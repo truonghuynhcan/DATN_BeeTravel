@@ -3,4 +3,4 @@ git clone https://github.com/truonghuynhcan/DATN_BeeTravel.git
 git checkout -b ten origin/ten
     tạo nhánh trên máy (thay ten = tên của mình)
 git add .
-    cập nhật
+    cập nhật nè
