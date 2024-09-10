@@ -1,0 +1,240 @@
+.hotel-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 15px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.wifi-badge {
+    background-color: lightgreen;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    /* Khung viền xung quanh */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    /* Đặt bên phải */
+}
+
+.hotel-img {
+    width: 100%;
+    height: 150px;
+    background-color: #ccc;
+    /* Placeholder for image */
+}
+
+.hotel-title {
+    font-weight: bold;
+    font-size: 1.25em;
+    color: #333;
+}
+
+.hotel-location {
+    color: red;
+}
+
+.room-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    background-color: #fff;
+}
+
+.room-title {
+    background-color: #007bff;
+    /* Màu nền */
+    color: white;
+    /* Màu chữ */
+    padding: 10px 15px;
+    /* Khoảng cách bên trong */
+    border-radius: 5px;
+    /* Bo góc */
+    display: inline-block;
+    /* Chỉ bao quanh nội dung */
+    margin-bottom: 15px;
+    /* Khoảng cách dưới */
+}
+
+.rating {
+    font-size: 2em;
+    color: #007bff;
+    /* Màu xanh cho điểm đánh giá */
+    margin-right: 15px;
+    /* Khoảng cách bên phải */
+}
+
+.review-info {
+    display: flex;
+    /* Sử dụng flexbox cho các phần này */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+}
+
+.review-title {
+    font-weight: bold;
+    margin-right: 15px;
+    /* Khoảng cách bên phải */
+}
+
+.amenities {
+    list-style-type: none;
+    padding: 0;
+}
+
+.amenities li {
+    padding: 5px 0;
+}
+
+.amenities li i {
+    color: green;
+    /* Màu cho biểu tượng kiểm tra */
+}
+
+.room-image {
+    width: 150px;
+    /* Chiều rộng hình ảnh */
+    height: 100px;
+    /* Chiều cao hình ảnh */
+    background-color: #ccc;
+    /* Màu nền placeholder */
+    border-radius: 5px;
+    margin-right: 15px;
+    /* Khoảng cách bên phải */
+}
+
+.amenities-container {
+    display: flex;
+    /* Sử dụng flexbox để căn chỉnh hình ảnh và danh sách */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+}
+
+.price-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px auto;
+    width: 400px;
+    /* Chiều rộng card */
+    position: relative;
+    /* Để căn chỉnh banner */
+}
+
+.discount-banner {
+    background-color: #dc3545;
+    /* Màu nền đỏ */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    /* Căn phải */
+}
+
+.total-price {
+    color: red;
+    /* Màu đỏ cho tổng tiền */
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.form-control {
+    /* Khoảng cách dưới cho input */
+}
+
+.d-flex {
+    justify-content: space-between;
+    /* Căn giữa hai phần tử */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+}
+
+body {
+    background-color: #f7f7f7;
+}
+
+.highlight {
+    color: #dc3545;
+}
+
+.hotel-card,
+.room-card,
+.price-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.hotel-title {
+    font-weight: bold;
+    font-size: 1.25em;
+    color: #333;
+}
+
+.hotel-location {
+    color: red;
+}
+
+.review-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.rating {
+    font-size: 2em;
+    color: #007bff;
+    margin-right: 15px;
+}
+
+.amenities {
+    list-style-type: none;
+    padding: 0;
+}
+
+.amenities li {
+    padding: 5px 0;
+}
+
+.amenities li i {
+    color: green;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.instructions {
+    margin-top: 20px;
+}
+
+.total-price {
+    color: red;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
