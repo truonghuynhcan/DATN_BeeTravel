@@ -9,7 +9,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link  text-white " href="#"><i class="bi bi-telephone-inbound-fill"></i>
-                            000.000.000</a>
+                            1900.1900.1900</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -45,6 +45,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('thanh_toan') }}">Thanh toán</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('thanh_toan') }}">Tour list</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('tour_chi_tiet') }}">Tour desctiption</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
