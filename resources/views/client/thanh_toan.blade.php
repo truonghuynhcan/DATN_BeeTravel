@@ -1,46 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap-custom.css">
-    <link rel="stylesheet" href="../assets/bootstrap/css/custom-buy.css">
-</head>
-
-<body>
-
-    <div class="container">
-        <div class="row align-items-center py-3">
-            <div class="col-md-2">
-                <div class="bg-light border" style="height: 50px; display: flex; align-items: center; justify-content: center;">
-                    <span>Logo</span>
-                </div>
-            </div>
-            <div class="col-md-8 text-center">
-                <div class="d-flex justify-content-center align-items-center">
-                    <div class="step active">
-                        <div class="step-number">1</div>
-                        <span class="ml-2 text-primary">Thông tin khách hàng</span>
-                    </div>
-                    <div class="step completed">
-                        <div class="step-number">2</div>
-                        <span class="ml-2 text-muted">Đã xác nhận đặt phòng!</span>
-                    </div>
-                </div>
-                <div class="text-danger mt-2">
-                    Chúng tôi đang giữ giá cho quý khách <span class="timer">00:00:00</span>
-                </div>
-            </div>
-            <div class="col-md-2 text-right">
-                <button class="btn btn-outline-primary">Đăng Nhập</button>
-            </div>
-        </div>
-    </div>
-
+@extends('client.layout.index')
+@section('title')
+    Thanh toán
+@endsection
+@section('main')
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-7">
@@ -194,10 +156,4 @@
             </div>
         </div>
     </div>
-
-
-
-    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+@endsection
