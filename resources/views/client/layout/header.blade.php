@@ -1,24 +1,38 @@
+<style>
+    #nav2 .nav-link.active{
+        color: var(--bs-primary);
+        font-weight: bold;
+    }
+    #nav2 .nav-link{
+        transition: color 0.4s ease, font-weight 0.3s ease, text-decoration 0.3s ease;
+    }
+    #nav2 .nav-link:hover{
+        font-weight: bold;
+        text-decoration: underline;
+        color: var(--bs-primary);
+    }
+</style>
 <header>
     <!-- nav 1 -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary p-0">
-        <div class="container-fluid  bg-primary ">
+    <nav class="navbar navbar-expand-lg p-0">
+        <div class="container-fluid  bg-secondary bg-opacity-50">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active  text-white " aria-current="page" href="#"> <i class="bi bi-envelope"></i> info@beechoice.net</a>
+                        <a class="nav-link text-body active " aria-current="page" href="#"> <i class="bi bi-envelope"></i> info@beechoice.net</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  text-white " href="#"><i class="bi bi-telephone-inbound-fill"></i>
+                        <a class="nav-link text-body " href="#"><i class="bi bi-telephone-inbound-fill"></i>
                             1900.1900.1900</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link  text-white " href="#"><i class="bi bi-geo-alt-fill"></i> Chọn điểm khởi
+                        <a class="nav-link text-body " href="#"><i class="bi bi-geo-alt-fill"></i> Chọn điểm khởi
                             hành</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle  text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link text-body dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
                         </a>
                         <ul class="dropdown-menu">
@@ -31,15 +45,14 @@
             </div>
         </div>
     </nav>
-    <!-- end nav 1 -->
     <!-- NAV 2 (Main Navbar) -->
-    <nav id="nav2" class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav id="nav2" class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ asset('') }}assets/image/logo.png" alt="logo" height="60px">
+                <img src="{{ asset('') }}assets/image/logo_ngang.png" alt="logo" height="60px">
             </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                     </li>
@@ -66,10 +79,6 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
@@ -78,7 +87,7 @@
     <nav id="nav3" class="navbar bg-body-tertiary fixed-top d-none">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('') }}assets/image/logo.png" alt="logo" height="60px">
+                <img src="{{ asset('') }}assets/image/logo_ngang.png" alt="logo" height="60px">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -86,7 +95,7 @@
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-                        <img src="{{ asset('') }}assets/image/logo.png" alt="logo" height="60px">
+                        <img src="{{ asset('') }}assets/image/logo_ngang.png" alt="logo" height="60px">
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
