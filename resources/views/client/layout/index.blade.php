@@ -8,6 +8,11 @@
     <link rel="shortcut icon" href="{{ asset('assets/image/logo_BeeTravel.png') }}" type="image/x-icon">
 
     <link rel="stylesheet" href="{{asset('')}}assets/css/bootstrap.css">
+    {{-- Fonaweosome --}}
+    <link href="{{asset('')}}assets/fontawesome-free-6.6.0-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="{{asset('')}}assets/fontawesome-free-6.6.0-web/css/brands.css" rel="stylesheet" />
+    <link href="{{asset('')}}assets/fontawesome-free-6.6.0-web/css/solid.css" rel="stylesheet" />
+
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{asset('')}}assets/css/bootstrap-custom.css">

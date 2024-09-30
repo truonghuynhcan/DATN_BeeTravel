@@ -13,7 +13,34 @@
                 <!-- images -->
                 <div class="row mb-3">
                     <div class="col-3">img phuj</div>
-                    <div class="col-9">img chính</div>
+                    <div class="col-9">
+                        <div id="carouselExampleIndicators" class="carousel slide">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="{{asset('')}}assets/image/tour01.webp" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{{asset('')}}assets/image/tour02.webp" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{{asset('')}}assets/image/tour03.webp" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Lịch khởi hành -->
                 <div class="row mb-3">
@@ -40,7 +67,8 @@
                         <li>Giải nhiệt và tận hưởng mùa hè tại huyện đảo Vân Đồn xinh đẹp với những cảnh đẹp thú vị</li>
                         <li>Cảnh đẹp cổ kính của Chùa Cái Bầu địa điểm tâm linh hàng đầu đáng để trải nghiệm nhất tại vùng đất mỏ Quảng Ninh</li>
                         <li>Cao nguyên Bình Liêu có khí hậu quanh năm ôn hòa, cấu trúc địa hình đa dạng cùng cảnh sắc thiên nhiên tươi đẹp, chinh phục những nấc thang "sống lưng khủng long", phóng tầm mắt ngắm nhìn cảnh sắc thiên nhiên tuyệt diệu và cảm nhận mình thật nhỏ bé giữa đất trời bao la</li>
-                        <li>Chiêm ngưỡng vẻ đẹp huyền bí của hệ thống 5 hang động tại khu du lịch Vũng Đục, các hang động được phân bổ từ thấp lên cao, có hang ta phải leo đến hàng trăm bậc đá mới đến cửa hang. Quý khách có thể hành hương chiêm bái tại các ngôi đền tự lưng bên núi nhìn ra vịnh Bái Tử Long xinh đẹp</li>
+                        <li>Chiêm ngưỡng vẻ đẹp huyền bí của hệ thống 5 hang động tại khu du lịch Vũng Đục, các hang động được phân bổ từ thấp lên cao, có hang ta phải leo đến hàng trăm bậc đá mới đến cửa hang. Quý khách có thể hành hương chiêm bái tại các ngôi đền tự lưng bên núi nhìn ra vịnh Bái Tử
+                            Long xinh đẹp</li>
                         <li>Wyndham Garden Sonasea Vân Đồn là khu nghỉ dưỡng cao cấp chuẩn 5 sao quốc tế. Đây là một trong những dự án có quy mô “khủng” nhất tại huyện đảo Vân Đồn, trải dài trên 2.2km đường bờ biển Bãi Dài, ngay bên cạnh Vịnh Bái Tử Long với diện tích lên tới 358.3ha</li>
                     </ul>
                 </div>
@@ -109,7 +137,8 @@
                                 </button>
                             </h2>
                             <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space
+                                    to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
                             </div>
                         </div>
                     </div>
@@ -146,7 +175,8 @@
                                     </button>
                                 </h2>
                                 <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the
+                                        space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +210,8 @@
                                     </button>
                                 </h2>
                                 <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the
+                                        space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
                                 </div>
                             </div>
                         </div>
@@ -227,12 +258,12 @@
             </div>
         </div>
     </div>
-<!-- Các tour khác -->
- <div class="container">
-    <div class="row">
-        <div class="col-4">1</div>
-        <div class="col-4">2</div>
-        <div class="col-4">3</div>
+    <!-- Các tour khác -->
+    <div class="container">
+        <div class="row">
+            <div class="col-4">1</div>
+            <div class="col-4">2</div>
+            <div class="col-4">3</div>
+        </div>
     </div>
- </div>
 @endsection

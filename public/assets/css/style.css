@@ -7,21 +7,7 @@
     --background-color: #ecf0f1; 
     --text-color: #2c3e50;      
 }
-
-/* banner */
-.banner-img{
-    margin-top: 20px;
-}
-
-.banner-img img {
-    border-radius: 10px;
-}
-
 /* product */
-.product {
-    margin-top: 20px;
-    background-color:rgba(74, 160, 245, 0.603);
-}
 
 .product h3 {
     margin-top: 10px;
@@ -78,47 +64,6 @@
     background-color:#6fabef;
 }
 
-.product .card{
-    height: 400px;
-    background-image: url(/assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg);
-    border-radius: 10px;
-}
-
-.product .card-body {
-    font-size: 15px;
-    margin-top: 134px;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-radius: 10px;
-    border: 1px solid #2c3e50;
-    background-color: white;
-}
-
-.product .card-body .map {
-    display: flex;
-    margin-bottom: 5px;
-}
-
-.product .card-body .map b {
-    color: #0E487C;
-}
-
-.product .card-body .gia{
-    display: flex;
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
-
-.product .card-body .gia p{
-    color: #FE0808;
-}
-
-.product .card a {
-    margin-top: 5px;
-    background-color: aliceblue;
-    color: #FE0808;
-    border: 1px solid #FE0808;
-}
 
 /* catagory-address */
 .yeuthich h3 {
