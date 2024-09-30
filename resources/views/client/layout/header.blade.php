@@ -46,13 +46,13 @@
         </div>
     </nav>
     <!-- NAV 2 (Main Navbar) -->
-    <nav id="nav2" class="navbar navbar-expand-lg">
+    <nav id="nav2" class="navbar navbar-expand-lg bg-body">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('') }}assets/image/logo_ngang.png" alt="logo" height="60px">
             </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto h5">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                     </li>
@@ -63,7 +63,7 @@
                         <a class="nav-link" href="{{ route('thanh_toan') }}">Tour list</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('tour_chi_tiet') }}">Tour desctiption</a>
+                        {{-- <a class="nav-link" href="{{ route('tour_chi_tiet') }}">Tour desctiption</a> --}}
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

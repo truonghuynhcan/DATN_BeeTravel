@@ -83,7 +83,7 @@
                         <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="450px" class="card-img oject-fit-fill" alt="...">
                         <div class="card-img-overlay m-3 p-2 bg-body bg-opacity-75 text-body" style="top:inherit">
                             <h5 class="card-title">
-                                <a href="{{route('tour_chi_tiet')}}" class="text-decoration-none text-body fs-6">
+                                <a href="{{route('tour_chi_tiet','alo')}}" class="text-decoration-none text-body fs-6">
                                     Đà Nẵng - Phố cổ Hội An - Cầu Vàng - KDL Bà Nà - Vườn Tượng Apec
                                 </a>
                             </h5>
