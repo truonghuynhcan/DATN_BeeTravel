@@ -10,4 +10,12 @@ class UserPageController extends Controller
     {
         return view('client.home');
     }
+    public function about()
+    {
+        return view('client.gioi_thieu');
+    }
+    public function contact()
+    {
+        return view('client.lien_he');
+    }
 }
