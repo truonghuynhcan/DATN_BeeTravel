@@ -77,17 +77,16 @@
                         <div class="position-absolute start-0" style="top:5px;">
                             <svg width="80" height="40" viewBox="0 0 146 62" fill="none"xmlns="http://www.w3.org/2000/svg">
                                 <path d="M144 1H1V61H144L120.405 31L144 1Z" style="fill: var(--bs-primary);" />
-                            </svg>
+                            </svg>                                
                             <span class="text-body position-absolute start-50 top-50 translate-middle">Mới</span>
                         </div>
                         <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="450px" class="card-img oject-fit-fill" alt="...">
-                        <div class="card-img-overlay m-3 p-2 bg-body bg-opacity-75 text-body" style="top:inherit">
+                        <div class="card-img-overlay m-3 p-2 bg-body text-body" style="top:inherit">
                             <h5 class="card-title">
                                 <a href="{{route('tour_chi_tiet','alo')}}" class="text-decoration-none text-body fs-6">
                                     Đà Nẵng - Phố cổ Hội An - Cầu Vàng - KDL Bà Nà - Vườn Tượng Apec
                                 </a>
                             </h5>
-
                             <div class="d-flex">
                                 <i class="bi bi-geo-alt"></i>
                                 <p class="card-text">Khởi hành: <b>Tp. Hồ Chí Minh</b></p>

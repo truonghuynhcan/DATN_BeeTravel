@@ -1,0 +1,152 @@
+<!-- yến nhi -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
+    <title>Giới thiệu - Bee Travel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .hero-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden; /* Đảm bảo không có nội dung nào tràn ra ngoài */
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-text {
+            position: absolute;
+            top: 50%; /* Căn giữa dọc */
+            left: 50%; /* Căn giữa ngang */
+            transform: translate(-50%, -50%); /* Điều chỉnh vị trí */
+            color: white; /* Màu chữ */
+            font-size: 2.5rem; /* Kích thước chữ */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Đổ bóng cho chữ */
+        }
+
+        .about-section {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .about-header h1 {
+            color: #333;
+            font-size: 2.5rem;
+        }
+
+        .about-content {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .about-content p {
+            margin-bottom: 20px;
+        }
+
+        .register-section {
+            display: flex; /* Sử dụng flexbox để căn chỉnh các phần tử */
+            justify-content: space-between; /* Đặt khoảng cách giữa các phần tử */
+            align-items: center; /* Căn giữa dọc */
+            margin: 40px 0;
+            padding: 20px;
+            border: 1px solid #007bff; /* Đường viền màu xanh */
+            border-radius: 10px; /* Bo góc cho khung */
+            background-color: #0b1455; /* Màu nền trắng cho khung */
+        }
+
+        .register-text {
+            font-size: 1rem; /* Kích thước chữ nhỏ lại */
+            color: #fff; /* Màu chữ */
+        }
+
+        .register-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .register-button:hover {
+            background-color: #0056b3;
+        }
+
+        .img-fluid {
+            border-radius: 10px; /* Bo góc cho hình ảnh */
+            max-height: 200px; /* Giới hạn chiều cao hình ảnh */
+            object-fit: cover; /* Giữ tỷ lệ hình ảnh */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hàng hình ảnh tràn ngang với chữ -->
+    <div class="hero-container">
+        <img src="../assets/image/contact.jpg" alt="Hero Image" class="hero-image">
+        <div class="hero-text">VỀ CHÚNG TÔI</div>
+    </div>
+
+    <!-- About Us Section -->
+    <div class="about-section">
+        <div class="about-header">
+            <h1>Giới thiệu về Bee Travel</h1>
+        </div>
+
+        <!-- Hàng 1 chia thành 2 cột -->
+        <h2>Câu chuyện về chúng tôi</h2>
+        <div class="row mb-4">
+            <div class="col-md-6 about-content">
+                <p>Câu chuyện về những người trẻ, chúng tôi sống giữa bộn bề học tập và công việc. Bị cuốn vào vòng xoáy đó thật sự cản trở nhiều sở thích cá nhân,
+                    những tâm hồn thích “xê lịch” nhưng luôn bị cầm chân bởi công việc và học tập. Sống ngay trong thành phố này, nhưng khi bạn bè hỏi nên đi chơi ở đâu,
+                    ăn uống chỗ nào, tham quan nơi đâu… thì cũng không thể trả lời. Chúng tôi là những người trẻ như vậy tập hợp lại với niềm đam mê, tình yêu xê dịch trong chính thành phố của chúng tôi.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="../assets/image/baner1.jpg" alt="About Us Image 1" class="img-fluid">
+            </div>
+        </div>
+
+        <!-- Hàng 2 chia thành 2 cột -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <img src="../assets/image/baner2.jpg" alt="About Us Image 2" class="img-fluid">
+            </div>
+            <div class="col-md-6 about-content">
+                <h2>Tầm nhìn của chúng tôi</h2>
+                <p>Bee Travel, cái tên thể hiện rõ định hướng của website là trở thành người bạn đồng hành đáng tin cậy cho bất kỳ ai đam mê du lịch, 
+                    dù là trong nước hay quốc tế. Với Bee Travel, mỗi hành trình đều trở nên dễ dàng và thú vị hơn, giúp bạn khám phá những điểm đến tuyệt vời một cách trọn vẹn nhất.
+                    Chúng tôi mong muốn mang đến nguồn cảm hứng du lịch và tình yêu dành cho những điểm đến tuyệt vời, không chỉ cho du khách trong và ngoài nước mà còn cho chính người dân địa phương.
+                    Bee Travel hy vọng sẽ không chỉ cung cấp thông tin về chuyến đi, giá vé… mà còn lan tỏa niềm đam mê du lịch và sự yêu mến đối với những thành phố trẻ trung, năng động và đầy tiềm năng phát triển.</p>
+            </div>
+        </div>
+
+        <!-- Hàng đăng ký -->
+        <div class="register-section">
+            <span class="register-text"> Lưu địa điểm yêu thích của bạn bằng cách đăng ký!!</span>
+            <button class="register-button">Đăng ký</button>
+        </div>
+    </div>
+
+    <script src="..../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

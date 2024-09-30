@@ -57,6 +57,12 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('about') }}">Giới thiệu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('thanh_toan') }}">Thanh toán</a>
                     </li>
                     <li class="nav-item">
