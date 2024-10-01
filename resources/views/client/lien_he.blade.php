@@ -4,11 +4,6 @@
 @endsection
 @section('main')
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-    }
-
     .contact-container {
         position: relative;
         width: 70%;
