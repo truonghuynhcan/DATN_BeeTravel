@@ -9,9 +9,11 @@
 
     <link rel="stylesheet" href="{{asset('')}}assets/css/bootstrap.css">
     {{-- Fonaweosome --}}
+    <script src="https://kit.fontawesome.com/0e14ebdea1.js" crossorigin="anonymous"></script>
+{{-- 
     <link href="{{asset('')}}assets/fontawesome-free-6.6.0-web/css/fontawesome.css" rel="stylesheet" />
     <link href="{{asset('')}}assets/fontawesome-free-6.6.0-web/css/brands.css" rel="stylesheet" />
-    <link href="{{asset('')}}assets/fontawesome-free-6.6.0-web/css/solid.css" rel="stylesheet" />
+    <link href="{{asset('')}}assets/fontawesome-free-6.6.0-web/css/solid.css" rel="stylesheet" /> --}}
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">

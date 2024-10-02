@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEE TRAVEL - Thông tin cá nhân</title>
+    <link rel="shortcut icon" href="../assets/image/logo_BeeTravel.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <!-- Fonaweosome -->
+    <script src="https://kit.fontawesome.com/0e14ebdea1.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap-custom.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body class="bg-secondary bg-opacity-10">
+
+    <!-- head profile -->
+    <section>
+        <div class="card text-bg-dark">
+            <img alt="..." src="../assets/image/head01.jpg" class="card-img object-fit-cover" height="200px" width="100%">
+            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                <h2 class="card-title">Thông tin của tôi</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- thong tin  -->
+    <section class="container my-4">
+        <div class="row">
+            <!-- navbar người dùng -->
+            <div class="col-3 p-2">
+                <!-- avatar -->
+                <div class="card border-0 mb-3" style="background-color: inherit;">
+                    <div class="row g-0">
+                        <div class="col-md-3 d-flex align-items-center">
+                            <img src="../assets/image/logo_BeeTravel.png" width="100%" class="object-fit-cover rounded-circle bg-body" alt="...">
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title h6">Du Lịch Cùng Bee Travel</h5>
+                                <p class="card-text"><small class="text-body-secondary"><i class="bi bi-pen"></i> Sửa hồ sơ</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- nav -->
+                <div class="d-flex flex-column">
+                    <div class="d-flex gap-1">
+                        
+                        <div class="d-flex flex-column">
+                        </div>
+                    </div>
+                    <a href="user-account-profile.html" class="text-decoration-none"><i class="bi bi-person link-primary"></i> Tài khoản của tui</a>
+                    <a href="user-account-profile.html" class="text-decoration-none px-4 link-body-emphasis">Hồ sơ</a>
+                    <a href="user-account-payment.html" class="text-decoration-none px-4 link-body-emphasis">Ngân hàng</a>
+                    <a href="user-setting-notification.html" class="text-decoration-none px-4 link-body-emphasis">Cài đặt thông báo</a>
+                    <a href="user-setting-security.html" class="text-decoration-none px-4 link-body-emphasis">Bảo mật</a>
+                    <a href="user-booking.html" class="text-decoration-none link-success" > <i class="bi bi-clipboard-minus"></i> Chuyến đi của tui</a>
+                    <a href="user-notifications-order" class="text-decoration-none link-danger"><i class="bi bi-bell link-danger"></i> Thông báo</a>
+                </div>
+            </div>
+
+
+            <!-- hiển thị thông tin -->
+            <div class="col-9 px-2">
+                <div class="bg-body p-2 rounded">
+
+                    <!-- Thẻ tín dụng -->
+                    <div class="d-flex justify-content-between mb-2">
+                        <h2 class="fs-4 fw-normal m-0">Thẻ Tín dụng/Ghi nợ</h2>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-plus"></i> Thêm thẻ</a>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-center align-items-center"style="height: 100px;">
+                        <span>Bạn chưa liên kết thẻ</span>
+                    </div>
+
+                    <!-- Thẻ ngân hàng -->
+                    <div class="d-flex justify-content-between mb-2">
+                        <h2 class="fs-4 fw-normal m-0">Tài khoản ngân hàng của tôi</h2>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-plus"></i> Thêm thẻ</a>
+                    </div>
+                    <hr>
+                    <div class="row ">
+                        <div class="col-1 d-flex align-items-center">
+                            <img src="../assets/image/icon/Icon-TPBank.webp" alt="img ngân hàng" width="100%" class="object-fit-cover">
+                        </div>
+                        <div class="col-6">
+                            <p class="mb-1 text-truncate">Ngân Hàng TMCP Tiên Phong</p>
+                            <p class=" m-0">Họ và Tên: Bee Travel</p>
+                            <p class=" m-0"><span class="opacity-75">Chi nhánh:</span>CN Quận 12, TP HCM (TPBank)</p>
+                        </div>
+                        <div class="col-1">**113</div>
+                        <div class="col-4">
+                            <div class="container-fluid d-flex justify-content-between">
+                                <a href="#">Xóa</a>
+                                <a href="#" class="btn btn-outline-primary text-decoration-none disabled">Thiết lập mặt định</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
