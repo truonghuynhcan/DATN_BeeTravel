@@ -63,6 +63,9 @@
                         <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('news') }}">Tin tức</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('thanh_toan') }}">Thanh toán</a>
                     </li>
                     <li class="nav-item">
@@ -72,16 +75,16 @@
                         {{-- <a class="nav-link" href="{{ route('tour_chi_tiet') }}">Tour desctiption</a> --}}
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Tài khoản
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <ul class="dropdown-menu" style="left: -45px;">
+                            <li><a class="dropdown-item" href="{{route('myProfile')}}">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="{{route('myTour')}}">Tour của tôi</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
                         </ul>
                     </li>
                 </ul>
