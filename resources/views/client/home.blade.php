@@ -11,7 +11,7 @@
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
         <div class="carousel-inner">
-            <div class="carousel-item active">
+            <div class="carousel-item active">  
                 <img src="{{ asset('') }}assets/image/banner-home-1.png" class="d-block w-100" style="min-height: 200px" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Bee Travel</h5>

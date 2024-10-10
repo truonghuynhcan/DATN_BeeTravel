@@ -5,6 +5,7 @@
 @section('main')
     <div class="container mt-5">
         <div class="row">
+        
             <div class="col-md-7">
                 <div class="alert alert-info" role="alert">
                     <div class="text-success">

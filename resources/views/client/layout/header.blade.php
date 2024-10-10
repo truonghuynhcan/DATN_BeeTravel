@@ -32,12 +32,12 @@
                             hành</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-body dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link text-body dropdown-toggle " href="{{ route('login') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Đăng Ký</a></li>
-                            <li><a class="dropdown-item" href="#">Đăng Nhập</a></li>
+                            <li><a class="dropdown-item" href="{{ route('register') }}">Đăng Ký</a></li>
+                            <li><a class="dropdown-item" href="{{ route('login') }}">Đăng Nhập</a></li>
 
                         </ul>
                     </li>
