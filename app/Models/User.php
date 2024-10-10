@@ -12,15 +12,25 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'name',
+        'gender',
+        'phone',
+        'address',
+        'image_url',
+        'noti_email',
+        'noti_sms',
+        'is_block',
+        'last_login_at',
+        'deletion_requested_at',
     ];
 
     /**
@@ -30,16 +40,35 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'noti_email' => 'boolean',
+        'noti_sms' => 'boolean',
+        'is_block' => 'boolean',
+        'last_login_at' => 'datetime',
+        'deletion_requested_at' => 'datetime',
     ];
+
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

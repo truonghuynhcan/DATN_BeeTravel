@@ -2,43 +2,31 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
+    protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => bcrypt('password'), // Mã hóa mật khẩu
+            'name' => $this->faker->name(),
+            'gender' => $this->faker->randomElement(['mr', 'mrs']),
+            'phone' => $this->faker->numerify('##########'),
+            'address' => $this->faker->address(),
+            'image_url' => $this->faker->imageUrl(640, 480, 'people'),
+            'noti_email' => $this->faker->boolean(80), // 80% cơ hội nhận thông báo email
+            'noti_sms' => $this->faker->boolean(20), // 20% cơ hội nhận thông báo SMS
+            'is_block' => $this->faker->boolean(10), // 10% cơ hội bị khóa tài khoản
+            'last_login_at' => $this->faker->dateTimeThisYear(),
+            'deletion_requested_at' => null, // Mặc định chưa yêu cầu xóa
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }
