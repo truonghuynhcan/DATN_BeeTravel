@@ -98,7 +98,7 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li class="p-2">Đăng nhập đại lý</li>
-                            <li class="p-2"><a class="container-fluid btn btn-outline-primary" href="">Đăng nhập đại lý</a></li>
+                            <li class="p-2"><a class="container-fluid btn btn-outline-primary" href="{{ route('login_dl') }}">Đăng nhập đại lý</a></li>
                         @endguest
 
                         {{-- khi người dùng đã đăng nhập thì hiện --}}
