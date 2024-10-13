@@ -1,20 +1,17 @@
-@extends('client.layout.index')
-@section('title')
-    Admin Demo
-@endsection
-@section('main')
-
-<div class="container">
-<p class="text-center text-uppercase fs-4 fst-italic p-4"><b>Trang Admin</b></p>
-@auth
-<h3>Xin chào {{Auth()->user()->name}}</h3>
-<form action="{{route('dangxuat')}}" method='post'>
-@csrf
-<button class="btn btn-primary rounded-pill">Đăng Xuất</button>
-</form>
-@else
-<a href="/dang-nhap">Đăng Nhập</a>
-@endauth
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Show Sản Phẩm</title>
+    <script src="https://kit.fontawesome.com/4cf044f92d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap-5.3.3-dist/css/style.css">
+    
+</head>
+<body>
+    <div class="container">
+      
         <div class="row pt-4">
             <div class="col-3 bg-dark-subtle ">
                   <ul class="nav nav-tabs">
@@ -104,7 +101,7 @@
                     
                   </ul>
                   <ul class="list-group list-group-horizontal-sm list-group-item-primary list">
-                    <li class="list-group-item"><img src="../assets/image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
+                    <li class="list-group-item"><img src="image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
                     <li class="list-group-item">Đà Lạt - Đồi Thông</li>
                     <li class="list-group-item">Tour trong nước</li>
                     <li class="list-group-item">450.000 VNĐ/ người</li>
@@ -114,7 +111,7 @@
                     </li>
                   </ul>
                   <ul class="list-group list-group-horizontal-sm list-group-item-primary list">
-                    <li class="list-group-item"><img src="../assets/image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
+                    <li class="list-group-item"><img src="image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
                     <li class="list-group-item">Đà Lạt - Đồi Thông</li>
                     <li class="list-group-item">Tour trong nước</li>
                     <li class="list-group-item">450.000 VNĐ/ người</li>
@@ -124,7 +121,7 @@
                     </li>
                   </ul>
                   <ul class="list-group list-group-horizontal-sm list-group-item-primary list">
-                    <li class="list-group-item"><img src="../assets/image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
+                    <li class="list-group-item"><img src="image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
                     <li class="list-group-item">Đà Lạt - Đồi Thông</li>
                     <li class="list-group-item">Tour trong nước</li>
                     <li class="list-group-item">450.000 VNĐ/ người</li>
@@ -134,7 +131,7 @@
                     </li>
                   </ul>
                   <ul class="list-group list-group-horizontal-sm list-group-item-primary list">
-                    <li class="list-group-item"><img src="../assets/image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
+                    <li class="list-group-item"><img src="image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
                     <li class="list-group-item">Đà Lạt - Đồi Thông</li>
                     <li class="list-group-item">Tour trong nước</li>
                     <li class="list-group-item">450.000 VNĐ/ người</li>
@@ -144,7 +141,7 @@
                     </li>
                   </ul>
                   <ul class="list-group list-group-horizontal-sm list-group-item-primary list">
-                    <li class="list-group-item"><img src="../assets/image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
+                    <li class="list-group-item"><img src="image/proxy-image.jpg" class="rounded" alt="..." width="70px" height="70px"></li>
                     <li class="list-group-item">Đà Lạt - Đồi Thông</li>
                     <li class="list-group-item">Tour trong nước</li>
                     <li class="list-group-item">450.000 VNĐ/ người</li>
@@ -178,5 +175,9 @@
             </div>
         </div>
     </div>
-    <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-@endsection
+    
+     
+    
+     <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
