@@ -173,13 +173,78 @@
                         <h5>Chi tiết Tour</h5>
                         <textarea id="content"></textarea>
                     </section>
+
+                    <!-- Ngày đi / ngày khởi hành -->
+                    <section class="bg-body rounded p-2 mb-3">
+                        <h5>Ngày giờ khởi hành</h5>
+                        <p class="form-label text-body-tertiary">Chọn ngày giờ khởi hành</p>
+                    
+                        <div id="departure-container">
+                            <div class="mb-4 departure-block">
+                                <div class="d-flex">
+                                    <input type="datetime-local" class="form-control form-control-sm fw-bold" name="departure-date[]" style="max-width: fit-content;">
+                                    <hr class="d-inline w-100">
+                                    <button class="btn btn-outline-danger btn-sm ms-2 remove-departure">Xóa</button> <!-- Nút xóa -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label for="adult-price" class="form-label">Giá người lớn (>12 tuổi)</label>
+                                        <input type="number" class="form-control form-control-sm" name="adult-price[]">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="child-price" class="form-label">Giá trẻ em (5-12 tuổi)</label>
+                                        <input type="number" class="form-control form-control-sm" name="child-price[]">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="toddler-price" class="form-label">Giá trẻ nhỏ (2-5 tuổi)</label>
+                                        <input type="number" class="form-control form-control-sm" name="toddler-price[]">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="infant-price" class="form-label">Giá em bé (dưới 2 tuổi)</label>
+                                        <input type="number" class="form-control form-control-sm" name="infant-price[]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <button id="add-departure" class="btn btn-outline-primary">+ thêm ngày giờ khởi hành</button>
+                    </section>
+                    
+                    <script>
+                        // Thêm sự kiện cho nút thêm ngày giờ khởi hành
+                        document.getElementById('add-departure').addEventListener('click', function () {
+                            // Clone the first departure block
+                            var firstBlock = document.querySelector('.departure-block');
+                            var newBlock = firstBlock.cloneNode(true);
+                    
+                            // Clear input values in the new block
+                            var inputs = newBlock.querySelectorAll('input');
+                            inputs.forEach(input => input.value = '');
+                    
+                            // Append the new block to the container
+                            document.getElementById('departure-container').appendChild(newBlock);
+                            
+                            // Gán lại sự kiện xóa cho nút xóa trong khối mới
+                            newBlock.querySelector('.remove-departure').addEventListener('click', function () {
+                                newBlock.remove(); // Xóa khối
+                            });
+                        });
+                    
+                        // Gán sự kiện cho nút xóa trong khối đầu tiên
+                        document.querySelector('.remove-departure').addEventListener('click', function () {
+                            this.closest('.departure-block').remove(); // Xóa khối
+                        });
+                    </script>
+                     
                 </div>
 
 
                 <!-- NỘI DUNG THÊM, Cate, IMG, 2n1d, phương tiện -->
                 <div class="col-3">
                     <section class="bg-body rounded mb-3 p-2">
-                        <label for="cate" class="form-label"><h5>Chọn danh mục</h5></label>
+                        <label for="cate" class="form-label">
+                            <h5>Chọn danh mục</h5>
+                        </label>
                         <select class="form-select form-select-sm" id="area" aria-label="Small select example">
                             <option selected>Chọn danh mục tour</option>
                             <option value="1">One</option>
@@ -188,7 +253,9 @@
                         </select>
                     </section>
                     <section class="bg-body rounded mb-3 p-2">
-                        <p class="mb-2"><h5>Ảnh đại diện</h5></p>
+                        <p class="mb-2">
+                        <h5>Ảnh đại diện</h5>
+                        </p>
                         <label for="fileUpload" class="form-label">
                             <img src="../../assets/image/img_phaceholder.jpg" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
                         </label>
