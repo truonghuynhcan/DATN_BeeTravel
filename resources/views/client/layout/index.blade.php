@@ -18,6 +18,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="{{ asset('') }}assets/css/bootstrap-custom.css">
         <link rel="stylesheet" href="{{ asset('') }}assets/css/style.css">
+
+
+        <!-- Insert the blade containing the TinyMCE configuration and source script -->
+        <x-head.tinymce-config />
+
     </head>
 
     <body class="bg-secondary bg-opacity-10">

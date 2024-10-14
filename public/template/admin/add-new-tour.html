@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- js -->
+    <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- TRÌNH SOẠN THẢO -->
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/j3c0uo9sihhr95e3j0x613exxpc573dgffjby8r3q6q0aand/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+    <script>
+        tinymce.init({
+            selector: 'textarea#content',
+            height: 400,
+            menubar: true,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'advcode', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'powerpaste', 'code'
+            ],
+            toolbar: 'undo redo | insert | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code',
+            powerpaste_allow_local_images: true,
+            powerpaste_word_import: 'prompt',
+            powerpaste_html_import: 'prompt',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+        });
+    </script>
+</head>
+
+<body class="bg-dark-subtle bg-opacity-25">
+    <header class="bg-body container-fluid">
+        <div class="d-flex justify-content-between align-items-center">
+            <img src="../../assets/image/logo_ngang.png" alt="" height="60px">
+
+            <div class="d-flex">
+                <button type="button" class="btn btn-outline-primary position-relative me-4 mt-2">
+                    <i class="bi bi-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        99+
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </button>
+                <div class="dropdown">
+                    <button class="btn btn-secondary bg-secondary bg-opacity-75 rounded-circle p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../../assets/image/logo_BeeTravel.png" class="object-fit-cover" height="35px" width="35px" alt="">
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="d-flex">
+        <!-- Thanh bên -->
+        <nav class="bg-body-tertiary bg-opacity-25 p-2 overflow-auto sticky-top" style="width: 250px; height: 100vh;">
+
+
+            <!-- Đối tác - chỉ show thống kê của riêng đối tác -->
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Dashboard
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Thống kê tour</a>
+                <a href="" class="list-group-item list-group-item-action">Thống kê doanh thu</a>
+            </div>
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Quản lý Tour
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả tour</a>
+                <a href="add-new-tour.html" class="list-group-item list-group-item-action">Thêm tour</a>
+                <a href="" class="list-group-item list-group-item-action">Danh mục tour</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm danh mục tour</a>
+            </div>
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Quản lý Tin tức
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả tin tức</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm tin tức</a>
+                <a href="" class="list-group-item list-group-item-action">Danh tin tức</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm danh mục tin tức</a>
+            </div>
+
+
+            <!-- Show khi là admin -->
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Quản lý Người dùng
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả đối tác</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm đối tác</a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả Khách hàng</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm khách hàng</a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả Admin</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm admin</a>
+            </div>
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Thông tin cá nhân
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Tài khoản</a>
+                <a href="" class="list-group-item list-group-item-action">Ngân hàng</a>
+                <a href="" class="list-group-item list-group-item-action">Bảo mật</a>
+                <a href="" class="list-group-item list-group-item-action">Cài đặt thông báo</a>
+            </div>
+        </nav>
+
+        <!-- show nội dung -->
+        <section class="w-100 d-inline bg-body-secondary p-2">
+            <header class="bg-body rounded p-2 d-flex justify-content-between mb-2 sticky-top">
+                <h2 class="">Thêm tour mới</h2>
+                <div>
+                    <a href="" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</a>
+                    <a href="" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</a> <!-- lưu với trạng thái ẩn -->
+                </div>
+            </header>
+            <div class="row">
+
+                <!-- NỘI DUNG CHI TIẾT -->
+                <div class="col-9">
+                    <section class="bg-body rounded mb-3">
+                        <input class="form-control form-control-lg" type="text" placeholder="Tên tour" aria-label=".form-control-lg example">
+                    </section>
+
+                    <section class="bg-body rounded p-2 mb-3"> <!-- ẩn khi là đối tác -->
+                        <h5>Nổi bật</h5>
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <label for="area" class="form-label">Chọn vị trí</label>
+                                <select class="form-select form-select-sm" id="area" aria-label="Small select example">
+                                    <option selected>mã vị trí</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                    <option value="">4</option>
+                                </select>
+                            </div>
+                            <div class="me-3">
+                                <label for="date" class="form-label">Chọn ngày bắt đầu, kết thức</label>
+                                <div class="d-flex">
+                                    <input type="date" class="form-control form-control-sm" id="date1">
+                                    <span class="mx-2">đến</span>
+                                    <input type="date" class="form-control form-control-sm" id="date2">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-body rounded p-2 mb-3">
+                        <h5>Mô tả ngắn</h5>
+                        <textarea class="d-block w-100"></textarea>
+                    </section>
+
+                    <section class="bg-body rounded p-2 mb-3">
+                        <h5>Chi tiết Tour</h5>
+                        <textarea id="content"></textarea>
+                    </section>
+                </div>
+
+
+                <!-- NỘI DUNG THÊM, Cate, IMG, 2n1d, phương tiện -->
+                <div class="col-3">
+                    <section class="bg-body rounded mb-3 p-2">
+                        <label for="cate" class="form-label"><h5>Chọn danh mục</h5></label>
+                        <select class="form-select form-select-sm" id="area" aria-label="Small select example">
+                            <option selected>Chọn danh mục tour</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </section>
+                    <section class="bg-body rounded mb-3 p-2">
+                        <p class="mb-2"><h5>Ảnh đại diện</h5></p>
+                        <label for="fileUpload" class="form-label">
+                            <img src="../../assets/image/img_phaceholder.jpg" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
+                        </label>
+                        <input type="file" class="form-control mb-3" id="fileUpload">
+
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed p-1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        Thêm ảnh phụ
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse pt-2" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body p-1"><input type="file" class="form-control mb-1" name="fileUpload1" id="fileUpload1"></div>
+                                    <div class="accordion-body p-1"><input type="file" class="form-control mb-1" name="fileUpload2" id="fileUpload2"></div>
+                                    <div class="accordion-body p-1"><input type="file" class="form-control mb-1" name="fileUpload3" id="fileUpload3"></div>
+                                    <div class="accordion-body p-1"><input type="file" class="form-control mb-1" name="fileUpload4" id="fileUpload4"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                    <section class="bg-body rounded mb-3 p-2">
+                        <div class=" mb-3">
+                            <h6>Phương tiện di chuyển</h6>
+                            <input type="text" class="form-control" id="transport" placeholder="xe hơi" value="">
+                        </div>
+                        <div class="">
+                            <h6>Thời gian diễn ra tour</h6>
+                            <input type="text" class="form-control" id="duration" placeholder="2n1d, 4n5d, 7n7d" value="">
+                        </div>
+                    </section>
+                    <section class="bg-body rounded mb-3 p-2">
+                        <label for="transport">Lượt đánh giá</label>
+                        <input type="number" class="form-control" disabled id="" value="0.000">
+                        <p class="text-primary mb-0">
+                            <strong>4.5</strong>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-half"></i>
+                            <i class="bi bi-star"></i>
+                        </p>
+                    </section>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</body>
+
+</html>
