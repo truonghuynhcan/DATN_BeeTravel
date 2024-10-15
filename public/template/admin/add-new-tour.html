@@ -25,23 +25,7 @@
     <!-- Place the first <script> tag in your HTML's <head> -->
     <script src="https://cdn.tiny.cloud/1/j3c0uo9sihhr95e3j0x613exxpc573dgffjby8r3q6q0aand/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
-    <script>
-        tinymce.init({
-            selector: 'textarea#content',
-            height: 400,
-            menubar: true,
-            plugins: [
-                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                'anchor', 'searchreplace', 'visualblocks', 'advcode', 'fullscreen',
-                'insertdatetime', 'media', 'table', 'powerpaste', 'code'
-            ],
-            toolbar: 'undo redo | insert | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code',
-            powerpaste_allow_local_images: true,
-            powerpaste_word_import: 'prompt',
-            powerpaste_html_import: 'prompt',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-        });
-    </script>
+    
 </head>
 
 <body class="bg-dark-subtle bg-opacity-25">
@@ -92,19 +76,17 @@
                 <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
                     Quản lý Tour
                 </a>
-                <a href="" class="list-group-item list-group-item-action">Tất cả tour</a>
+                <a href="tat-ca-tour.html" class="list-group-item list-group-item-action">Tất cả tour</a>
                 <a href="add-new-tour.html" class="list-group-item list-group-item-action">Thêm tour</a>
-                <a href="" class="list-group-item list-group-item-action">Danh mục tour</a>
-                <a href="" class="list-group-item list-group-item-action">Thêm danh mục tour</a>
+                <a href="danh-muc-tour.html" class="list-group-item list-group-item-action">Danh mục tour</a>
             </div>
             <div class="list-group mb-3">
                 <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
                     Quản lý Tin tức
                 </a>
-                <a href="" class="list-group-item list-group-item-action">Tất cả tin tức</a>
-                <a href="" class="list-group-item list-group-item-action">Thêm tin tức</a>
-                <a href="" class="list-group-item list-group-item-action">Danh tin tức</a>
-                <a href="" class="list-group-item list-group-item-action">Thêm danh mục tin tức</a>
+                <a href="tat-ca-tin-tuc.html" class="list-group-item list-group-item-action">Tất cả tin tức</a>
+                <a href="add-new-tin.html" class="list-group-item list-group-item-action">Thêm tin tức</a>
+                <a href="danh-muc-tin-tuc.html" class="list-group-item list-group-item-action">Danh tin tức</a>
             </div>
 
 
@@ -133,8 +115,27 @@
 
         <!-- show nội dung -->
         <section class="w-100 d-inline bg-body-secondary p-2">
+            <!-- TRÌNH SOẠN THẢO -->
+            <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+            <script>
+                tinymce.init({
+                    selector: 'textarea#content',
+                    height: 400,
+                    menubar: true,
+                    plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                        'anchor', 'searchreplace', 'visualblocks', 'advcode', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'powerpaste', 'code'
+                    ],
+                    toolbar: 'undo redo | insert | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code',
+                    powerpaste_allow_local_images: true,
+                    powerpaste_word_import: 'prompt',
+                    powerpaste_html_import: 'prompt',
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+                });
+            </script>
             <form action="" method="post">
-                <header class="bg-body rounded p-2 d-flex justify-content-between mb-2 sticky-top">
+                <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top">
                     <h2 class="">Thêm tour mới</h2>
                     <div>
                         <button type="submit" name="post" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
