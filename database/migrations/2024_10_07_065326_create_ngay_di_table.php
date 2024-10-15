@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('tour_id');
 
-            $table->date('start_date')->comment('ngay bat dau');
+            $table->dateTime('start_date')->comment('ngay bat dau');
             $table->double('price')->comment('Gia nguoi lon >12 tuoi');
             $table->double('price_tre_em')->comment('Gia nguoi lon 5-12 tuoi');
             $table->double('price_tre_nho')->comment('Gia nguoi lon 2-5 tuoi');
