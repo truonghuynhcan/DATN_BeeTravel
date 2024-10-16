@@ -25,80 +25,44 @@
 
 <!-- category -->
 <section class="container mt-4">
-    <a href="" class=" me-2 fs-2 fw-bold text-body text-decoration-none position-relative ps-2">DU LỊCH</a>
-    <a href="" class=" me-2 fw-bold pb-1 link-body-emphasis opacity-75 text-decoration-none">Điểm đến</a>
-    <a href="" class=" me-2 fw-bold pb-1 link-body-emphasis opacity-75 text-decoration-none">Ẩm thực</a>
-    <a href="" class=" me-2 fw-bold pb-1 link-body-emphasis opacity-75 text-decoration-none">Dấu chân</a>
-    <a href="" class=" me-2 fw-bold pb-1 link-body-emphasis opacity-75 text-decoration-none">Cẩm nang</a>
+    @foreach($categories as $item)
+        <a href="{{ route('categories',  $item->id) }}" class="me-2 fs-2 fw-bold text-body text-decoration-none position-relative ps-2">{{ $item->title }}</a>
+    @endforeach
     <hr class="m-0 p-0">
 </section>
 
 
 <!-- nội dung -->
 <section class="container my-4">
+    @foreach($news as $item)
     <div class="row">
         <div class="col-9 border-end ">
             <div class="card text-center">
-                <img src="https://i1-giadinh.vnecdn.net/2024/10/01/1-45-5346-1727581073-172775001-5670-6100-1727750017.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=wox5Ngh44k9hauDBydfiWg" class="card-img-top" alt="...">
+            <a href="/tin_tuc_chi_tiet/{{$item->category_id}}">
+            <img src="{{ asset($item->image_url) }}" class="card-img-top" height="400px" alt="...">
+            </a>
                 <div class="card-body">
-                    <h5 class="card-title">Chàng trai Vũng Tàu 16 tháng độc hành qua 63 quốc gia, vùng lãnh thổ</h5>
-                    <p class="card-text">Bà Rịa - Vũng TàuTrọng Thắng, 27 tuổi, chi 1,4 tỷ đồng rong chơi khắp các châu lục trong suốt 16 tháng như một cách mở mang tầm mắt, trải nghiệm cuộc sống.</p>
+                    <h5 class="card-title">{{$item->title}}</h5>{{$item->description}}</p>
                 </div>
-            </div>
+            </div> 
         </div>
+        @endforeach
+        
         <div class="col-3">
+        @foreach($reading as $item)
             <div class="card text-center mb-3">
-
-                <img src="https://i1-giadinh.vnecdn.net/2024/10/01/1-45-5346-1727581073-172775001-5670-6100-1727750017.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=wox5Ngh44k9hauDBydfiWg" class="card-img-top object-fit-cover" height="150px" alt="...">
-
+                <img src="{{ asset($item->image_url) }}" class="card-img-top object-fit-cover" height="165px" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Chàng trai Vũng Tàu 16 tháng độc hành qua 63 quốc gia, vùng lãnh thổ</h5>
+                    <h5 class="card-title">{{ $item->title }}</h5>
                 </div>
             </div>
-            <hr class="mx-4">
-            <div class="card text-center mb-3">
-                <img src="https://i1-giadinh.vnecdn.net/2024/10/01/1-45-5346-1727581073-172775001-5670-6100-1727750017.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=wox5Ngh44k9hauDBydfiWg" class="card-img-top object-fit-cover" height="150px" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Chàng trai Vũng Tàu 16 tháng độc hành qua 63 quốc gia, vùng lãnh thổ</h5>
-                </div>
-            </div>
-        </div>
+        @endforeach
+</div>
+        
     </div>
+   
     <hr>
-    <div class="row">
-        <div class="col-3">
-            <div class="card text-center mb-3">
-                <img src="https://i1-giadinh.vnecdn.net/2024/10/01/1-45-5346-1727581073-172775001-5670-6100-1727750017.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=wox5Ngh44k9hauDBydfiWg" class="card-img-top object-fit-cover" height="150px" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Chàng trai Vũng Tàu 16 tháng độc hành qua 63 quốc gia, vùng lãnh thổ</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card text-center mb-3">
-                <img src="https://i1-giadinh.vnecdn.net/2024/10/01/1-45-5346-1727581073-172775001-5670-6100-1727750017.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=wox5Ngh44k9hauDBydfiWg" class="card-img-top object-fit-cover" height="150px" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Chàng trai Vũng Tàu 16 tháng độc hành qua 63 quốc gia, vùng lãnh thổ</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card text-center mb-3">
-                <img src="https://i1-giadinh.vnecdn.net/2024/10/01/1-45-5346-1727581073-172775001-5670-6100-1727750017.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=wox5Ngh44k9hauDBydfiWg" class="card-img-top object-fit-cover" height="150px" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Chàng trai Vũng Tàu 16 tháng độc hành qua 63 quốc gia, vùng lãnh thổ</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card text-center mb-3">
-                <img src="https://i1-giadinh.vnecdn.net/2024/10/01/1-45-5346-1727581073-172775001-5670-6100-1727750017.jpg?w=680&h=408&q=100&dpr=1&fit=crop&s=wox5Ngh44k9hauDBydfiWg" class="card-img-top object-fit-cover" height="150px" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Chàng trai Vũng Tàu 16 tháng độc hành qua 63 quốc gia, vùng lãnh thổ</h5>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </section>
 
 
@@ -110,121 +74,40 @@
 <!-- danh mục tin tức -->
 <section class="container">
     <div class="row">
-
+    @foreach($news as $item)
         <div class="col-9">
             <div class="card mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="https://i1-dulich.vnecdn.net/2024/09/28/5-1727522556-1727522568-6904-1727522598.jpg?w=240&h=144&q=100&dpr=1&fit=crop&s=QdIbjuSQQYafA7oM47tmaw" height="100%" width="100%" class="object-fit-cover rounded-start" alt="...">
+                        <img src="{{asset($item->image_url)}}" height="100%" width="100%" class="object-fit-cover rounded-start" alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">Tỉnh nào ở Việt Nam được Chủ tịch Hồ Chí Minh đặt tên?</h5>
-                            <p class="card-text">Tên tỉnh thành ở miền Bắc được Chủ tịch Hồ Chí Minh đặt vào năm 1963, mang ý nghĩa "rộng lớn và yên vui".</p>
+                            <h5 class="card-title">{{$item->title}}</h5>
+                            <p class="card-text">{{$item->description}}</p>
                             <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="https://i1-dulich.vnecdn.net/2024/09/28/5-1727522556-1727522568-6904-1727522598.jpg?w=240&h=144&q=100&dpr=1&fit=crop&s=QdIbjuSQQYafA7oM47tmaw" height="100%" width="100%" class="object-fit-cover rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Tỉnh nào ở Việt Nam được Chủ tịch Hồ Chí Minh đặt tên?</h5>
-                            <p class="card-text">Tên tỉnh thành ở miền Bắc được Chủ tịch Hồ Chí Minh đặt vào năm 1963, mang ý nghĩa "rộng lớn và yên vui".</p>
-                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="https://i1-dulich.vnecdn.net/2024/09/28/5-1727522556-1727522568-6904-1727522598.jpg?w=240&h=144&q=100&dpr=1&fit=crop&s=QdIbjuSQQYafA7oM47tmaw" height="100%" width="100%" class="object-fit-cover rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Tỉnh nào ở Việt Nam được Chủ tịch Hồ Chí Minh đặt tên?</h5>
-                            <p class="card-text">Tên tỉnh thành ở miền Bắc được Chủ tịch Hồ Chí Minh đặt vào năm 1963, mang ý nghĩa "rộng lớn và yên vui".</p>
-                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="https://i1-dulich.vnecdn.net/2024/09/28/5-1727522556-1727522568-6904-1727522598.jpg?w=240&h=144&q=100&dpr=1&fit=crop&s=QdIbjuSQQYafA7oM47tmaw" height="100%" width="100%" class="object-fit-cover rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Tỉnh nào ở Việt Nam được Chủ tịch Hồ Chí Minh đặt tên?</h5>
-                            <p class="card-text">Tên tỉnh thành ở miền Bắc được Chủ tịch Hồ Chí Minh đặt vào năm 1963, mang ý nghĩa "rộng lớn và yên vui".</p>
-                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
+        @foreach($reading as $item)
         <div class="col-3">
             <div class="card mb-3 bg-body-secondary bg-opacity-10 border-0">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="https://i1-dulich.vnecdn.net/2024/09/28/5-1727522556-1727522568-6904-1727522598.jpg?w=240&h=144&q=100&dpr=1&fit=crop&s=QdIbjuSQQYafA7oM47tmaw" height="100%" width="100%" class="object-fit-cover " alt="...">
+                        <img src="{{asset($item->image_url)}}" height="100%" width="100%" class="object-fit-cover " alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body p-1">
-                            <h5 class="card-title h6 mb-1">Tỉnh nào ở Việt Nam được Chủ tịch Hồ Chí Minh đặt tên?</h5>
-                            <span>50 like</span>
+                            <h5 class="card-title h6 mb-1">{{$item->title}}</h5>
+                            <span>{{$item->reading}}</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <hr>
-            <div class="card mb-3 bg-body-secondary bg-opacity-10 border-0">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="https://i1-dulich.vnecdn.net/2024/09/28/5-1727522556-1727522568-6904-1727522598.jpg?w=240&h=144&q=100&dpr=1&fit=crop&s=QdIbjuSQQYafA7oM47tmaw" height="100%" width="100%" class="object-fit-cover " alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body p-1">
-                            <h5 class="card-title h6 mb-1">Tỉnh nào ở Việt Nam được Chủ tịch Hồ Chí Minh đặt tên?</h5>
-                            <span>50 like</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="card mb-3 bg-body-secondary bg-opacity-10 border-0">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="https://i1-dulich.vnecdn.net/2024/09/28/5-1727522556-1727522568-6904-1727522598.jpg?w=240&h=144&q=100&dpr=1&fit=crop&s=QdIbjuSQQYafA7oM47tmaw" height="100%" width="100%" class="object-fit-cover " alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body p-1">
-                            <h5 class="card-title h6 mb-1">Tỉnh nào ở Việt Nam được Chủ tịch Hồ Chí Minh đặt tên?</h5>
-                            <span>50 like</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="card mb-3 bg-body-secondary bg-opacity-10 border-0">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="https://i1-dulich.vnecdn.net/2024/09/28/5-1727522556-1727522568-6904-1727522598.jpg?w=240&h=144&q=100&dpr=1&fit=crop&s=QdIbjuSQQYafA7oM47tmaw" height="100%" width="100%" class="object-fit-cover " alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body p-1">
-                            <h5 class="card-title h6 mb-1">Tỉnh nào ở Việt Nam được Chủ tịch Hồ Chí Minh đặt tên?</h5>
-                            <span>50 like</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
             <hr>
         </div>
     </div>

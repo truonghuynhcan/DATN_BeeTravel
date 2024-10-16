@@ -31,8 +31,9 @@ Route::get('/thanh-toan', function(){return view('client.thanh_toan');})->name('
 
 
 // * TIN TỨC ----------------------------------------------------------------
-Route::get('/tin-tuc', [UserNewsController::class, 'news'])->name('news');
-
+Route::get('/news', [UserNewsController::class, 'news'])->name('news');
+Route::get('/categories/{category_id}', [UserNewsController::class, 'getNewByCategory'])->name('categories');
+Route::get('/tin_tuc_chi_tiet/{category_id}', [UserNewsController::class, 'showNews'])->name('tin_tuc_chi_tiet');
 
 // * USER ACCOUNT SETTING ----------------------------------------------------------------
 //Route áp dụng được quyền sử dụng sau khi đã đăng nhập tài khoản
@@ -49,11 +50,6 @@ Route::prefix('tai-khoan')->group(function () {
 
     Route::get('/thong-bao', [UserAccountController::class, 'settingNotificationsOrderView'])->name('settingNotificationsOrder');
 });
-
-
-
-
-// ! ADMIN ==================================================================================================================================
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/admin', 'AdminController@index')->middleware('login.check');
