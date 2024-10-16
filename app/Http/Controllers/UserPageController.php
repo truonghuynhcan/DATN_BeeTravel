@@ -26,6 +26,8 @@ class UserPageController extends Controller
     {
         return view('client.dang_nhap');    
     }
+
+
     public function login_dl()
     {
         return view('client.dang_nhap_dl');    
