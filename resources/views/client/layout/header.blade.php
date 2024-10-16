@@ -53,12 +53,14 @@
 <!-- NAV 2 (Main Navbar) -->
 <header class="sticky-top">
     <nav id="nav2" class="navbar navbar-expand-lg">
-        <div class="container bg-body rounded-4 mt-3">
+        <div class="container bg-body rounded-4 mt-3 ">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="../assets/image/logo_ngang.png" alt="logo" height="60px">
+                <img src="../assets/image/logo_ngang.png" alt="logo" height="40px">
             </a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0 h5">
+                    <!-- 
+                    -->
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                     </li>
@@ -95,7 +97,7 @@
                         {{-- khi người dùng chưa đăng nhập thì hiện như này --}}
                         @guest
                         <li class="p-2">Đăng nhập hoặc đăng ký để tận dụng ưu đãi</li>
-                        <li class="p-2"><a class="btn btn-primary" href="{{ route('login') }}">Đăng nhập thành viên</a></li>
+                        <li class="p-2"><a class="container-fluid btn btn-primary" href="{{ route('login') }}">Đăng nhập khách hàng</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

@@ -11,7 +11,7 @@ Route::get('/gioi-thieu', [UserPageController::class, 'about'])->name('about');
 Route::get('/lien-he', [UserPageController::class, 'contact'])->name('contact');
 Route::get('/dang-ky', [UserPageController::class, 'register'])->name('register');
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
-Route::get('/dang-nhap-dl', [UserPageController::class, 'login_dl'])->name('login_dl');
+Route::get('/dang-nhap-dl', [UserPageController::class, 'login_dl'])->name('login_dl'); // đăng nhập cho đại lý
 
 
 Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');
