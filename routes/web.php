@@ -22,7 +22,7 @@ Route::post('/dangxuat',[UserLoginController::class,'logout'])->name('dangxuat')
 
 // * Tour ----------------------------------------------------------------
 Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');
-Route::get('/tour/{id}', [UserTourController::class,'chitiet'])->name('chitiet');
+Route::get('/tour/{slug}', [UserTourController::class,'chitiet'])->name('chitiet');
 Route::get('/tour-chi-tiet/{slug}', [UserTourController::class, 'chitiet'])->name('tour_chi_tiet');
 
 
@@ -50,6 +50,12 @@ Route::prefix('tai-khoan')->group(function () {
 
     Route::get('/thong-bao', [UserAccountController::class, 'settingNotificationsOrderView'])->name('settingNotificationsOrder');
 });
+
+
+
+
+// ! ADMIN ==================================================================================================================================
+
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/admin', 'AdminController@index')->middleware('login.check');

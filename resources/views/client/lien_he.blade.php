@@ -122,14 +122,14 @@
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Số điện thoại</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <label for="title">Tiêu đề</label>
+                    <input type="text" id="title" name="title" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Nội dung</label>
                     <textarea id="message" name="message" rows="5" required></textarea>
                 </div>
-                <button type="submit">Gửi thông tin</button>
+                <button type="submit" class="btn btn-primary container-fluid">Gửi thông tin</button>
             </form>
         </div>
     </div>

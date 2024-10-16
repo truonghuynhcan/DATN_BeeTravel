@@ -25,8 +25,9 @@
 
 <!-- category -->
 <section class="container mt-4">
+    <a href="{{route('news')}}" class=" me-2 fs-2 fw-bold text-body text-decoration-none position-relative ps-2">DU LỊCH</a>
     @foreach($categories as $item)
-        <a href="{{ route('categories',  $item->id) }}" class="me-2 fs-2 fw-bold text-body text-decoration-none position-relative ps-2">{{ $item->title }}</a>
+        <a href="{{ route('categories',  $item->id) }}" class=" me-2 fw-bold pb-1 link-body-emphasis opacity-75 text-decoration-none">{{ $item->title }}</a>
     @endforeach
     <hr class="m-0 p-0">
 </section>
@@ -85,15 +86,15 @@
                         <div class="card-body">
                             <h5 class="card-title">{{$item->title}}</h5>
                             <p class="card-text">{{$item->description}}</p>
-                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <p class="card-text"><small class="text-body-secondary">{{$item->updated_at}}</small></p>
                         </div>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
-        @foreach($reading as $item)
         <div class="col-3">
+            @foreach($reading as $item)
             <div class="card mb-3 bg-body-secondary bg-opacity-10 border-0">
                 <div class="row g-0">
                     <div class="col-md-4">
@@ -102,13 +103,13 @@
                     <div class="col-md-8">
                         <div class="card-body p-1">
                             <h5 class="card-title h6 mb-1">{{$item->title}}</h5>
-                            <span>{{$item->reading}}</span>
+                            <span><i class="bi bi-eye"></i> {{$item->reading}}</span>
                         </div>
                     </div>
                 </div>
             </div>
-            @endforeach
             <hr>
+            @endforeach
         </div>
     </div>
 </section>
