@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserNewsController;
 use App\Http\Controllers\UserPageController;
@@ -9,7 +9,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [UserPageController::class, 'home'])->name('home');
 Route::get('/gioi-thieu', [UserPageController::class, 'about'])->name('about');
 Route::get('/lien-he', [UserPageController::class, 'contact'])->name('contact');
+Route::get('/dang-ky', [UserPageController::class, 'register'])->name('register');
+Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
+Route::get('/dang-nhap-dl', [UserPageController::class, 'login_dl'])->name('login_dl');
 
+
+Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');
+Route::get('/tour/{id}', [UserTourController::class,'chitiet'])->name('chitiet');
+
+Route::get('/thanh-toan', function(){return view('client.thanh_toan');})->name('thanh_toan');
 
 // TIN TỨC
 Route::get('/tin-tuc', [UserNewsController::class, 'news'])->name('news');
@@ -33,7 +41,21 @@ Route::prefix('tai-khoan')->group(function () {
 
 
 
-Route::get('/thanh-toan', function(){return view('client.thanh_toan');})->name('thanh_toan');
+// Route::get('/thanh-toan', function(){return view('client.thanh_toan');})->name('thanh_toan');
 
 Route::get('/tour-chi-tiet/{slug}', [UserTourController::class, 'chitiet'])->name('tour_chi_tiet');
 // Route::get('/tour-chi-tiet', function(){return view('client.tour_chi_tiet');})->name('tour_chi_tiet');
+//Route áp dụng được quyền sử dụng sau khi đã đăng nhập tài khoản
+// Route::middleware(['login.check'])->group(function () {
+    // Các routes trong nhóm này chỉ có thể truy cập nếu người dùng đã đăng nhập
+    // });
+Route::get('/admin', 'AdminController@index')->middleware('login.check');
+//Route sau khi test Auth để đăng ký và đăng nhập
+Route::view('/admin','client.admin')->name('admin')->middleware('login.check');
+Route::get('/dang-nhap', function (){ return view('client.dang_nhap');})->name('auth.login');
+// Route::get('/dang-nhap-dl', function (){ return view('client.dang_nhap_dl');})->name('auth.login');
+Route::get('/dang-ky', function (){ return view('client.dang_ky');})->name('auth.register');
+Route::post('/dang-nhap',[UserLoginController::class,'login'])->name('login');
+Route::post('/dang-nhap-dl',[UserLoginController::class,'login_dl'])->name('login_dl');
+Route::post('/dang-ky',[UserLoginController::class,'register'])->name('register');
+Route::post('/dangxuat',[UserLoginController::class,'logout'])->name('dangxuat');

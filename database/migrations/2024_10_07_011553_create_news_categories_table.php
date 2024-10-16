@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('news_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title'); 
-            $table->string('slug'); 
-            $table->string('image_url'); 
+            $table->string('slug'); // giải quyết trùng lặp bằng cách thêm số vào cuối
+            $table->string('image_url')->nullable(); 
             $table->timestamps();
         });
     }

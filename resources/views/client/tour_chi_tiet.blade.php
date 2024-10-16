@@ -4,7 +4,7 @@
 @endsection
 @section('main')
     <!-- Title -->
-    <h2 class="container fs-3">Hà Nội - Lào Cai - Quảng Ninh - Ninh Bình: Sapa - Bản Cát Cát - Fansipan Hạ Long - Động Thiên Cung - Yên Tử - Kdl Tràng An - Bái Đính</h2>
+    <h2 class="container fs-3">{{$tour->title}}</h2>
     <!-- Detail -->
     <div class="container">
         <div class="row">
@@ -378,17 +378,17 @@
                         <tr>
                             <td><i class="fa-solid fa-map-location-dot"></i></td>
                             <td>Khởi hành: </td>
-                            <td class="text-info fw-bold">TP. HCM</td>
+                            <td class="text-info fw-bold">{{$tour->featured}}</td>
                         </tr>
                         <tr>
                             <td><i class="fa-regular fa-calendar-days"></i></td>
                             <td>Ngày đi: </td>
-                            <td class="text-info fw-bold">01-08-2004</td>
+                            <td class="text-info fw-bold">{{$tour->featured_start}}</td>
                         </tr>
                         <tr>
                             <td><i class="fa-solid fa-hourglass-half"></i></td>
                             <td>Thời gian:</td>
-                            <td class="text-info fw-bold">6 ngày 5 đêm</td>
+                            <td class="text-info fw-bold">{{$tour->duration}}</td>
                         </tr>
                         <tr>
                             <td><i class="fa-solid fa-check-to-slot"></i></td>

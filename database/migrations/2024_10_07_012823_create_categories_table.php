@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('ten_danh_muc');
-            $table->string('slug')->comment('slug cua danh muc');
-            $table->boolean('tour_nuoc_ngoai')->default(false)->comment('true, false');
+            $table->string('slug')->unique()->comment('slug cua danh muc');
+            $table->boolean('tour_nuoc_ngoai')->default(false)->comment('0-false, 1-true');
+            $table->string('image_url')->nullable()->comment('Ảnh đại diện');
             $table->timestamps();
         });
     }

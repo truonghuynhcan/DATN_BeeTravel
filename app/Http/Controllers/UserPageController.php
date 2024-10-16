@@ -18,4 +18,20 @@ class UserPageController extends Controller
     {
         return view('client.lien_he');
     }
+    public function register()
+    {
+        return view('client.dang_ky');
+    }
+    public function login()
+    {
+        return view('client.dang_nhap');    
+    }
+    public function login_dl()
+    {
+        return view('client.dang_nhap_dl');    
+    }
+    // public function admin()
+    // {
+    //     return view('client.admin');    
+    // }
 }

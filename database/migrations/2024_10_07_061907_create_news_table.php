@@ -17,11 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
              
             $table->string('title')->comment('tieu de bai viet');
-            $table->string('slug');
+            $table->string('slug'); // giải quyết trùng lặp bằng cách thêm số vào cuối
             $table->string('description')->comment('mo ta ngan tin tuc');
             $table->text('content')->comment('noi dung tin tuc');
-            $table->string('image_url')->comment('anh bia cho tin tuc');
-            $table->integer('reading')->comment('luot xem');
+            $table->string('image_url')->nullable()->comment('anh bia cho tin tuc');
+            $table->integer('reading')->nullable()->comment('luot xem');
             $table->timestamps();
 
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('restrict');

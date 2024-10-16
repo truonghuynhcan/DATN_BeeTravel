@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- js -->
+    <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <!-- TRÌNH SOẠN THẢO -->
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/j3c0uo9sihhr95e3j0x613exxpc573dgffjby8r3q6q0aand/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+</head>
+
+<body class="bg-dark-subtle bg-opacity-25">
+    <header class="bg-body container-fluid">
+        <div class="d-flex justify-content-between align-items-center">
+            <img src="../../assets/image/logo_ngang.png" alt="" height="60px">
+
+            <div class="d-flex">
+                <button type="button" class="btn btn-outline-primary position-relative me-4 mt-2">
+                    <i class="bi bi-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        99+
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </button>
+                <div class="dropdown">
+                    <button class="btn btn-secondary bg-secondary bg-opacity-75 rounded-circle p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../../assets/image/logo_BeeTravel.png" class="object-fit-cover" height="35px" width="35px" alt="">
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- navbar & nội dung chính -->
+    <div class="d-flex">
+        <!-- navbar left/ thanh trái -->
+        <nav class="bg-body-tertiary bg-opacity-25 p-2 overflow-auto sticky-top" style="width: 250px; height: 100vh;">
+
+            <!-- Đối tác - chỉ show thống kê của riêng đối tác -->
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Dashboard
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Thống kê tour</a>
+                <a href="" class="list-group-item list-group-item-action">Thống kê doanh thu</a>
+            </div>
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Quản lý Tour
+                </a>
+                <a href="tat-ca-tour.html" class="list-group-item list-group-item-action">Tất cả tour</a>
+                <a href="add-new-tour.html" class="list-group-item list-group-item-action">Thêm tour</a>
+                <a href="danh-muc-tour.html" class="list-group-item list-group-item-action">Danh mục tour</a>
+            </div>
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Quản lý Tin tức
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả tin tức</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm tin tức</a>
+                <a href="danh-muc-tin-tuc.html" class="list-group-item list-group-item-action">Danh mục tin tức</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm danh mục tin tức</a>
+            </div>
+
+
+            <!-- Show khi là admin -->
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Quản lý Người dùng
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả đối tác</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm đối tác</a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả Khách hàng</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm khách hàng</a>
+                <a href="" class="list-group-item list-group-item-action">Tất cả Admin</a>
+                <a href="" class="list-group-item list-group-item-action">Thêm admin</a>
+            </div>
+            <div class="list-group mb-3">
+                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                    Thông tin cá nhân
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Tài khoản</a>
+                <a href="" class="list-group-item list-group-item-action">Ngân hàng</a>
+                <a href="" class="list-group-item list-group-item-action">Bảo mật</a>
+                <a href="" class="list-group-item list-group-item-action">Cài đặt thông báo</a>
+            </div>
+        </nav>
+
+        <!-- show nội dung -->
+        <section class="w-100 d-inline bg-body-secondary p-2">
+            <form action="" method="post">
+                <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top">
+                    <h2 class="">Danh mục</h2>
+                </header>
+
+                <div class="row">
+
+                    <!-- Thêm tour mới -->
+                    <div class="col-4">
+                        <section class="mb-3 p-2">
+                            <h5>Thêm danh mục tour mới</h5>
+                            <p class="text-body-secondary">
+                                Các danh mục sản phẩm cho cửa hàng của bạn có thể được quản lý tại đây.
+                            </p>
+                            <form action="" method="post">
+                                <div class="mb-3">
+                                    <label for="name">Tên danh mục</label>
+                                    <input type="text" name="name" id="name" class="form-control form-control-sm">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="slug">Slug</label>
+                                    <input type="text" name="slug" id="slug" class="form-control form-control-sm">
+                                    <small class="text-body-secondary">The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="">Loại tour</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tourType" id="tourType1" checked>
+                                        <label class="form-check-label" for="tourType1">
+                                            Trong nước
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tourType" id="tourType2">
+                                        <label class="form-check-label" for="tourType2">
+                                            Nước ngoài
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="slug">Ảnh đại diện</label>
+                                    <div class="d-flex">
+                                        <!-- Ảnh đại diện sẽ được hiển thị tại đây -->
+                                        <img id="previewImage" src="../../assets/image/img_phaceholder.jpg" width="50px" alt="Ảnh đại diện" class="img-thumbnail">
+                                        <div class="input-group ms-3">
+                                            <input type="file" class="form-control" accept="image/*" id="inputGroupFile02" style="height: fit-content;">
+                                        </div>
+                                    </div>
+                                    <!-- demo ảnh đại diện -->
+                                    <script>
+                                        // Lắng nghe sự kiện thay đổi của input file
+                                        document.getElementById('inputGroupFile02').addEventListener('change', function (event) {
+                                            const file = event.target.files[0]; // Lấy file người dùng chọn
+                                            if (file) {
+                                                const reader = new FileReader(); // Sử dụng FileReader để đọc file ảnh
+                                                reader.onload = function (e) {
+                                                    // Khi file được đọc xong, cập nhật src của thẻ <img>
+                                                    document.getElementById('previewImage').src = e.target.result;
+                                                };
+                                                reader.readAsDataURL(file); // Đọc file dưới dạng URL
+                                            }
+                                        });
+                                    </script>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">Thêm danh mục mới</button>
+                            </form>
+                        </section>
+                    </div>
+
+                    <!-- NỘI DUNG CHI TIẾT -->
+                    <div class="col-8">
+                        <section class="rounded mb-3">
+                            <div class="input-group ms-auto" style="max-width: 450px;">
+                                <input type="text" class="form-control me-2" placeholder="Tìm kiếm danh mục tour" aria-label="Tìm kiếm danh mục tour" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-primary" type="button" id="button-addon2">Tìm kiếm danh mục</button>
+                            </div>
+                        </section>
+
+                        <section class="bg-body rounded p-2 mb-3"> <!-- ẩn khi là đối tác -->
+                            <table class="table table-hover table-striped table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="text-center">Ảnh</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">slug</th>
+                                    <th scope="col" class="text-center">Loại tour</th>
+                                    <th scope="col" class="text-center">Số lượng</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row" class="text-center"><img src="../../assets/image/img_phaceholder.jpg" width="100px" class="object-fit-cover img-thumbnail" alt=""></th>
+                                    <td>Thành Phố Hồ Chí Minh</td>
+                                    <td>thanh-pho-ho-chi-minh</td>
+                                    <td class="text-center">Trong nước</td>
+                                    <td class="text-center">12</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row" class="text-center"><img src="../../assets/image/img_phaceholder.jpg" width="100px" class="object-fit-cover img-thumbnail" alt=""></th>
+                                    <td>Thành Phố Hồ Chí Minh</td>
+                                    <td>thanh-pho-ho-chi-minh</td>
+                                    <td class="text-center">Trong nước</td>
+                                    <td class="text-center">12</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row" class="text-center"><img src="../../assets/image/img_phaceholder.jpg" width="100px" class="object-fit-cover img-thumbnail" alt=""></th>
+                                    <td>Thành Phố Hồ Chí Minh</td>
+                                    <td>thanh-pho-ho-chi-minh</td>
+                                    <td class="text-center">Trong nước</td>
+                                    <td class="text-center">12</td>
+                                  </tr>
+                                 
+                                </tbody>
+                              </table>
+                          
+                        </section>
+
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</body>
+
+</html>
