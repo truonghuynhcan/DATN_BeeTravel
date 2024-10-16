@@ -65,5 +65,10 @@ Route::get('/dang-ky-doi-tac', function (){ return view('client.dang_ky');})->na
 Route::get('/dang-nhap-dl', [UserPageController::class, 'login_dl'])->name('login_dl'); // đăng nhập cho đại lý
 Route::post('/dang-nhap-dl',[UserLoginController::class,'login_dl'])->name('login_dl');
 
+
+// * Page
+Route::middleware(['login.check'])->group(function () {
+    // Các routes trong nhóm này chỉ có thể truy cập nếu người dùng đã đăng nhập
+    });
 //Route sau khi test Auth để đăng ký và đăng nhập
 Route::view('/admin','client.admin')->name('admin')->middleware('login.check');
