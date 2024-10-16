@@ -13,6 +13,10 @@ Route::get('/dang-ky', [UserPageController::class, 'register'])->name('register'
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
 Route::get('/dang-nhap-dl', [UserPageController::class, 'login_dl'])->name('login_dl');
 
+
+Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');
+Route::get('/tour/{id}', [UserTourController::class,'chitiet'])->name('chitiet');
+
 Route::get('/thanh-toan', function(){return view('client.thanh_toan');})->name('thanh_toan');
 
 // TIN TỨC

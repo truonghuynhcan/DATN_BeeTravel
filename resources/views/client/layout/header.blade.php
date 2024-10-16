@@ -63,6 +63,9 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('tour') }}">Tour list</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('about') }}">Giới thiệu</a>
                     </li>
                     <li class="nav-item">
@@ -74,9 +77,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('thanh_toan') }}">Thanh toán</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('thanh_toan') }}">Tour list</a>
-                    </li>
+                  
                     <li class="nav-item">
                         {{-- <a class="nav-link" href="{{ route('tour_chi_tiet') }}">Tour desctiption</a> --}}
                     </li>

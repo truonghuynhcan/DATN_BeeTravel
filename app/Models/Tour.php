@@ -13,6 +13,7 @@ class Tour extends Model
 
     // Các thuộc tính có thể được điền vào (mass-assignable)
     protected $fillable = [
+        'id',
         'admin_id',
         'category_id',
         'image_url',
