@@ -2,51 +2,74 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminLoginController extends Controller
 {
     // ! ĐĂNG NHẬP
-    function login_dl(Request $req)
+    function login_admin_(Request $req)
     {
         $req->validate([
-            'name' => 'required|name',
             'email' => 'required|email',
-            'password' => 'required',
-            'phone' => 'required|phone',
+            'password' => 'required'
         ], [
-            'name.required' => 'Vui lòng nhập tên đại lý doanh nghiệp',
             'email.required' => 'Vui lòng nhập email',
             'email.email' => 'Vui lòng nhập đúng định dạng email',
-            'password.required' => 'Vui lòng nhập password',
-            'phone.required' => 'Vui lòng nhập số điện thoại'
+            'password.required' => 'Vui lòng nhập password'
         ]);
-        if (Auth::attempt(['name' => $req->name, 'email' => $req->email, 'password' => $req->password, 'phone' => $req->phone])) {
-            return redirect('admin');
-        } else
-            return redirect()->back()->witherrors('Sai email hoặc password đại lý');
+
+        if (Auth::guard('admin')->attempt(['email' => $req->email, 'password' => $req->password])) {
+            $user = Auth::guard('admin')->user(); // Lấy thông tin người dùng từ bảng admins
+
+            // Kiểm tra role của admin
+            if ($user->role == 'admin') {
+                return redirect()->route('dashboard');
+            } elseif ($user->role == 'provider') {
+                return redirect(''); // Ví dụ trang dashboard của provider
+            } elseif ($user->role == 'pending') {
+                Auth::guard('admin')->logout(); // Đăng xuất admin vì đang chờ xác nhận
+                return redirect()->back()->withErrors('Tài khoản của bạn đang chờ xác nhận');
+            }
+        } else {
+            return redirect()->back()->withErrors('Email hoặc password chưa đúng');
+        }
     }
-    
+
+
     // ! ĐĂNG KÝ
-    function register_dl(Request $req)
+    function register_admin_(Request $request)
     {
-        $req->validate([
-            'name' => 'required|name',
-            'email' => 'required|email',
-            'password' => 'required',
-            'phone' => 'required|phone',
+        // Validate dữ liệu
+        $request->validate([
+            'email' => 'required|email|unique:admins,email',
+            'password' => 'required|min:8|confirmed',
+            'name' => 'required',
+            'phone' => 'required|digits:10',
         ], [
-            'name.required' => 'Vui lòng nhập tên đại lý doanh nghiệp',
-            'email.required' => 'Vui lòng nhập email',
+            'email.required' => 'Email là bắt buộc',
             'email.email' => 'Vui lòng nhập đúng định dạng email',
-            'password.required' => 'Vui lòng nhập password',
-            'phone.required' => 'Vui lòng nhập số điện thoại'
+            'email.unique' => 'Email này đã được sử dụng',
+            'password.required' => 'Mật khẩu là bắt buộc',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp',
+            'name.required' => 'Tên là bắt buộc',
+            'phone.required' => 'Số điện thoại là bắt buộc',
+            'phone.digits' => 'Số điện thoại phải có 10 chữ số',
         ]);
-        if (Auth::attempt(['name' => $req->name, 'email' => $req->email, 'password' => $req->password, 'phone' => $req->phone])) {
-            return redirect('admin');
-        } else
-            return redirect()->back()->witherrors('Sai email hoặc password đại lý');
+
+        // Tạo admin mới
+        $admin = new Admin();
+        $admin->email = $request->email;
+        $admin->password = Hash::make($request->password);
+        $admin->name = $request->name;
+        $admin->phone = $request->phone;
+        $admin->role = 'pending'; // Tài khoản mới sẽ là pending để chờ xác nhận
+        $admin->save();
+
+        return redirect()->route('register_admin')->with('success', 'Đăng ký thành công, tài khoản đang chờ xác nhận.');
     }
 
     // ! LOGOUT

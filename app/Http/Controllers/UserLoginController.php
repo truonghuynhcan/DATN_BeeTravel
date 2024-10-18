@@ -22,7 +22,7 @@ class UserLoginController extends Controller
         } else
             return redirect()->back()->witherrors('Sai email hoặc password');
     }
-    
+
     function register(Request $req)
     {
         $req->validate([
