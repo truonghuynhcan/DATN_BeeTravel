@@ -45,7 +45,7 @@ class UserLoginController extends Controller
             'phone' => $req->phone,
         ]);
         Auth::login($user);
-        return redirect('admin');
+        return redirect()->route('home');
         // Auth::login_dl($user);
         // return redirect('admin');
     }

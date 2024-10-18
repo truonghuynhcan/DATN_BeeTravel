@@ -79,6 +79,16 @@ Route::post('/dang-ky-doi-tac/loading', [AdminLoginController::class, 'register_
 
 
 // * Page
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::view('/quan-ly-tour', 'admin.tour')->name('quanLyTour');
+
+    // Route::get('/quan-ly-tour', [TourController::class, 'quanLyTour'])->name('quanLyTour');
+   
+});
+
+
+
+
 Route::middleware(['login.check'])->group(function () {
     // Các routes trong nhóm này chỉ có thể truy cập nếu người dùng đã đăng nhập
 });

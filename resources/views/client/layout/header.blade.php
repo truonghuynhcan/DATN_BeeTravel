@@ -95,7 +95,7 @@
                     <ul class="dropdown-menu position-absolute" style="left: -100px; min-width:209px">
 
                         {{-- khi người dùng chưa đăng nhập thì hiện như này --}}
-                        @guest
+                        @guest('user')
                         <li class="p-2">Đăng nhập hoặc đăng ký để tận dụng ưu đãi</li>
                         <li class="p-2"><a class="container-fluid btn btn-primary" href="{{ route('login') }}">Đăng nhập khách hàng</a></li>
                         <li>
@@ -106,7 +106,7 @@
                         @endguest
 
                         {{-- khi người dùng đã đăng nhập thì hiện --}}
-                        @auth
+                        @auth('user')
                         <li><a class="dropdown-item" href="{{ route('myProfile') }}">Thông tin cá nhân</a></li>
                         <li><a class="dropdown-item" href="{{ route('myTour') }}">Tour của tôi</a></li>
                         <li>
