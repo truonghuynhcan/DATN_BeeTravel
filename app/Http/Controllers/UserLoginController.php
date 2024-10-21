@@ -18,7 +18,7 @@ class UserLoginController extends Controller
             'password.required' => 'Vui lòng nhập password'
         ]);
         if (Auth::attempt(['email' => $req->email, 'password' => $req->password])) {
-            return redirect('admin');
+            return redirect('');
         } else
             return redirect()->back()->witherrors('Sai email hoặc password');
     }
@@ -52,6 +52,6 @@ class UserLoginController extends Controller
     function logout()
     {
         Auth::logout();
-        return redirect('dang-nhap');
+        return redirect('');
     }
 }
