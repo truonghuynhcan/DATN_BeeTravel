@@ -6,13 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin - @yield('title') - BeeTravel</title>
 
-        <!-- css -->
+        <!-- bootstrap -->
         <link rel="stylesheet" href="{{ asset('') }}assets/css/bootstrap.css">
-
+        <script src="{{ asset('') }}assets/bootstrap/js/bootstrap.bundle.min.js" defer></script>
         <!-- icon -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <!-- js -->
-        <script src="{{ asset('') }}assets/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
 
         <!-- chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -24,29 +23,31 @@
 
     {{-- BTApp - BeeTravelApp / BTCtrl - BeeTravelController --}}
 
-    <body ng - app = "BTApp" ng - controller = "BTCtrl" class = "bg-dark-subtle bg-opacity-25">
+    <body ng-app="BTApp" ng-controller="BTCtrl" class="bg-dark-subtle bg-opacity-25">
         @include('admin.layout.header')
 
         <!--navbar & nội dung chỉnh-->
-        <div class = "d-flex">
+        <div class="d-flex">
             <!--navbar left / thanh trái-->
             @include('admin.layout.navbar')
 
             <!--show nội dung-->
-            <section class = "w-100 d-inline bg-body-secondary p-2" ng - controller = "viewCtrl">
+            <section class="w-100 d-inline bg-body-secondary p-2" ng-controller="viewCtrl">
                 @yield('main')
             </section>
         </div>
 
-        <script script script src="{{ asset('') }}assets/js/angular.min.js"></script>
+
+
+        <!-- ! Angular -->
+        <script src="{{ asset('') }}assets/js/angular.min.js"></script>
 
         <script>
             var app = angular.module('BTApp', [])
             // controller chính toàn bộ website
-            app.controller('BTController', function($scope) {})
-            
-            // để
-            var viewFunction = function($scope) {}
+            app.controller('BTCtrl', function($scope) {})
+
+            var viewFunction = function($scope, $http) {}
         </script>
 
         <!-- truyền vào function angular từ trang phụ -->

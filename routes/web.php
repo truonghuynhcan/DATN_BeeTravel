@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\AdminTourController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserNewsController;
@@ -16,7 +17,7 @@ Route::get('/lien-he', [UserPageController::class, 'contact'])->name('contact');
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
-Route::post('/dang-nhap', [UserLoginController::class, 'login'])->name('login');
+Route::post('/dang-nhap/loading', [UserLoginController::class, 'login_'])->name('login_');
 Route::get('/dang-ky', [UserPageController::class, 'register'])->name('register');
 Route::post('/dang-ky', [UserLoginController::class, 'register'])->name('register');
 Route::post('/dangxuat', [UserLoginController::class, 'logout'])->name('dangxuat');
@@ -71,19 +72,18 @@ Route::post('/dang-nhap-doi-tac/loading', [AdminLoginController::class, 'login_a
 Route::view('/dang-ky-doi-tac', 'admin.dang_ky_doi_tac')->name('register_admin');
 Route::post('/dang-ky-doi-tac/loading', [AdminLoginController::class, 'register_admin_'])->name('register_admin_');
 
-// Route::get('/dang-nhap-doi-tac', function (){ return view('admin.dang_nhap');})->name('auth.login');
-// Route::get('/dang-nhap-dl', function (){ return view('client.dang_nhap_dl');})->name('auth.login');
-// Route::get('/dang-ky-doi-tac', function () {
-//     return view('client.dang_ky');
-// })->name('auth.register');
-
-
-// * Page
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::view('/quan-ly-tour', 'admin.tour')->name('quanLyTour');
+// * Page admin và provider sau khi đăng nhập thành công
+Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_provider'])->group(function () {
+    // Route cho logout admin
+    Route::post('/dang-xuat', [AdminLoginController::class, 'logout'])->name('logout');
+    
+    Route::view('/quan-ly-tour', 'admin.tour')->name('tourManagement');
+    // Route::get('/quan-ly-tour', [AdminTourController::class, 'tourManagement'])->name('tourManagement');
 
     // Route::get('/quan-ly-tour', [TourController::class, 'quanLyTour'])->name('quanLyTour');
-   
+    Route::prefix('/api')->group(function(){
+        Route::get('/danh-sach-tour/{admin_id}', [AdminTourController::class,'tours']);
+    });
 });
 
 

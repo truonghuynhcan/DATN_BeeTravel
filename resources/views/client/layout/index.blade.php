@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vn" data-bs-theme="dark" style="font-size: 14px">
+<html lang="vn" data-bs-theme="" style="font-size: 14px">
 
     <head>
         <meta charset="UTF-8">

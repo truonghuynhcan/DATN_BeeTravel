@@ -26,9 +26,9 @@ class AdminLoginController extends Controller
 
             // Kiểm tra role của admin
             if ($user->role == 'admin') {
-                return redirect()->route('dashboard');
+                return redirect()->route('admin.tourManagement');
             } elseif ($user->role == 'provider') {
-                return redirect(''); // Ví dụ trang dashboard của provider
+                return redirect()->route('admin.tourManagement'); // Ví dụ trang dashboard của provider
             } elseif ($user->role == 'pending') {
                 Auth::guard('admin')->logout(); // Đăng xuất admin vì đang chờ xác nhận
                 return redirect()->back()->withErrors('Tài khoản của bạn đang chờ xác nhận');
@@ -73,9 +73,13 @@ class AdminLoginController extends Controller
     }
 
     // ! LOGOUT
-    function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return redirect()->route('login_dl');
+        Auth::guard('admin')->logout();  // Đăng xuất guard admin
+
+        $request->session()->invalidate();  // Xóa session hiện tại
+        $request->session()->regenerateToken();  // Tạo CSRF token mới
+
+        return redirect()->route('login_admin');  // Chuyển hướng sau khi logout
     }
 }

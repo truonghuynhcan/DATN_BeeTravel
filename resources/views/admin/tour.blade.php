@@ -7,6 +7,12 @@
         <h2 class="">Quản lý tour</h2>
         <a href="" class="btn btn-primary" style="height: fit-content;">Thêm tour mới</a>
     </header>
+    <div class="alert alert-danger">
+        <h4>Todo</h4>
+        <ul>
+            <li>Làm thêm lọc tour</li>
+        </ul>
+    </div>
     <section class="bg-body rounded p-2">
         <div class="d-flex mb-3">
             <div class="me-3">
@@ -40,18 +46,28 @@
                     <th scope="col" class="text-center">Ảnh</th>
                     <th scope="col">Tên tour</th>
                     <th scope="col" class="text-center">Danh mục</th>
+                    @if (Auth::guard('admin')->user()->role == 'admin')
+                        <th scope="col" class="text-center">Đối tác</th>
+                    @else
+                        <th scope="col" class="text-center">Ngày Khởi Hành</th>
+                    @endif
                     <th scope="col" class="text-end">Giá</th>
                     <th scope="col" class="text-center">Người đăng ký</th>
                     <th scope="col">Hành động</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr>
-                    <th scope="row" class="text-center"><img src="../../assets/image/tour01.webp" alt="ảnh" class="object-fit-cover" height="60px"></th>
-                    <td>Hà Nội - Hà Giang - Lũng Cú - Đồng Văn - Nơi Đá Nở Hoa</td>
-                    <td class="text-center">Hà Nội</td>
-                    <td class="text-end">6.990.000</td>
-                    <td class="text-center">25</td>
+                <tr ng-repeat="tour in tours">
+                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image/@{{ tour.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
+                    <td>@{{ tour.title }}</td>
+                    <td class="text-center">@{{ tour.category.ten_danh_muc }}</td>
+                    @if (Auth::guard('admin')->user()->role == 'admin')
+                        <td class="text-center">@{{ tour.admin.name }}</td>
+                    @else
+                        <td class="text-center">@{{ tour.ngay_di[0].start_date || 'Chưa có' | date:'dd/MM/yyyy'}}</td>
+                    @endif
+                    <td class="text-end">@{{ tour.ngay_di[0].price || 0  | number}}</td>
+                    <td class="text-center">0</td>
                     <td>
                         <a href="" class="btn btn-info">Sửa</a>
                         <button class="btn btn-outline-danger">Xóa</button>
@@ -60,4 +76,20 @@
             </tbody>
         </table>
     </section>
+@endsection
+
+@section('viewFunction')
+    <script>
+        viewFunction = function($scope, $http) {
+            $scope.hello = {{ Auth::guard('admin')->user()->id }}
+            $http.get('/admin/api/danh-sach-tour/{{ Auth::guard('admin')->user()->id }}').then(
+                function(res) { // success
+                    $scope.tours = res.data.data;
+                },
+                function(res) { // error
+                    console.error('Lỗi khi lấy danh sách tours:', error); // Ghi lỗi
+                }
+            )
+        };
+    </script>
 @endsection

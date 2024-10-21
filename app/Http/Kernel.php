@@ -23,6 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
     protected $routeMiddleware = [
+        'admin_or_provider' => \App\Http\Middleware\AdminOrProviderMiddleware::class, // check admin or provider
         'login.check'=>\App\Http\Middleware\CheckUserLogin::class
         ];
 
