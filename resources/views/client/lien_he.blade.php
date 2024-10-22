@@ -111,29 +111,39 @@
         </div>
         <div class="contact-form">
             <h2>Liên hệ với chúng tôi</h2>
-            <form action="#" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="name">Họ và tên</label>
-                    <input type="text" id="name" name="name" required>
+            @if(!empty($data))
+            <h1>{{ $data['title'] }}</h1>
+            <p><strong>Tên:</strong> {{ $data['name'] }}</p>
+            <p><strong>Email:</strong> {{ $data['email'] }}</p>
+            <p><strong>Nội dung:</strong> {{ $data['message'] }}</p>
+            @endif
+            <form action="{{ route('contact.send') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="name">Họ và tên</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="title">Tiêu đề</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Nội dung</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary container-fluid">Gửi thông tin</button>
+        </form>
+
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="title">Tiêu đề</label>
-                    <input type="text" id="title" name="title" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Nội dung</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary container-fluid">Gửi thông tin</button>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
 <div id="map-container">
     <h2>Vị trí của chúng tôi</h2>
     <div id="map">

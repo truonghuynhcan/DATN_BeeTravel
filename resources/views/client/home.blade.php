@@ -232,7 +232,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- tin tức mới -->
+        <div class="row">
+        <div>
+            <div class="yeuthich">
+            <h3>TIN TỨC NỔI BẬT</h3>
+            <hr class="short-line">
+            </div>
+        
+        <div class="row">
+            @foreach($latestNews as $item)
+            <div class="col-md-3 mb-3"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
+                <div class="card h-100"> <!-- H-100 để các card có chiều cao bằng nhau -->
+                    <img src="{{$item->image_url}}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
+                    <div class="card-body d-flex flex-column"> <!-- Sử dụng flex để căn chỉnh nội dung -->
+                        <h6 class="card-title">{{$item->title}}</h6>
+                        <p class="card-text">{{$item->description}}</p>
+                        <a href="/tin_tuc_chi_tiet/{{$item->category_id}}" class="btn btn-sm btn-outline-primary mt-auto">Đọc thêm</a> <!-- Nút ở dưới cùng -->
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
+</div>
+
+
+
 
     {{-- Liên hệ --}}
     <style>
@@ -329,41 +356,52 @@
             border-radius: 10px;
         }
     </style>
-    <div class="contact-container">
-        <div class="contact-background">
-            <img src="{{asset('')}}assets/image/contact.jpg" alt="Contact Background">
-        </div>
-        <div class="contact-content">
-            <div class="contact-info">
-                <h2>BEE TRAVEL</h2>
-                <p><strong>Địa chỉ:</strong> QTSC 1, Phường Tân Chánh Hiệp, Quận 12, TP.HCM</p>
-                <p><strong>Website:</strong> beetravel.com</p>
-                <p><strong>Email:</strong> info@beetravel.com</p>
-                <p><strong>Điện thoại:</strong> 0123 456 789</p>
-            </div>
-            <div class="contact-form">
-                <h2>Liên hệ với chúng tôi</h2>
-                <form action="#" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="name">Họ và tên</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Số điện thoại</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Nội dung</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit">Gửi thông tin</button>
-                </form>
-            </div>
-        </div>
+  <div class="contact-container">
+    <div class="contact-background">
+        <img src="{{asset('')}}assets/image/contact.jpg" alt="Contact Background">
     </div>
+    <div class="contact-content">
+        <div class="contact-info">
+            <h2>BEE TRAVEL</h2>
+            <p><strong>Địa chỉ:</strong> QTSC 1, Phường Tân Chánh Hiệp, Quận 12, TP.HCM</p>
+            <p><strong>Website:</strong> beetravel.com</p>
+            <p><strong>Email:</strong> info@beetravel.com</p>
+            <p><strong>Điện thoại:</strong> 0123 456 789</p>
+        </div>
+        <div class="contact-form">
+            <h2>Liên hệ với chúng tôi</h2>
+            @if(!empty($data))
+            <h1>{{ $data['title'] }}</h1>
+            <p><strong>Tên:</strong> {{ $data['name'] }}</p>
+            <p><strong>Email:</strong> {{ $data['email'] }}</p>
+            <p><strong>Nội dung:</strong> {{ $data['message'] }}</p>
+            @endif
+            <form action="{{ route('contact.send') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="name">Họ và tên</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="title">Tiêu đề</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Nội dung</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary container-fluid">Gửi thông tin</button>
+        </form>
+
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+                </div>
+            </div>
+       
+</div>
 @endsection
