@@ -235,8 +235,12 @@
 
         <!-- tin tức mới -->
         <div class="row">
-    <div>
-        <h4 class="fw-bold">Tin tức nổi bật</h4>
+        <div>
+            <div class="yeuthich">
+            <h3>TIN TỨC NỔI BẬT</h3>
+            <hr class="short-line">
+            </div>
+        
         <div class="row">
             @foreach($latestNews as $item)
             <div class="col-md-3 mb-3"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
@@ -398,6 +402,6 @@
         @endif
                 </div>
             </div>
-        </div>
+       
 </div>
 @endsection
