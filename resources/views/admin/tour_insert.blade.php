@@ -21,9 +21,9 @@
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
         });
     </script>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.tourInsert_') }}" method="post">
         @csrf
-        <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top">
+        <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top z-1">
             <h2 class="">Thêm tour mới</h2>
             <div>
                 <button type="submit" name="post" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
@@ -33,48 +33,66 @@
         <div class="alert alert-danger">
             <h4>Todo</h4>
             <ul>
-                <li>tim fhiểm làm api hoặc truyền trực tiếp</li>
+                <li>Làm nhập tour</li>
+                <li>Làm nhập ngày đi</li>
+                <li>Làm nhập ảnh</li>
+                <li>Làm nhập nổi bật</li>
             </ul>
         </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="row">
             <!-- NỘI DUNG CHI TIẾT -->
             <div class="col-9">
                 <section class="bg-body rounded mb-3">
-                    <input class="form-control form-control-lg" type="text" placeholder="Tên tour" aria-label=".form-control-lg example">
+                    <input name="title" value="{{ old('title') }}" class="form-control form-control-lg" type="text" placeholder="Tên tour (không quá 255 ký tự) *" aria-label=".form-control-lg example">
                 </section>
 
-                <section class="bg-body rounded p-2 mb-3"> <!-- ẩn khi là đối tác -->
-                    <h5>Nổi bật</h5>
-                    <div class="d-flex">
-                        <div class="me-3">
-                            <label for="area" class="form-label">Chọn vị trí</label>
-                            <select class="form-select form-select-sm" id="area" aria-label="Small select example">
-                                <option selected>Mã vị trí</option>
-                                <option value="">1</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4</option>
-                            </select>
-                        </div>
-                        <div class="me-3">
-                            <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
-                            <div class="d-flex">
-                                <input type="date" class="form-control form-control-sm" id="date1">
-                                <span class="mx-2">đến</span>
-                                <input type="date" class="form-control form-control-sm" id="date2">
+                {{-- Nổi bật --}}
+                @if (Auth::guard('admin')->user()->role == 'admin')
+                    <section class="bg-body rounded p-2 mb-3"> <!-- ẩn khi là đối tác -->
+                        <h5>Nổi bật</h5>
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <label for="area" class="form-label">Chọn vị trí</label>
+                                <select name="featured" class="form-select form-select-sm" id="area" aria-label="Small select example">
+                                    <option selected>Mã vị trí</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                    <option value="">4</option>
+                                </select>
+                            </div>
+                            <div class="me-3">
+                                <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
+                                <div class="d-flex">
+                                    <input name="features_start" type="date" class="form-control form-control-sm" id="date1">
+                                    <span class="mx-2">đến</span>
+                                    <input name="features_end" type="date" class="form-control form-control-sm" id="date2">
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
+                @endif
+
+                <section class="bg-body rounded p-2 mb-3">
+                    <label for="slug" class="h5">Slug</label>
+                    <input type="text" name="slug" value="{{ old('slug') }}" class="form-control mb-3" id="slug"></input>
+                    <label for="sub_title" class="h5">Mô tả ngắn <span class="text-danger">*</span></label>
+                    <textarea name="sub_title" id="sub_title" class="form-control">{{ old('sub_title') }}</textarea>
                 </section>
 
                 <section class="bg-body rounded p-2 mb-3">
-                    <h5>Mô tả ngắn</h5>
-                    <textarea class="d-block w-100"></textarea>
-                </section>
-
-                <section class="bg-body rounded p-2 mb-3">
-                    <h5>Chi tiết Tour</h5>
-                    <textarea id="content"></textarea>
+                    <label for="content" class="h5">Chi tiết Tour <span class="text-danger">*</span></label>
+                    <textarea name="description" id="content">{{ old('description') }}</textarea>
                 </section>
 
                 <!-- Ngày đi / ngày khởi hành -->
@@ -83,34 +101,36 @@
                     <p class="form-label text-body-tertiary">Chọn ngày giờ khởi hành</p>
 
                     <div id="departure-container">
-                        <div class="mb-4 departure-block">
-                            <div class="d-flex">
-                                <input type="datetime-local" class="form-control form-control-sm fw-bold" name="departure-date[]" style="max-width: fit-content;">
-                                <hr class="d-inline w-100">
-                                <button class="btn btn-outline-danger btn-sm ms-2 remove-departure">Xóa</button> <!-- Nút xóa -->
+                        @foreach (old('departure-date', [['']]) as $key => $date)
+                            <div class="mb-4 departure-block">
+                                <div class="d-flex">
+                                    <input type="datetime-local" value="{{ old('departure-date.' . $key, '') }}" class="form-control form-control-sm fw-bold" name="departure-date[]" style="max-width: fit-content;">
+                                    <hr class="d-inline w-100">
+                                    <button type="button" class="btn btn-outline-danger btn-sm ms-2 remove-departure" onclick="removeDeparture(this)">Xóa</button> <!-- Nút xóa -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label for="adult-price" class="form-label">Giá người lớn (>12 tuổi) <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control form-control-sm" name="adult-price[]" min="0" value="{{ old('adult-price.' . $key, '') }}">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="child-price" class="form-label">Giá trẻ em (5-12 tuổi)</label>
+                                        <input type="number" class="form-control form-control-sm" name="child-price[]" min="0" value="{{ old('child-price.' . $key, '') }}">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="toddler-price" class="form-label">Giá trẻ nhỏ (2-5 tuổi)</label>
+                                        <input type="number" class="form-control form-control-sm" name="toddler-price[]" min="0" value="{{ old('toddler-price.' . $key, '') }}">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="infant-price" class="form-label">Giá em bé (dưới 2 tuổi)</label>
+                                        <input type="number" class="form-control form-control-sm" name="infant-price[]" min="0" value="{{ old('infant-price.' . $key, '') }}">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <label for="adult-price" class="form-label">Giá người lớn (>12 tuổi)</label>
-                                    <input type="number" class="form-control form-control-sm" name="adult-price[]">
-                                </div>
-                                <div class="col-3">
-                                    <label for="child-price" class="form-label">Giá trẻ em (5-12 tuổi)</label>
-                                    <input type="number" class="form-control form-control-sm" name="child-price[]">
-                                </div>
-                                <div class="col-3">
-                                    <label for="toddler-price" class="form-label">Giá trẻ nhỏ (2-5 tuổi)</label>
-                                    <input type="number" class="form-control form-control-sm" name="toddler-price[]">
-                                </div>
-                                <div class="col-3">
-                                    <label for="infant-price" class="form-label">Giá em bé (dưới 2 tuổi)</label>
-                                    <input type="number" class="form-control form-control-sm" name="infant-price[]">
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
 
-                    <button id="add-departure" class="btn btn-outline-primary">+ thêm ngày giờ khởi hành</button>
+                    <button type="button" id="add-departure" class="btn btn-outline-primary">+ thêm ngày giờ khởi hành</button>
                 </section>
                 <!-- JS CHO CHỨC NĂNG THÊM NGÀY ĐI -->
                 <script>
@@ -126,81 +146,47 @@
 
                         // Append the new block to the container
                         document.getElementById('departure-container').appendChild(newBlock);
-
-                        // Gán lại sự kiện xóa cho nút xóa trong khối mới
-                        newBlock.querySelector('.remove-departure').addEventListener('click', function() {
-                            newBlock.remove(); // Xóa khối
-                        });
                     });
 
-                    // Gán sự kiện cho nút xóa trong khối đầu tiên
-                    document.querySelector('.remove-departure').addEventListener('click', function() {
-                        this.closest('.departure-block').remove(); // Xóa khối
-                    });
+                    function removeDeparture(button) {
+                        // Tìm khối cha của nút "Xóa" và xóa nó
+                        button.closest('.departure-block').remove();
+                    }
+
                 </script>
-
-                <!-- show biểu đồ khi có nội dung  -->
-                <section class="bg-body rounded p-2 mb-3">
-                    <h5>Thống kê lượt đặt tour theo THÁNG</h5>
-                    <div>
-                        <canvas id="myChart"></canvas>
-                    </div>
-                    <script>
-                        const ctx = document.getElementById('myChart');
-                        new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
-                                datasets: [{
-                                        label: 'Số đơn đặt tour',
-                                        data: [12, 19, 3, 5, 2, 3, 15, 23, 18, 12, 9, 6], // Dữ liệu cho dây 1
-                                        borderColor: 'rgba(75, 192, 192, 1)', // Màu dây 1
-                                        borderWidth: 2, // Độ dày của dây 1
-                                        fill: false // Không tô màu dưới đường
-                                    },
-                                    {
-                                        label: 'Số người tham gia',
-                                        data: [12, 32, 13, 22, 31, 18, 29, 33, 41, 26, 35, 23], // Dữ liệu cho dây 2
-                                        borderColor: 'rgba(255, 99, 132, 1)', // Màu dây 2
-                                        borderWidth: 1, // Độ dày của dây 2
-                                        fill: false // Không tô màu dưới đường
-                                    }
-                                ]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }
-                        });
-                    </script>
-                </section>
             </div>
 
 
             <!-- NỘI DUNG NAV RIGHT THÊM, Cate, IMG, 2n1d, phương tiện -->
             <div class="col-3">
                 <section class="bg-body rounded mb-3 p-2">
-                    <label for="cate" class="form-label">
-                        <h5>Chọn danh mục</h5>
+                    @if (Auth::guard('admin')->user()->role == 'admin')
+                        <label for="provider" class="form-label">
+                            <h5>Chọn đối tác <span class="text-danger">*</span></h5>
+                        </label>
+                        <select name="admin_id" class="form-select form-select-sm mb-3" id="provider">
+                            <option value="" selected>Chọn đối tác</option>
+                            <option ng-repeat="provider in providers" value="@{{ provider.id }}">@{{ provider.name }}</option>
+                        </select>
+                    @else
+                        <input name="admin_id" value="{{ Auth::guard('admin')->user()->id }}" hidden></input>
+                    @endif
+                    <label for="categories" class="form-label">
+                        <h5>Chọn danh mục <span class="text-danger">*</span></h5>
                     </label>
-                    <select class="form-select form-select-sm" id="area" aria-label="Small select example">
-                        <option selected>Chọn danh mục tour</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select name="category_id" class="form-select form-select-sm" id="categories" aria-label="Small select example">
+                        <option value="" selected>Chọn danh mục tour</option>
+                        <option ng-repeat="cate in categories" value="@{{ cate.id }}">@{{ cate.ten_danh_muc }}</option>
                     </select>
                 </section>
                 <section class="bg-body rounded mb-3 p-2">
                     <p class="mb-2">
-                    <h5>Ảnh đại diện</h5>
+                    <h5>Ảnh đại diện <span class="text-danger">*</span></h5>
                     </p>
                     <label for="fileUpload" class="form-label">
-                        <img id="mainImage" src="../../assets/image/img_phaceholder.jpg" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
+                        <img id="mainImage" src="{{ asset('') }}assets/image/img_phaceholder.jpg" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
                     </label>
-                    <input type="file" class="form-control mb-3" accept="image/*" id="fileUpload">
+                    <input name="image_url" type="file" class="form-control mb-3" accept="image/*" id="fileUpload">
 
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <div class="accordion-item">
@@ -209,22 +195,19 @@
                                     Thêm ảnh phụ
                                 </button>
                             </h2>
+                            {{-- name="fileUpload1" các ảnh phụ (nếu có) --}}
                             <div id="flush-collapseOne" class="accordion-collapse collapse pt-2" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body p-1">
-                                    <img id="image1" src="../../assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
-                                    <input type="file" class="form-control mb-1" name="fileUpload1" accept="image/*" id="fileUpload1">
+                                    <img id="image1" src="{{ asset('') }}assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
+                                    <input type="file" class="form-control mb-1" name="sub_image_url[]" accept="image/*" id="fileUpload1">
                                 </div>
                                 <div class="accordion-body p-1">
-                                    <img id="image2" src="../../assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
-                                    <input type="file" class="form-control mb-1" name="fileUpload2" accept="image/*" id="fileUpload2">
+                                    <img id="image2" src="{{ asset('') }}assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
+                                    <input type="file" class="form-control mb-1" name="sub_image_url[]" accept="image/*" id="fileUpload2">
                                 </div>
                                 <div class="accordion-body p-1">
-                                    <img id="image3" src="../../assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
-                                    <input type="file" class="form-control mb-1" name="fileUpload3" accept="image/*" id="fileUpload3">
-                                </div>
-                                <div class="accordion-body p-1">
-                                    <img id="image4" src="../../assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
-                                    <input type="file" class="form-control mb-1" name="fileUpload4" accept="image/*" id="fileUpload4">
+                                    <img id="image3" src="{{ asset('') }}assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
+                                    <input type="file" class="form-control mb-1" name="sub_image_url[]" accept="image/*" id="fileUpload3">
                                 </div>
                             </div>
                         </div>
@@ -287,45 +270,39 @@
                 <section class="bg-body rounded mb-3 p-2">
                     <div class=" mb-3">
                         <h6>Phương tiện di chuyển</h6>
-                        <input type="text" class="form-control" id="transport" placeholder="xe hơi" value="">
+                        <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small>
+                        <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="Xe Khách">
                     </div>
                     <div class="">
                         <h6>Thời gian diễn ra tour</h6>
-                        <input type="text" class="form-control" id="duration" placeholder="2n1d, 4n5d, 7n7d" value="">
+                        <input name="duration" type="text" class="form-control" id="duration" placeholder="2n1d, 4n5d, 7n7d" value="2n1d">
                     </div>
-                </section>
-
-
-                <section class="bg-body rounded mb-3 p-2">
-                    <label for="">Số lượng đặt tour</label>
-                    <input type="number" class="form-control" disabled id="" value="0">
-                    <hr>
-                    <label for="">Đã đánh giá</label>
-                    <input type="number" class="form-control" disabled id="" value="0">
-                    <p class="text-primary mb-0">
-                        <strong>4.5</strong>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i>
-                        <i class="bi bi-star"></i>
-                    </p>
-                    <hr>
-                    <label for="">Đã Thích</label>
-                    <input type="number" class="form-control" disabled id="" value="0">
-                    <hr>
-                    <a href="">Bình luận</a>
-                    <input type="number" class="form-control" disabled id="" value="0">
                 </section>
             </div>
         </div>
     </form>
 @endsection
 
+
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
-
+            $http.get('/admin/api/danh-muc-tour').then(
+                function(res) { // success
+                    $scope.categories = res.data.data;
+                },
+                function(res) { // error
+                    console.error('Lỗi khi lấy danh mục tours:', error); // Ghi lỗi
+                }
+            );
+            $http.get('/admin/api/danh-sach-admin?role=provider&is_block=0').then(
+                function(res) { // success
+                    $scope.providers = res.data;
+                },
+                function(res) { // error
+                    console.error('Lỗi khi lấy danh mục tours:', error); // Ghi lỗi
+                }
+            )
         };
     </script>
 @endsection

@@ -21,6 +21,7 @@ class Category extends Model
 
     // Các thuộc tính có thể được điền vào (mass-assignable)
     protected $fillable = [
+        'id',
         'ten_danh_muc',
         'slug',
         'tour_nuoc_ngoai',

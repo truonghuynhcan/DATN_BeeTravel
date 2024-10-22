@@ -81,7 +81,6 @@
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
-            $scope.hello = {{ Auth::guard('admin')->user()->id }}
             $http.get('/admin/api/danh-sach-tour/{{ Auth::guard('admin')->user()->id }}').then(
                 function(res) { // success
                     $scope.tours = res.data.data;

@@ -27,7 +27,7 @@
 
     <body class="bg-secondary bg-opacity-10">
         <!-- Overlay -->
-        @include('client.layout.overlay')
+        {{-- @include('client.layout.overlay') --}}
 
 
         @include('client.layout.header')

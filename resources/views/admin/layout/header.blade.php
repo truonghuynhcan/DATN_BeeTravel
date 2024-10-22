@@ -10,7 +10,7 @@
                     <span class="visually-hidden">unread messages</span>
                 </span>
             </button>
-            <div class="dropdown">
+            <div class="dropdown z-3">
                 <button class="btn btn-secondary bg-secondary bg-opacity-75 rounded-circle p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ asset('') }}assets/image/logo_BeeTravel.png" class="object-fit-cover" height="35px" width="35px" alt="">
                 </button>

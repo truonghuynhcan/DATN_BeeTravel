@@ -53,7 +53,7 @@
         <!-- truyền vào function angular từ trang phụ -->
         @yield('viewFunction')
 
-        <!-- Điều kiển nội dung sau khi lấy từ @yield('main') -->
+        <!-- Điều kiển nội dung sau khi lấy từ yield('main') -->
         <script>
             app.controller('viewCtrl', viewFunction);
         </script>
