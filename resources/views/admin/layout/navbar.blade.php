@@ -12,7 +12,7 @@
             Quản lý Tour
         </a>
         <a href="{{route('admin.tourManagement')}}" class="list-group-item list-group-item-action">Tất cả tour</a>
-        <a href="add-new-tour.html" class="list-group-item list-group-item-action">Thêm tour</a>
+        <a href="{{route('admin.tourInsert')}}" class="list-group-item list-group-item-action">Thêm tour</a>
         <a href="danh-muc-tour.html" class="list-group-item list-group-item-action">Danh mục tour</a>
     </div>
     <div class="list-group mb-3">

@@ -78,7 +78,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::post('/dang-xuat', [AdminLoginController::class, 'logout'])->name('logout');
     
     Route::view('/quan-ly-tour', 'admin.tour')->name('tourManagement');
-    // Route::get('/quan-ly-tour', [AdminTourController::class, 'tourManagement'])->name('tourManagement');
+    Route::view('/them-tour', 'admin.tour_insert')->name('tourInsert');
+    // Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
 
     // Route::get('/quan-ly-tour', [TourController::class, 'quanLyTour'])->name('quanLyTour');
     Route::prefix('/api')->group(function(){

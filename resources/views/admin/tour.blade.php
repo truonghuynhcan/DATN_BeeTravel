@@ -5,7 +5,7 @@
 @section('main')
     <header class="bg-body rounded p-2 d-flex justify-content-between mb-2">
         <h2 class="">Quản lý tour</h2>
-        <a href="" class="btn btn-primary" style="height: fit-content;">Thêm tour mới</a>
+        <a href="{{route('admin.tourInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm tour mới</a>
     </header>
     <div class="alert alert-danger">
         <h4>Todo</h4>
