@@ -17,9 +17,9 @@ Route::get('/lien-he', [UserPageController::class, 'contact'])->name('contact');
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
-Route::post('/dang-nhap/loading', [UserLoginController::class, 'login_'])->name('login_');
+Route::post('/dang-nhap', [UserLoginController::class, 'login'])->name('login_loading');
 Route::get('/dang-ky', [UserPageController::class, 'register'])->name('register');
-Route::post('/dang-ky', [UserLoginController::class, 'register'])->name('register');
+Route::post('/dang-ky', [UserLoginController::class, 'register'])->name('register_loading');
 Route::post('/dangxuat', [UserLoginController::class, 'logout'])->name('dangxuat');
 
 

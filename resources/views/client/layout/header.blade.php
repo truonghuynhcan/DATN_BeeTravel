@@ -107,12 +107,17 @@
 
                         {{-- khi người dùng đã đăng nhập thì hiện --}}
                         @auth()
-                        <li><a class="dropdown-item" href="{{ route('myProfile') }}">Thông tin cá nhân</a></li>
+                        <li><a class="dropdown-item" href="{{ route('myProfile') }}">Thông tin cá nhân: <p class="text-uppercase fs-4 fst-italic">{{Auth::user()->name}}</p></a></li>
                         <li><a class="dropdown-item" href="{{ route('myTour') }}">Tour của tôi</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                        <form action="{{route('dangxuat')}}" method='post'>
+@csrf
+<!-- <button class="btn btn-primary rounded-pill">Đăng Xuất</button> -->
+<li><button class="dropdown-item" >Đăng xuất</button></li>
+</form>
+                        <!-- <li><a class="dropdown-item" href="#">Đăng xuất</a></li> -->
                         @endauth
                     </ul>
                 </li>
