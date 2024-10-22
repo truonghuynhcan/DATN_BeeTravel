@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Image;
+use App\Models\NgayDi;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class AdminTourController extends Controller
 {
 
+    // ! Tạo api lấy danh sách tour
+    // ! Tạo api lấy danh sách tour
     // ! Tạo api lấy danh sách tour
     public function tours($admin_id)
     {
@@ -41,11 +47,14 @@ class AdminTourController extends Controller
         // 403 - forbidden thiếu quyền
     }
 
+    // ! Thêm tour
+    // ! Thêm tour
+    // ! Thêm tour
     public function tourInsert_(Request $request)
     {
         $validated = $request->validate(
             [
-                'admin_id' => ['required','integer', 'exists:admins,id'],
+                'admin_id' => ['required', 'integer', 'exists:admins,id'],
                 'category_id' => ['required', 'integer', 'exists:categories,id'],
                 //  * Tour information
                 'title' => ['required', 'string', 'max:255'],
@@ -55,28 +64,28 @@ class AdminTourController extends Controller
                 'transport' => ['nullable', 'string', 'max:100'],
                 'duration' => ['nullable', 'string', 'max:50'],
 
-                
-                // * Ngày đi & giá
-                'departure-date' => ['nullable', 'array'],  // ngày khởi hành
 
-                'adult-price' => ['nullable', 'array'], 
-                'child-price' => ['nullable', 'array'], 
-                'toddler-price' => ['nullable', 'array'], 
-                'infant-price' => ['nullable', 'array'],
-                
-                'departure-date.*' => ['nullable', 'date', 'after_or_equal:today'],  // Ensure the price is a positive number
-                'adult-price.*' => ['nullable', 'numeric', 'min:0'],
-                'child-price.*' => ['nullable', 'numeric', 'min:0'],
-                'toddler-price.*' => ['nullable', 'numeric', 'min:0'],
-                'infant-price.*' => ['nullable', 'numeric', 'min:0'],
-                
+                // * Ngày đi & giá
+                'departure-date' => ['sometimes', 'array'],  // ngày khởi hành
+                'adult-price' => ['sometimes', 'array'],
+                'child-price' => ['sometimes', 'array'],
+                'toddler-price' => ['sometimes', 'array'],
+                'infant-price' => ['sometimes', 'array'],
+
+                'departure-date.*' => ['nullable', 'date', 'after_or_equal:today'], // Không bắt buộc, nhưng nếu có thì phải đúng định dạng ngày
+                // Các trường dưới đây sẽ chỉ bắt buộc nếu có departure-date
+                'adult-price.*' => ['required_with:departure-date.*', 'nullable', 'numeric', 'min:0'],
+                'child-price.*' => ['required_with:departure-date.*', 'nullable', 'numeric', 'min:0'],
+                'toddler-price.*' => ['required_with:departure-date.*', 'nullable', 'numeric', 'min:0'],
+                'infant-price.*' => ['required_with:departure-date.*', 'nullable', 'numeric', 'min:0'],
+
                 // * Ảnh chính và ảnh phụ
                 'image_url' => ['required', 'image', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],  // Max file size 2MB
-                'sub_image_url' => ['nullable', 'array'], 
+                'sub_image_url' => ['nullable', 'array'],
                 'sub_image_url.*' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],  // Max file size 2MB for each image
 
                 // * Nổi bật
-                'featured' => ['nullable', 'string','max:100'],
+                'featured' => ['nullable', 'string', 'max:100'],
                 'features_start' => ['nullable', 'date', 'after_or_equal:today'],   // Ensure the start date is today or later
                 'features_end' => ['nullable', 'date', 'after_or_equal:start_date'],// Ensure the end date is after or equal to the start date
             ],
@@ -84,76 +93,135 @@ class AdminTourController extends Controller
                 'admin_id.required' => 'Bạn chưa chọn đối tác.',
                 'admin_id.integer' => 'ID của admin phải là số nguyên.',
                 'admin_id.exists' => 'Admin không tồn tại trong hệ thống.',
-                
+
                 'category_id.required' => 'Bạn chưa chọn Danh mục cho tour.',
                 'category_id.integer' => 'ID của danh mục phải là số nguyên.',
                 'category_id.exists' => 'Danh mục không tồn tại trong hệ thống.',
-                
+
                 // * Tour Information
                 'title.required' => 'Tiêu đề tour là bắt buộc.',
                 'title.max' => 'Tiêu đề không được vượt quá :max ký tự.',
-                
+
                 'sub_title.required' => 'Tiêu đề phụ là bắt buộc.',
                 'sub_title.max' => 'Tiêu đề phụ không được vượt quá :max ký tự.',
-                
+
                 'description.required' => 'Mô tả là bắt buộc.',
                 'transport.max' => 'Tên phương tiện không được vượt quá :max ký tự.',
                 'duration.max' => 'Thời gian đi không được vượt quá :max ký tự.',
-                
+
                 // * Ngày đi & giá
                 'departure-date.array' => 'Ngày đi phải là một mảng.',
                 'departure-date.*.date' => 'Mỗi ngày đi phải là một ngày hợp lệ.',
                 'departure-date.*.after_or_equal' => 'Ngày đi phải sau hoặc bằng ngày hôm nay.',
-                
+
+                'adult-price.*.required_with' => 'Giá cho người lớn là bắt buộc nếu có ngày khởi hành.',
                 'adult-price.*.numeric' => 'Giá người lớn phải là số.',
                 'adult-price.*.min' => 'Giá người lớn không thể nhỏ hơn :min.',
-                
+
+                'child-price.*.required_with' => 'Giá cho trẻ em là bắt buộc nếu có ngày khởi hành.',
                 'child-price.*.numeric' => 'Giá trẻ em phải là số.',
                 'child-price.*.min' => 'Giá trẻ em không thể nhỏ hơn :min.',
-                
+
+                'toddler-price.*.required_with' => 'Giá cho trẻ nhỏ là bắt buộc nếu có ngày khởi hành.',
                 'toddler-price.*.numeric' => 'Giá trẻ nhỏ phải là số.',
                 'toddler-price.*.min' => 'Giá trẻ nhỏ không thể nhỏ hơn :min.',
-                
+
+                'infant-price.*.required_with' => 'Giá cho trẻ sơ sinh là bắt buộc nếu có ngày khởi hành.',
                 'infant-price.*.numeric' => 'Giá trẻ nhỏ phải là số.',
                 'infant-price.*.min' => 'Giá trẻ nhỏ không thể nhỏ hơn :min.',
 
-                
+
                 // * Ảnh
-                'image_url.required' => 'Cần thêm ảnh đại diện',                
+                'image_url.required' => 'Cần thêm ảnh đại diện',
                 'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
                 'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
                 'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
-                
+
                 'sub_image_url.*.image' => 'Ảnh phụ phải là định dạng hình ảnh.',
                 'sub_image_url.*.mimes' => 'Ảnh phụ phải có định dạng: jpg, png, jpeg, gif, svg.',
                 'sub_image_url.*.max' => 'Kích thước mỗi ảnh không được vượt quá 2MB.',
-                
+
                 // * Ngày nổi bật
-                
+
                 'features_start.date' => 'Ngày bắt đầu nổi bật phải là ngày hợp lệ.',
                 'features_start.after_or_equal' => 'Ngày bắt đầu nổi bật phải sau hoặc bằng hôm nay.',
-                
+
                 'features_end.date' => 'Ngày kết thúc nổi bật phải là ngày hợp lệ.',
-                'features_end.after_or_equal' => 'Ngày kết thúc nổi bật phải sau hoặc bằng ngày bắt đầu.',   
+                'features_end.after_or_equal' => 'Ngày kết thúc nổi bật phải sau hoặc bằng ngày bắt đầu.',
             ]
         );
-        return redirect()->back()->withInput();
 
-        // Store the validated data into the database
-        // You can now safely proceed with saving the tour details into the database
         $tour = new Tour();
-        $tour->name = $validated['title'];
         $tour->category_id = $validated['category_id'];
-        $tour->start_date = $validated['start_date'];
-        $tour->end_date = $validated['end_date'];
-        $tour->price = $validated['price'];
+        $tour->admin_id = $validated['admin_id'];
+        // * tạo tour
+        // lấy tên ảnh - tạo tên ảnh mới - lưu vào file public - lưu vào db
+        $filename = time() . '_' . $validated['image_url']->getClientOriginalName();
+        $validated['image_url']->move('assets/image_tour', $filename); // Di chuyển file vào thư mục public/assets/images
+        $tour->image_url = $filename;
+
+        $tour->title = $validated['title'];
+
+        if (!empty($validated['slug'])) {
+            $tour->slug = $validated['slug'];
+        } else {
+            $tour->slug = Str::slug($validated['title']);
+        }
+
+        $tour->sub_title = $validated['sub_title'];
         $tour->description = $validated['description'];
+        $tour->duration = $validated['duration'] ?? null;
+        $tour->transport = $validated['transport'] ?? null;
+        //  tạo ẩn hiện dựa trên btn submit
+        if ($request->input('action') === 'publish') {
+            $tour->is_hidden = 0;
+        } elseif ($request->input('action') === 'draft') {
+            $tour->is_hidden = 1;
+        }
+        // nổi bật
+        $tour->featured = $validated['featured'] ?? null;
+        $tour->featured_start = $validated['featured_start'] ?? null;
+        $tour->featured_end = $validated['featured_end'] ?? null;
+
         $tour->save();
 
-        // Handle additional features like saving departure dates, prices, images, etc.
 
-        return redirect()->route('admin.tour')->with('success', 'Tour added successfully!');
+        // * tạo ngày đi (nếu có)
+        if (isset($validated['departure-date']) && !empty($validated['departure-date']) && !$validated['departure-date'][0]===null) {
+            foreach ($validated['departure-date'] as $key => $date) {
+                $ngay_di = new NgayDi();
+                $ngay_di->tour_id = $tour->id; // id tự động lấy sau khi save()
+                $ngay_di->start_date = $date; // dạng datetime
+                $ngay_di->price = $validated['adult-price.' . $key]; // Giá người lớn
+                $ngay_di->price_tre_em = $validated['child-price.' . $key]; // Giá người lớn
+                $ngay_di->price_tre_nho = $validated['toddler-price.' . $key]; // Giá người lớn
+                $ngay_di->price_em_be = $validated['infant-price.' . $key]; // Giá người lớn
+                $ngay_di->save();
+            }
+        }
 
+        // * tạo ảnh (nếu có)
+        if (isset($validated['sub_image_url']) && !empty($validated['sub_image_url']) && count($validated['departure-date']) > 0) {
+            foreach ($validated['sub_image_url'] as $file) {
+                if ($file) { // Kiểm tra xem file có tồn tại không
+                    // Tạo một tên file duy nhất
+                    $filename = time() . '_' . $file->getClientOriginalName();
+
+                    // Di chuyển file vào thư mục public/assets/images
+                    $file->move('assets/image_tour', $filename);
+
+                    // Tạo bản ghi cho ảnh
+                    $image = new Image();
+                    $image->tour_id = $tour->id; // ID tour đã lưu
+                    $image->name = $filename; // Hoặc bất kỳ tên nào bạn muốn lưu
+                    $image->url = $filename; // Lưu đường dẫn của ảnh
+
+                    $image->save(); // Lưu vào cơ sở dữ liệu
+                }
+            }
+        }
+
+        return redirect()->route('admin.tourManagement')->with('success', 'Tour added successfully!');
     }
 
     /**

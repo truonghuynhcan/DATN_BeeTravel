@@ -7,21 +7,6 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    // lấy id và name đối tác
-    public function getProviderAll()
-    {
-        $provider = Admin::select('id','name', 'role')->where('role','provider')->get();
-        // trả kết quả
-        $return = [
-            'status' => true,
-            'message' => 'Lấy dữ liệu tours thành công!',
-            'data' => $provider,
-        ];
-        return response()->json($return, 200);
-    }
-
-
-
     // Get all admins or selectively based on query parameters
     public function index(Request $request)
     {

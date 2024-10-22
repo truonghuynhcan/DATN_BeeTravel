@@ -21,24 +21,15 @@
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
         });
     </script>
-    <form action="{{ route('admin.tourInsert_') }}" method="post">
+    <form action="{{ route('admin.tourInsert_') }}" method="post" enctype="multipart/form-data">
         @csrf
         <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top z-1">
             <h2 class="">Thêm tour mới</h2>
             <div>
                 <button type="submit" name="post" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
-                <button type="submit" name="postHidden" href="" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
+                <button type="submit" name="draft" href="" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
             </div>
         </header>
-        <div class="alert alert-danger">
-            <h4>Todo</h4>
-            <ul>
-                <li>Làm nhập tour</li>
-                <li>Làm nhập ngày đi</li>
-                <li>Làm nhập ảnh</li>
-                <li>Làm nhập nổi bật</li>
-            </ul>
-        </div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -114,15 +105,15 @@
                                         <input type="number" class="form-control form-control-sm" name="adult-price[]" min="0" value="{{ old('adult-price.' . $key, '') }}">
                                     </div>
                                     <div class="col-3">
-                                        <label for="child-price" class="form-label">Giá trẻ em (5-12 tuổi)</label>
+                                        <label for="child-price" class="form-label">Giá trẻ em (5-12 tuổi) <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control form-control-sm" name="child-price[]" min="0" value="{{ old('child-price.' . $key, '') }}">
                                     </div>
                                     <div class="col-3">
-                                        <label for="toddler-price" class="form-label">Giá trẻ nhỏ (2-5 tuổi)</label>
+                                        <label for="toddler-price" class="form-label">Giá trẻ nhỏ (2-5 tuổi) <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control form-control-sm" name="toddler-price[]" min="0" value="{{ old('toddler-price.' . $key, '') }}">
                                     </div>
                                     <div class="col-3">
-                                        <label for="infant-price" class="form-label">Giá em bé (dưới 2 tuổi)</label>
+                                        <label for="infant-price" class="form-label">Giá em bé (dưới 2 tuổi) <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control form-control-sm" name="infant-price[]" min="0" value="{{ old('infant-price.' . $key, '') }}">
                                     </div>
                                 </div>
@@ -287,6 +278,7 @@
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
+            // API danh mục tour
             $http.get('/admin/api/danh-muc-tour').then(
                 function(res) { // success
                     $scope.categories = res.data.data;
@@ -295,6 +287,8 @@
                     console.error('Lỗi khi lấy danh mục tours:', error); // Ghi lỗi
                 }
             );
+
+            // API đối tác
             $http.get('/admin/api/danh-sach-admin?role=provider&is_block=0').then(
                 function(res) { // success
                     $scope.providers = res.data;
