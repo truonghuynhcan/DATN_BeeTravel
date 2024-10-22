@@ -7,12 +7,13 @@ use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserNewsController;
 use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\UserTourController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 // ! USER ==================================================================================================================================
 Route::get('/', [UserPageController::class, 'home'])->name('home');
 Route::get('/gioi-thieu', [UserPageController::class, 'about'])->name('about');
-Route::get('/lien-he', [UserPageController::class, 'contact'])->name('contact');
+//Route::get('/lien-he', [UserPageController::class, 'contact'])->name('contact');
 
 
 // * login/register/logout ----------------------------------------------------------------
@@ -39,6 +40,11 @@ Route::get('/thanh-toan', function () {
 Route::get('/news', [UserNewsController::class, 'news'])->name('news');
 Route::get('/categories/{category_id}', [UserNewsController::class, 'getNewByCategory'])->name('categories');
 Route::get('/tin_tuc_chi_tiet/{category_id}', [UserNewsController::class, 'showNews'])->name('tin_tuc_chi_tiet');
+
+
+//*LIÊN HỆ
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
 // * USER ACCOUNT SETTING ----------------------------------------------------------------
 //Route áp dụng được quyền sử dụng sau khi đã đăng nhập tài khoản
