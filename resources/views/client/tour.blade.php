@@ -103,7 +103,8 @@ Tour
                                     <p class="card-text">Ngày đi: <b>{{$tour->featured_start}}</b></p>
                                 </div>
                                 <div class="d-flex ">
-                                    <p class="card-text">Giá: <b class=" text-danger">10.890.000 ₫</b></p>
+                                <p><span class="card-text" id="priceDisplay"><b class=" text-danger">{{ number_format($tour->ngayDi->first()->price, 0, ',', '.') }} VNĐ</b></span></p>
+                                    <!-- <p class="card-text">Giá: <b class=" text-danger">10.890.000 ₫</b></p> -->
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <a href="#" class="btn btn-primary container-fluid">Đặt ngay</a>
