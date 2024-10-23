@@ -14,6 +14,7 @@
         </ul>
     </div>
     <section class="bg-body rounded p-2">
+        {{-- Bộ lọc --}}
         <div class="d-flex mb-3">
             <div class="me-3">
                 <label for="area" class="form-label">Lọc theo danh mục</label>
@@ -40,6 +41,8 @@
                 </div>
             </div>
         </div>
+
+        {{-- danh sách tour --}}
         <table class="table table-hover table-striped table-bordered">
             <thead>
                 <tr>
@@ -58,7 +61,7 @@
             </thead>
             <tbody class="table-group-divider">
                 <tr ng-repeat="tour in tours">
-                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image/@{{ tour.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
+                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_tour/@{{ tour.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
                     <td>@{{ tour.title }}</td>
                     <td class="text-center">@{{ tour.category.ten_danh_muc }}</td>
                     @if (Auth::guard('admin')->user()->role == 'admin')
@@ -69,7 +72,7 @@
                     <td class="text-end">@{{ tour.ngay_di[0].price || 0  | number}}</td>
                     <td class="text-center">0</td>
                     <td>
-                        <a href="" class="btn btn-info">Sửa</a>
+                        <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info">Sửa</a>
                         <button class="btn btn-outline-danger">Xóa</button>
                     </td>
                 </tr>

@@ -21,9 +21,10 @@ class UserTourController extends Controller
         $tour = Tour::select('id','category_id', 'image_url', 'title', 'sub_title', 'slug', 'description','duration','transport','featured','featured_start')->where('slug', '=', $slug)->first();
 
         $images = [
-            'assets/image/'.$tour->image_url,
-            'assets/image/tour02.webp',
-            'assets/image/tour03.webp',
+            'assets/image_tour/'.$tour->image_url,
+            'assets/image_tour/tour02.webp',
+            'assets/image_tour/tour03.webp',
+            'assets/image_tour/tour03.webp',
             // Thêm các ảnh khác nếu có
         ];
         
