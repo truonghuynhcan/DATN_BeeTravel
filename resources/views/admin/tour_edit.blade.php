@@ -21,15 +21,25 @@
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
         });
     </script>
-    <form action="{{ route('admin.tourInsert_') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.tourEdit_') }}" method="post" enctype="multipart/form-data">
         @csrf
         <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top z-1">
-            <h2 class="">Thêm tour mới</h2>
+            <h2 class="">Sửa tour #{{ $tour->id }}</h2>
             <div>
                 <button type="submit" name="post" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
                 <button type="submit" name="draft" href="" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
             </div>
         </header>
+        <div class="alert alert-danger">
+            <h4>Todo</h4>
+            <ul>
+                <li>cập nhật sản phẩm</li>
+                <li>thiếu dữ liệu số lượng đặt tour</li>
+                <li>thiếu dữ liệu số lượng Bình luận</li>
+                <li>làm xem thống kê khi đăng ký vip cho tour</li>
+            </ul>
+        </div>
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -44,7 +54,7 @@
             <!-- NỘI DUNG CHI TIẾT -->
             <div class="col-9">
                 <section class="bg-body rounded mb-3">
-                    <input name="title" value="{{ old('title') }}" class="form-control form-control-lg" type="text" placeholder="Tên tour (không quá 255 ký tự) *" aria-label=".form-control-lg example">
+                    <input name="title" value="{{ old('title') ?? $tour->title }}" class="form-control form-control-lg" type="text" placeholder="Tên tour (không quá 255 ký tự) *" aria-label=".form-control-lg example">
                 </section>
 
                 {{-- Nổi bật --}}
@@ -55,7 +65,7 @@
                             <div class="me-3">
                                 <label for="area" class="form-label">Chọn vị trí</label>
                                 <select name="featured" class="form-select form-select-sm" id="area" aria-label="Small select example">
-                                    <option selected>Mã vị trí</option>
+                                    <option value="{{ old('featured') ?? $tour->featured }}" selected>Mã vị trí</option>
                                     <option value="">1</option>
                                     <option value="">2</option>
                                     <option value="">3</option>
@@ -76,50 +86,85 @@
 
                 <section class="bg-body rounded p-2 mb-3">
                     <label for="slug" class="h5">Slug</label>
-                    <input type="text" name="slug" value="{{ old('slug') }}" class="form-control mb-3" id="slug"></input>
+                    <input type="text" name="slug" value="{{ old('slug') ?? $tour->slug }}" class="form-control mb-3" id="slug"></input>
                     <label for="sub_title" class="h5">Mô tả ngắn <span class="text-danger">*</span></label>
-                    <textarea name="sub_title" id="sub_title" class="form-control">{{ old('sub_title') }}</textarea>
+                    <textarea name="sub_title" id="sub_title" class="form-control">{{ old('sub_title') ?? $tour->sub_title }}</textarea>
                 </section>
 
                 <section class="bg-body rounded p-2 mb-3">
                     <label for="content" class="h5">Chi tiết Tour <span class="text-danger">*</span></label>
-                    <textarea name="description" id="content">{{ old('description') }}</textarea>
+                    <textarea name="description" id="content">{{ old('description') ?? $tour->description }}</textarea>
                 </section>
 
                 <!-- Ngày đi / ngày khởi hành -->
                 <section class="bg-body rounded p-2 mb-3">
                     <h5>Ngày giờ khởi hành</h5>
                     <p class="form-label text-body-tertiary">Chọn ngày giờ khởi hành</p>
-
                     <div id="departure-container">
-                        @foreach (old('departure-date', [['']]) as $key => $date)
+                        @php
+                            // Kiểm tra dữ liệu cũ hoặc dữ liệu từ tour
+                            $departureData = old('departure-date', null) ?? $tour->ngayDi;
+                        @endphp
+
+                        @if ($departureData && count($departureData) > 0)
+                            @foreach ($departureData as $key => $data)
+                                <input type="hidden" name="ngayDi_id[]" value="{{ old('ngayDi_id.' . $key) ?? $data->id }}">
+                                <div class="mb-4 departure-block">
+                                    <div class="d-flex">
+                                        <input type="datetime-local" value="{{ old('departure-date.' . $key) ?? $data->start_date }}" class="form-control form-control-sm fw-bold" name="departure-date[]" style="max-width: fit-content;">
+                                        <hr class="d-inline w-100">
+                                        <button type="button" class="btn btn-outline-danger btn-sm ms-2 remove-departure" onclick="removeDeparture(this)">Xóa</button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label for="adult-price" class="form-label">Giá người lớn (>12 tuổi) <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control form-control-sm" name="adult-price[]" min="0" value="{{ old('adult-price.' . $key) ?? $data->price }}">
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="child-price" class="form-label">Giá trẻ em (5-12 tuổi) <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control form-control-sm" name="child-price[]" min="0" value="{{ old('child-price.' . $key) ?? $data->price_tre_em }}">
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="toddler-price" class="form-label">Giá trẻ nhỏ (2-5 tuổi) <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control form-control-sm" name="toddler-price[]" min="0" value="{{ old('toddler-price.' . $key) ?? $data->price_tre_nho }}">
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="infant-price" class="form-label">Giá em bé (dưới 2 tuổi) <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control form-control-sm" name="infant-price[]" min="0" value="{{ old('infant-price.' . $key) ?? $data->price_em_be }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <!-- Hiển thị một bảng trống nếu không có dữ liệu -->
                             <div class="mb-4 departure-block">
                                 <div class="d-flex">
-                                    <input type="datetime-local" value="{{ old('departure-date.' . $key, null) }}" class="form-control form-control-sm fw-bold" name="departure-date[]" style="max-width: fit-content;">
+                                    <input type="datetime-local" class="form-control form-control-sm fw-bold" name="departure-date[]" style="max-width: fit-content;">
                                     <hr class="d-inline w-100">
-                                    <button type="button" class="btn btn-outline-danger btn-sm ms-2 remove-departure" onclick="removeDeparture(this)">Xóa</button> <!-- Nút xóa -->
+                                    <button type="button" class="btn btn-outline-danger btn-sm ms-2 remove-departure" onclick="removeDeparture(this)">Xóa</button>
                                 </div>
                                 <div class="row">
                                     <div class="col-3">
                                         <label for="adult-price" class="form-label">Giá người lớn (>12 tuổi) <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control form-control-sm" name="adult-price[]" min="0" value="{{ old('adult-price[].' . $key, null) }}">
+                                        <input type="number" class="form-control form-control-sm" name="adult-price[]" min="0" value="">
                                     </div>
                                     <div class="col-3">
                                         <label for="child-price" class="form-label">Giá trẻ em (5-12 tuổi) <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control form-control-sm" name="child-price[]" min="0" value="{{ old('child-price[].' . $key, null) }}">
+                                        <input type="number" class="form-control form-control-sm" name="child-price[]" min="0" value="">
                                     </div>
                                     <div class="col-3">
                                         <label for="toddler-price" class="form-label">Giá trẻ nhỏ (2-5 tuổi) <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control form-control-sm" name="toddler-price[]" min="0" value="{{ old('toddler-price[].' . $key, null) }}">
+                                        <input type="number" class="form-control form-control-sm" name="toddler-price[]" min="0" value="">
                                     </div>
                                     <div class="col-3">
                                         <label for="infant-price" class="form-label">Giá em bé (dưới 2 tuổi) <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control form-control-sm" name="infant-price[]" min="0" value="{{ old('infant-price[].' . $key, null) }}">
+                                        <input type="number" class="form-control form-control-sm" name="infant-price[]" min="0" value="">
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @endif
                     </div>
+
 
                     <button type="button" id="add-departure" class="btn btn-outline-primary">+ thêm ngày giờ khởi hành</button>
                 </section>
@@ -143,8 +188,46 @@
                         // Tìm khối cha của nút "Xóa" và xóa nó
                         button.closest('.departure-block').remove();
                     }
-
                 </script>
+
+                <!-- show biểu đồ khi có nội dung  -->
+                <section class="bg-body rounded p-2 mb-3">
+                    <h5 class="text-center">Thống kê lượt đặt tour theo THÁNG</h5>
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <script>
+                        const ctx = document.getElementById('myChart');
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                                datasets: [{
+                                        label: 'Số đơn đặt tour',
+                                        data: [12, 19, 3, 5, 2, 3, 15, 23, 18, 12, 9, 6], // Dữ liệu cho dây 1
+                                        borderColor: 'rgba(75, 192, 192, 1)', // Màu dây 1
+                                        borderWidth: 2, // Độ dày của dây 1
+                                        fill: false // Không tô màu dưới đường
+                                    },
+                                    {
+                                        label: 'Số người tham gia',
+                                        data: [12, 32, 13, 22, 31, 18, 29, 33, 41, 26, 35, 23], // Dữ liệu cho dây 2
+                                        borderColor: 'rgba(255, 99, 132, 1)', // Màu dây 2
+                                        borderWidth: 1, // Độ dày của dây 2
+                                        fill: false // Không tô màu dưới đường
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+                </section>
             </div>
 
 
@@ -156,7 +239,7 @@
                             <h5>Chọn đối tác <span class="text-danger">*</span></h5>
                         </label>
                         <select name="admin_id" class="form-select form-select-sm mb-3" id="provider">
-                            <option value="" selected>Chọn đối tác</option>
+                            <option value="{{ $tour->admin->id }}" selected>{{ $tour->admin->name }}</option>
                             <option ng-repeat="provider in providers" value="@{{ provider.id }}">@{{ provider.name }}</option>
                         </select>
                     @else
@@ -166,7 +249,7 @@
                         <h5>Chọn danh mục <span class="text-danger">*</span></h5>
                     </label>
                     <select name="category_id" class="form-select form-select-sm" id="categories" aria-label="Small select example">
-                        <option value="" selected>Chọn danh mục tour</option>
+                        <option value="{{ $tour->category->id }}" selected>{{ $tour->category->ten_danh_muc }}</option>
                         <option ng-repeat="cate in categories" value="@{{ cate.id }}">@{{ cate.ten_danh_muc }}</option>
                     </select>
                 </section>
@@ -175,29 +258,29 @@
                     <h5>Ảnh đại diện <span class="text-danger">*</span></h5>
                     </p>
                     <label for="fileUpload" class="form-label">
-                        <img id="mainImage" src="{{ asset('') }}assets/image/img_phaceholder.jpg" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
+                        <img id="mainImage" src="{{ asset('assets/image/' . $tour->image_url ?? 'img_phaceholder.jpg') }}" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
                     </label>
                     <input name="image_url" type="file" class="form-control mb-3" accept="image/*" id="fileUpload">
 
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed p-1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                <button class="accordion-button  p-1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                                     Thêm ảnh phụ
                                 </button>
                             </h2>
                             {{-- name="fileUpload1" các ảnh phụ (nếu có) --}}
-                            <div id="flush-collapseOne" class="accordion-collapse collapse pt-2" data-bs-parent="#accordionFlushExample">
+                            <div id="flush-collapseOne" class="accordion-collapse collapse show pt-2" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body p-1">
-                                    <img id="image1" src="{{ asset('') }}assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
+                                    <img id="image1" src="{{ asset('assets/image/' . (isset($tour->image[0]) ? $tour->image[0]->url : 'img_phaceholder.jpg')) }}" height="80px" alt="" class="object-fit-cover">
                                     <input type="file" class="form-control mb-1" name="sub_image_url[]" accept="image/*" id="fileUpload1">
                                 </div>
                                 <div class="accordion-body p-1">
-                                    <img id="image2" src="{{ asset('') }}assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
+                                    <img id="image2" src="{{ asset('assets/image/' . (isset($tour->image[1]) ? $tour->image[1]->url : 'img_phaceholder.jpg')) }}" height="80px" alt="" class="object-fit-cover">
                                     <input type="file" class="form-control mb-1" name="sub_image_url[]" accept="image/*" id="fileUpload2">
                                 </div>
                                 <div class="accordion-body p-1">
-                                    <img id="image3" src="{{ asset('') }}assets/image/img_phaceholder.jpg" height="80px" alt="" class="object-fit-cover">
+                                    <img id="image3" src="{{ asset('assets/image/' . (isset($tour->image[2]) ? $tour->image[2]->url : 'img_phaceholder.jpg')) }}" height="80px" alt="" class="object-fit-cover">
                                     <input type="file" class="form-control mb-1" name="sub_image_url[]" accept="image/*" id="fileUpload3">
                                 </div>
                             </div>
@@ -262,12 +345,53 @@
                     <div class=" mb-3">
                         <h6>Phương tiện di chuyển</h6>
                         <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small>
-                        <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="Xe Khách">
+                        <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="{{ $tour->transport ?? null }}">
                     </div>
                     <div class="">
                         <h6>Thời gian diễn ra tour</h6>
-                        <input name="duration" type="text" class="form-control" id="duration" placeholder="2n1d, 4n5d, 7n7d" value="2n1d">
+                        <input name="duration" type="text" class="form-control" id="duration" placeholder="2n1d, 4n5d, 7n7d" value="{{ $tour->duration ?? null }}">
                     </div>
+                </section>
+
+                <section class="bg-body rounded mb-3 p-2">
+                    <label for="">Số lượng đặt tour</label>
+                    <input type="number" class="form-control" disabled id="" value="0">
+                    <hr>
+                    <label for="">Đã đánh giá</label>
+                    <input type="number" class="form-control" disabled id="" value="{{ $tour->rating ?? 0 }}">
+                    <p class="text-primary mb-0">
+                        <strong id="tour-rating">{{ $tour->rating ?? 0 }}</strong>
+                        <span id="stars-container">
+                            <!-- Các biểu tượng ngôi sao sẽ được chèn ở đây bằng JavaScript -->
+                        </span>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const rating = parseFloat(document.getElementById('tour-rating').textContent);
+                                const starsContainer = document.getElementById('stars-container');
+                                const maxStars = 5;
+                                let starHTML = '';
+
+                                for (let i = 1; i <= maxStars; i++) {
+                                    if (i <= rating) {
+                                        starHTML += '<i class="bi bi-star-fill"></i>'; // Ngôi sao đầy
+                                    } else if (i - 0.5 === rating) {
+                                        starHTML += '<i class="bi bi-star-half"></i>'; // Ngôi sao nửa
+                                    } else {
+                                        starHTML += '<i class="bi bi-star"></i>'; // Ngôi sao rỗng
+                                    }
+                                }
+
+                                starsContainer.innerHTML = starHTML; // Chèn các ngôi sao vào container
+                            });
+                        </script>
+                    </p>
+
+                    <hr>
+                    <label for="">Đã Thích</label>
+                    <input type="number" class="form-control" disabled value="{{ $tour->wishlists_count ?? 0 }}">
+                    <hr>
+                    <a href="">Bình luận</a>
+                    <input type="number" class="form-control" disabled value="0">
                 </section>
             </div>
         </div>

@@ -87,7 +87,7 @@ Tour
                                 </svg>
                                 <span class="text-body position-absolute start-50 top-50 translate-middle">Mới</span>
                             </div>
-                            <img src="{{asset('')}}assets/image/{{$tour->image_url}}" height="350px" class="card-img oject-fit-fill" alt="...">
+                            <img src="{{asset('')}}assets/image_tour/{{$tour->image_url}}" height="350px" class="card-img oject-fit-fill" alt="...">
                             <div class="card-img-overlay m-3 p-2 bg-body text-body" style="top:inherit">
                                 <h5 class="card-title">
                                     <a href="{{route('chitiet',$tour->slug)}}" class="text-decoration-none text-body fs-6">

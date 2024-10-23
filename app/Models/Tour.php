@@ -42,7 +42,7 @@ class Tour extends Model
     }
     public function image()
     {
-        return $this->hasMany(Image::class);
+        return $this->hasMany(Image::class, 'tour_id');
     }
     public function ngayDi()
     {
@@ -54,7 +54,7 @@ class Tour extends Model
     }
     public function wishlist()
     {
-        return $this->hasMany(Wishlist::class);
+        return $this->hasMany(Wishlist::class, 'tour_id');
     }
     public function feedback()
     {

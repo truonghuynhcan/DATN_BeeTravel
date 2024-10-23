@@ -88,6 +88,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::view('/quan-ly-tour', 'admin.tour')->name('tourManagement');
     Route::view('/them-tour', 'admin.tour_insert')->name('tourInsert');
     Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
+    
+    Route::get('/sua-tour/{id}', [AdminTourController::class, 'tourEdit'])->name('tourEdit');
+    Route::post('/sua-tour/loading', [AdminTourController::class, 'tourEdit_'])->name('tourEdit_');
     // Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
 
     // Route::get('/quan-ly-tour', [TourController::class, 'quanLyTour'])->name('quanLyTour');

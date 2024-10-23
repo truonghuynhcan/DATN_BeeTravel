@@ -9,10 +9,21 @@ use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Number;
 
 
 class AdminTourController extends Controller
 {
+    public function tourEdit($tour_id){
+        $tour = Tour::with(['category', 'ngayDi', 'image', 'admin'])->withCount('wishlist')->find($tour_id);
+        if (!$tour) {
+            return redirect()->back()->withErrors('Tour not found!');
+        }
+        return view('admin.tour_edit', compact('tour'));
+    }
+    public function tourEdit_(Request $request){
+        return redirect()->back();
+    }
 
     // ! Tạo api lấy danh sách tour
     // ! Tạo api lấy danh sách tour
@@ -34,7 +45,6 @@ class AdminTourController extends Controller
                 ->with(['category', 'ngayDi'])
                 ->where('admin_id', $admin_id)->get();
         }
-
         // trả kết quả
         $return = [
             'status' => true,
@@ -182,26 +192,30 @@ class AdminTourController extends Controller
         $tour->featured = $validated['featured'] ?? null;
         $tour->featured_start = $validated['featured_start'] ?? null;
         $tour->featured_end = $validated['featured_end'] ?? null;
-
         $tour->save();
 
 
         // * tạo ngày đi (nếu có)
-        if (isset($validated['departure-date']) && !empty($validated['departure-date']) && !$validated['departure-date'][0]===null) {
-            foreach ($validated['departure-date'] as $key => $date) {
+        foreach ($validated['departure-date'] as $key => $date) {
+            if ($date!==null) {
                 $ngay_di = new NgayDi();
                 $ngay_di->tour_id = $tour->id; // id tự động lấy sau khi save()
                 $ngay_di->start_date = $date; // dạng datetime
-                $ngay_di->price = $validated['adult-price.' . $key]; // Giá người lớn
-                $ngay_di->price_tre_em = $validated['child-price.' . $key]; // Giá người lớn
-                $ngay_di->price_tre_nho = $validated['toddler-price.' . $key]; // Giá người lớn
-                $ngay_di->price_em_be = $validated['infant-price.' . $key]; // Giá người lớn
+                $ngay_di->price =$validated['adult-price'][$key]; // Giá người lớn
+                $ngay_di->price_tre_em =$validated['child-price'][$key]; // Giá người lớn
+                $ngay_di->price_tre_nho =$validated['toddler-price'][$key]; // Giá người lớn
+                $ngay_di->price_em_be =$validated['infant-price'][$key]; // Giá người lớn
                 $ngay_di->save();
+            } else {
+                continue;
             }
+            
         }
+        // if (isset($validated['departure-date']) && !empty($validated['departure-date']) && !$validated['departure-date'][0]===null) {
+        // }
 
         // * tạo ảnh (nếu có)
-        if (isset($validated['sub_image_url']) && !empty($validated['sub_image_url']) && count($validated['departure-date']) > 0) {
+        if (isset($validated['sub_image_url']) && !empty($validated['sub_image_url']) && count($validated['sub_image_url']) > 0) {
             foreach ($validated['sub_image_url'] as $file) {
                 if ($file) { // Kiểm tra xem file có tồn tại không
                     // Tạo một tên file duy nhất
