@@ -73,29 +73,57 @@
                         </div>
                     </section>
                 @endif
-
                 <section class="bg-body rounded p-2 mb-3">
-                    <label for="slug" class="h5">Slug</label>
-                    <input type="text" name="slug" value="{{ old('slug') }}" id="slug" class="form-control mb-3"></input>
+                    <div class="d-flex gap-3 justify-content-between">
+                        <label for="slug" class="h5">Slug</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="autoSlugCheck" checked>
+                            <label class="form-check-label opacity-75" for="autoSlugCheck">
+                                Tự động tạo slug
+                            </label>
+                        </div>
+                    </div>
+                    <input type="text" name="slug" value="{{ old('slug') }}" id="slug" class="form-control mb-3">
                     <label for="sub_title" class="h5">Mô tả ngắn <span class="text-danger">*</span></label>
                     <textarea name="sub_title" id="sub_title" class="form-control">{{ old('sub_title') }}</textarea>
                 </section>
 
                 {{-- JS auto slug --}}
                 <script>
-                    document.getElementById('title').addEventListener('input', function() {
-                        const title = this.value;
-                        const slug = title
-                            .toLowerCase()
-                            .replace(/đ/g, 'd') // Chuyển "đ" thành "d"
-                            .normalize('NFD') // Chuẩn hóa để tách dấu ra khỏi chữ cái
-                            .replace(/[\u0300-\u036f]/g, '') // Loại bỏ dấu
-                            .replace(/[^a-z0-9\s-]/g, '') // Xóa ký tự đặc biệt
-                            .replace(/\s+/g, '-') // Thay khoảng trắng bằng dấu gạch ngang
-                            .replace(/-+/g, '-'); // Xóa các dấu gạch ngang liên tiếp
-                        document.getElementById('slug').value = slug;
+                    const titleInput = document.getElementById('title');
+                    const slugInput = document.getElementById('slug');
+                    const autoSlugCheck = document.getElementById('autoSlugCheck');
+
+                    titleInput.addEventListener('input', function() {
+                        if (autoSlugCheck.checked) { // Chỉ tạo slug nếu checkbox được chọn
+                            const title = this.value;
+                            const slug = title
+                                .toLowerCase()
+                                .replace(/đ/g, 'd') // Chuyển "đ" thành "d"
+                                .normalize('NFD') // Chuẩn hóa để tách dấu ra khỏi chữ cái
+                                .replace(/[\u0300-\u036f]/g, '') // Loại bỏ dấu
+                                .replace(/[^a-z0-9\s-]/g, '') // Xóa ký tự đặc biệt
+                                .replace(/\s+/g, '-') // Thay khoảng trắng bằng dấu gạch ngang
+                                .replace(/-+/g, '-'); // Xóa các dấu gạch ngang liên tiếp
+                            slugInput.value = slug;
+                        }
                     });
+
+                    // Cho phép người dùng chỉnh sửa slug thủ công nếu checkbox không được chọn
+                    autoSlugCheck.addEventListener('change', function() {
+                        if (!this.checked) {
+                            slugInput.removeAttribute('readonly');
+                        } else {
+                            slugInput.setAttribute('readonly', true);
+                        }
+                    });
+
+                    // Đặt slug là readonly khi checkbox được chọn
+                    if (autoSlugCheck.checked) {
+                        slugInput.setAttribute('readonly', true);
+                    }
                 </script>
+
 
                 <section class="bg-body rounded p-2 mb-3">
                     <label for="content" class="h5">Chi tiết Tour <span class="text-danger">*</span></label>
@@ -180,9 +208,24 @@
                     <label for="categories" class="form-label">
                         <h5>Chọn danh mục <span class="text-danger">*</span></h5>
                     </label>
-                    <select name="category_id" class="form-select form-select-sm" id="categories" aria-label="Small select example">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" ng-model="tour_nuoc_ngoai" id="tour_nuoc_ngoai">
+                        <label class="form-check-label opacity-75" for="tour_nuoc_ngoai">
+                            Tour nước ngoài
+                        </label>
+                    </div>
+                    <select name="category_id" class="form-select form-select-sm" aria-label="Small select example" ng-model="selectedCategory">
                         <option value="" selected>Chọn danh mục tour</option>
-                        <option ng-repeat="cate in categories" value="@{{ cate.id }}">@{{ cate.ten_danh_muc }}</option>
+                        <optgroup label="Tour trong nước" ng-if="!tour_nuoc_ngoai">
+                            <option ng-repeat="cate in categories | filter:{ tour_nuoc_ngoai: 0 }" value="@{{ cate.id }}">
+                                @{{ cate.ten_danh_muc }}
+                            </option>
+                        </optgroup>
+                        <optgroup label="Tuor nước ngoài" ng-if="tour_nuoc_ngoai">
+                            <option ng-repeat="cate in categories | filter:{ tour_nuoc_ngoai: 1 }" value="@{{ cate.id }}">
+                                @{{ cate.ten_danh_muc }}
+                            </option>
+                        </optgroup>
                     </select>
                 </section>
                 <section class="bg-body rounded mb-3 p-2">
