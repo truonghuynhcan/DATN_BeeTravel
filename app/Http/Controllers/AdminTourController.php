@@ -36,12 +36,12 @@ class AdminTourController extends Controller
         // Kiểm tra role để trả về tours tương ứng
         if ($role == 'admin') {
             // Lấy tất cả tours
-            $tours = Tour::select('id', 'image_url', 'title', 'slug', 'admin_id', 'category_id')
+            $tours = Tour::select('id', 'image_url', 'title', 'slug', 'is_hidden', 'admin_id', 'category_id')
                 ->with(['admin:id,name', 'category:id,ten_danh_muc', 'ngayDi']) // khi sử dụng with ->luôn có cuột id
                 ->get();
         } else {
             // Lấy tour thuộc về đối tác (admin_id)
-            $tours = Tour::select('id', 'image_url', 'title', 'slug', 'category_id')
+            $tours = Tour::select('id', 'image_url', 'title', 'slug',  'is_hidden', 'category_id')
                 ->with(['category', 'ngayDi'])
                 ->where('admin_id', $admin_id)->get();
         }

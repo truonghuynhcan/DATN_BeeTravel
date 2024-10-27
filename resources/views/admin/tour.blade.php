@@ -56,6 +56,7 @@
                     @endif
                     <th scope="col" class="text-end">Giá</th>
                     <th scope="col" class="text-center">Người đăng ký</th>
+                    <th scope="col" class="text-center">Trạng thái</th>
                     <th scope="col">Hành động</th>
                 </tr>
             </thead>
@@ -70,7 +71,11 @@
                         <td class="text-center">@{{ tour.ngay_di[0].start_date || 'Chưa có' | date:'dd/MM/yyyy'}}</td>
                     @endif
                     <td class="text-end">@{{ tour.ngay_di[0].price || 0  | number}}</td>
+                    <!-- Người đăng ký -->
                     <td class="text-center">0</td>
+                    <!-- trạng thái -->
+                    <td class="text-center" ng-bind="tour.is_hidden !== 0 ? 'Ẩn' : 'Hiện'"></td>
+
                     <td>
                         <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info">Sửa</a>
                         <button class="btn btn-outline-danger">Xóa</button>
