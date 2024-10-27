@@ -26,8 +26,8 @@
         <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top z-1">
             <h2 class="">Thêm tour mới</h2>
             <div>
-                <button type="submit" name="post" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
-                <button type="submit" name="draft" href="" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
+                <button type="submit" name="post" id="post-btn" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
+                <button type="submit" name="draft" id="draft-btn" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
             </div>
         </header>
         @if ($errors->any())
@@ -44,7 +44,7 @@
             <!-- NỘI DUNG CHI TIẾT -->
             <div class="col-9">
                 <section class="bg-body rounded mb-3">
-                    <input name="title" value="{{ old('title') }}" class="form-control form-control-lg" type="text" placeholder="Tên tour (không quá 255 ký tự) *" aria-label=".form-control-lg example">
+                    <input name="title" value="{{ old('title') }}" id="title" class="form-control form-control-lg" type="text" placeholder="Tên tour (không quá 255 ký tự) *" aria-label=".form-control-lg example">
                 </section>
 
                 {{-- Nổi bật --}}
@@ -76,10 +76,26 @@
 
                 <section class="bg-body rounded p-2 mb-3">
                     <label for="slug" class="h5">Slug</label>
-                    <input type="text" name="slug" value="{{ old('slug') }}" class="form-control mb-3" id="slug"></input>
+                    <input type="text" name="slug" value="{{ old('slug') }}" id="slug" class="form-control mb-3"></input>
                     <label for="sub_title" class="h5">Mô tả ngắn <span class="text-danger">*</span></label>
                     <textarea name="sub_title" id="sub_title" class="form-control">{{ old('sub_title') }}</textarea>
                 </section>
+
+                {{-- JS auto slug --}}
+                <script>
+                    document.getElementById('title').addEventListener('input', function() {
+                        const title = this.value;
+                        const slug = title
+                            .toLowerCase()
+                            .replace(/đ/g, 'd') // Chuyển "đ" thành "d"
+                            .normalize('NFD') // Chuẩn hóa để tách dấu ra khỏi chữ cái
+                            .replace(/[\u0300-\u036f]/g, '') // Loại bỏ dấu
+                            .replace(/[^a-z0-9\s-]/g, '') // Xóa ký tự đặc biệt
+                            .replace(/\s+/g, '-') // Thay khoảng trắng bằng dấu gạch ngang
+                            .replace(/-+/g, '-'); // Xóa các dấu gạch ngang liên tiếp
+                        document.getElementById('slug').value = slug;
+                    });
+                </script>
 
                 <section class="bg-body rounded p-2 mb-3">
                     <label for="content" class="h5">Chi tiết Tour <span class="text-danger">*</span></label>
@@ -122,29 +138,28 @@
                     </div>
 
                     <button type="button" id="add-departure" class="btn btn-outline-primary">+ thêm ngày giờ khởi hành</button>
+                    <!-- JS CHO CHỨC NĂNG THÊM NGÀY ĐI -->
+                    <script>
+                        // Thêm sự kiện cho nút thêm ngày giờ khởi hành
+                        document.getElementById('add-departure').addEventListener('click', function() {
+                            // Clone the first departure block
+                            var firstBlock = document.querySelector('.departure-block');
+                            var newBlock = firstBlock.cloneNode(true);
+
+                            // Clear input values in the new block
+                            var inputs = newBlock.querySelectorAll('input');
+                            inputs.forEach(input => input.value = '');
+
+                            // Append the new block to the container
+                            document.getElementById('departure-container').appendChild(newBlock);
+                        });
+
+                        function removeDeparture(button) {
+                            // Tìm khối cha của nút "Xóa" và xóa nó
+                            button.closest('.departure-block').remove();
+                        }
+                    </script>
                 </section>
-                <!-- JS CHO CHỨC NĂNG THÊM NGÀY ĐI -->
-                <script>
-                    // Thêm sự kiện cho nút thêm ngày giờ khởi hành
-                    document.getElementById('add-departure').addEventListener('click', function() {
-                        // Clone the first departure block
-                        var firstBlock = document.querySelector('.departure-block');
-                        var newBlock = firstBlock.cloneNode(true);
-
-                        // Clear input values in the new block
-                        var inputs = newBlock.querySelectorAll('input');
-                        inputs.forEach(input => input.value = '');
-
-                        // Append the new block to the container
-                        document.getElementById('departure-container').appendChild(newBlock);
-                    });
-
-                    function removeDeparture(button) {
-                        // Tìm khối cha của nút "Xóa" và xóa nó
-                        button.closest('.departure-block').remove();
-                    }
-
-                </script>
             </div>
 
 
@@ -266,8 +281,42 @@
                     </div>
                     <div class="">
                         <h6>Thời gian diễn ra tour</h6>
-                        <input name="duration" type="text" class="form-control" id="duration" placeholder="2n1d, 4n5d, 7n7d" value="2n1d">
+                        <div class="d-flex gap-2">
+                            <input type="number" name="ngay" id="days" class="form-control form-control-sm" min="0" placeholder="Số ngày">
+                            <span>Ngày</span>
+                            <input type="number" name="dem" id="nights" class="form-control form-control-sm" min="0" placeholder="Số đêm">
+                            <span>Đêm</span>
+                        </div>
+                        <input name="duration" type="text" id="duration" value="" hidden>
+                        <p id="error-message" style="color: red; display: none;">Ngày và đêm chỉ được chênh lệch tối đa 1.</p>
                     </div>
+                    {{-- Function to update the duration value --}}
+                    <script>
+                        function updateDuration() {
+                            const days = parseInt(document.getElementById('days').value) || 0;
+                            const nights = parseInt(document.getElementById('nights').value) || 0;
+                            const errorMessage = document.getElementById('error-message');
+                            const postBtn = document.getElementById('post-btn');
+                            const draftBtn = document.getElementById('draft-btn');
+
+                            // Check the difference between days and nights
+                            if (Math.abs(days - nights) > 1) {
+                                errorMessage.style.display = 'block';
+                                document.getElementById('duration').value = ''; // Clear duration if validation fails
+                                postBtn.disabled = true; // Disable buttons
+                                draftBtn.disabled = true;
+                            } else {
+                                errorMessage.style.display = 'none';
+                                document.getElementById('duration').value = `${days}N${nights}Đ`; // Update duration if validation passes
+                                postBtn.disabled = false; // Enable buttons
+                                draftBtn.disabled = false;
+                            }
+                        }
+
+                        // Attach event listeners to both inputs
+                        document.getElementById('days').addEventListener('input', updateDuration);
+                        document.getElementById('nights').addEventListener('input', updateDuration);
+                    </script>
                 </section>
             </div>
         </div>
