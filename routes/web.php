@@ -30,8 +30,8 @@ Route::post('/dangxuat', [UserLoginController::class, 'logout'])->name('dangxuat
 Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');
 Route::get('/tour/{slug}', [UserTourController::class, 'chitiet'])->name('chitiet');
 Route::get('/tour-chi-tiet/{slug}', [UserTourController::class, 'chitiet'])->name('tour_chi_tiet');
-Route::get('/tour/{id}', [UserTourController::class, 'chitietid'])->name('tour_chi_tiet');
-Route::get('/tour/price', [UserTourController::class, 'getPrice']);
+// Route::get('/tour/{id}', [UserTourController::class, 'chitietid'])->name('tour_chi_tiet');
+// Route::get('/tour/price', [UserTourController::class, 'getPrice']);
 
 
 // * Thanh toán ----------------------------------------------------------------

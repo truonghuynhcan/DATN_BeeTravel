@@ -366,15 +366,10 @@
             </div>
             <!-- Bảng giá -->
             <div class="col-4">
-                <!-- Giả sử bạn có một input select cho các ngày -->
-<select id="dateSelect">
-    @foreach($tour->ngayDi as $ngay)
-        <option value="{{ $ngay->start_date }}">{{ $ngay->start_date }}</option>
-    @endforeach
-</select>
+                
                 <div class="bg-body shadow-sm border rounded p-3">
                     <div class="h6">Giá từ:</div>
-                    <div><span class="text-primary fs-5 fw-bolder" id="priceDisplay">{{ number_format($tour->ngayDi->first()->price, 0, ',', '.') }} VNĐ</span></div>
+                    <div><span class="text-primary fs-5 fw-bolder"></span>0 VNĐ</span></div>
 
                     <!-- <div><span class="text-primary fs-5 fw-bolder">12.790.000 VNĐ</span></div> -->
                     <table>
@@ -421,20 +416,5 @@
             <div class="col-4">3</div>
         </div>
     </div>
-    <script>
-    $(document).ready(function() {
-        $('#dateSelect').change(function() {
-            var selectedDate = $(this).val();
-            var tourId = {{ $tour->id }};
-            $.ajax({
-                url: '/tour/price',
-                method: 'GET',
-                data: { date: selectedDate, tour_id: tourId },
-                success: function(response) {
-                    $('#priceDisplay').text(response.price + ' VNĐ');
-                }
-            });
-        });
-    });
-</script>
+    
 @endsection

@@ -30,28 +30,28 @@ class UserTourController extends Controller
         
         return view('client.tour_chi_tiet', compact('images','categories','tour'));
     }
-    public function show($id)
-    {
-        $tour = Tour::with('ngayDi')->find($id);
-        return view('client.tour_chi_tiet', compact('images','categories','tour'));
-    }
-    public function getPrice(Request $request)
-    {
-        $date = $request->input('date');
-        $tourId = $request->input('tour_id');
+    // public function show($id)
+    // {
+    //     $tour = Tour::with('ngayDi')->find($id);
+    //     return view('client.tour_chi_tiet', compact('images','categories','tour'));
+    // }
+    // public function getPrice(Request $request)
+    // {
+    //     $date = $request->input('date');
+    //     $tourId = $request->input('tour_id');
 
-        $priceInfo = NgayDi::where('tour_id', $tourId)
-            ->where('start_date', $date)
-            ->first();
+    //     $priceInfo = NgayDi::where('tour_id', $tourId)
+    //         ->where('start_date', $date)
+    //         ->first();
 
-        if ($priceInfo) {
-            return response()->json([
-                'price' => number_format($priceInfo->price, 0, ',', '.')
-            ]);
-        }
+    //     if ($priceInfo) {
+    //         return response()->json([
+    //             'price' => number_format($priceInfo->price, 0, ',', '.')
+    //         ]);
+    //     }
 
-        return response()->json(['price' => 'Không có sẵn']);
-    }
+    //     return response()->json(['price' => 'Không có sẵn']);
+    // }
     // public function bookTour(Request $request)
     // {
     //     // Lấy dữ liệu từ request
