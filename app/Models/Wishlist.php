@@ -26,7 +26,7 @@ class Wishlist extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -34,6 +34,6 @@ class Wishlist extends Model
      */
     public function tour()
     {
-        return $this->belongsTo(Tour::class);
+        return $this->belongsTo(Tour::class,'tour_id');
     }
 }

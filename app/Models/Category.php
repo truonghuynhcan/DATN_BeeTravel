@@ -11,15 +11,17 @@ class Category extends Model
 
     // Chỉ định bảng
     protected $table = 'categories';
+    protected $primaryKey = 'id';
 
-     // Thiết lập quan hệ 1-nhiều (Category có nhiều Tours)
-     public function tours()
-     {
-         return $this->hasMany(Tour::class);
-     }
+    // Thiết lập quan hệ 1-nhiều (Category có nhiều Tours)
+    public function tours()
+    {
+        return $this->hasMany(Tour::class);
+    }
 
     // Các thuộc tính có thể được điền vào (mass-assignable)
     protected $fillable = [
+        'id',
         'ten_danh_muc',
         'slug',
         'tour_nuoc_ngoai',

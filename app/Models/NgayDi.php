@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NgayDi extends Model
 {
     use HasFactory;
+    protected $table ='ngay_di';
 
     protected $fillable = [
         'tour_id',
@@ -20,6 +21,6 @@ class NgayDi extends Model
 
     public function tour()
     {
-        return $this->belongsTo(Tour::class);
+        return $this->belongsTo(Tour::class,'tour_id');
     }
 }

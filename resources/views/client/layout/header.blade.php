@@ -53,12 +53,14 @@
 <!-- NAV 2 (Main Navbar) -->
 <header class="sticky-top">
     <nav id="nav2" class="navbar navbar-expand-lg">
-        <div class="container bg-body rounded-4 mt-3">
+        <div class="container bg-body rounded-4 mt-3 ">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="../assets/image/logo_ngang.png" alt="logo" height="60px">
+                <img src="../assets/image/logo_ngang.png" alt="logo" height="40px">
             </a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0 h5">
+                    <!-- 
+                    -->
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                     </li>
@@ -93,24 +95,29 @@
                     <ul class="dropdown-menu position-absolute" style="left: -100px; min-width:209px">
 
                         {{-- khi người dùng chưa đăng nhập thì hiện như này --}}
-                        @guest
+                        @guest()
                         <li class="p-2">Đăng nhập hoặc đăng ký để tận dụng ưu đãi</li>
-                        <li class="p-2"><a class="btn btn-primary" href="{{ route('login') }}">Đăng nhập thành viên</a></li>
+                        <li class="p-2"><a class="container-fluid btn btn-primary" href="{{ route('login') }}">Đăng nhập khách hàng</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li class="p-2">Đăng nhập đại lý</li>
-                        <li class="p-2"><a class="container-fluid btn btn-outline-primary" href="{{ route('login_dl') }}">Đăng nhập đại lý</a></li>
+                        <li class="p-2">Đăng nhập đối tác</li>
+                        <li class="p-2"><a class="container-fluid btn btn-outline-primary" href="{{ route('login_admin') }}">Đăng nhập đối tác</a></li>
                         @endguest
 
                         {{-- khi người dùng đã đăng nhập thì hiện --}}
-                        @auth
-                        <li><a class="dropdown-item" href="{{ route('myProfile') }}">Thông tin cá nhân</a></li>
+                        @auth()
+                        <li><a class="dropdown-item" href="{{ route('myProfile') }}">Thông tin cá nhân: <p class="text-uppercase fs-4 fst-italic">{{Auth::user()->name}}</p></a></li>
                         <li><a class="dropdown-item" href="{{ route('myTour') }}">Tour của tôi</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                        <form action="{{route('dangxuat')}}" method='post'>
+@csrf
+<!-- <button class="btn btn-primary rounded-pill">Đăng Xuất</button> -->
+<li><button class="dropdown-item" >Đăng xuất</button></li>
+</form>
+                        <!-- <li><a class="dropdown-item" href="#">Đăng xuất</a></li> -->
                         @endauth
                     </ul>
                 </li>

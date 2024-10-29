@@ -34,15 +34,19 @@ class Tour extends Model
     // Thiết lập quan hệ 1-nhiều (1 admin - nhiều tour)
     public function admin()
     {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsTo(Admin::class,'admin_id');
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class,'category_id');
     }
     public function image()
     {
-        return $this->hasMany(Image::class);
+        return $this->hasMany(Image::class, 'tour_id');
     }
     public function ngayDi()
     {
-        return $this->hasMany(NgayDi::class);
+        return $this->hasMany(NgayDi::class, 'tour_id');
     }
     public function order()
     {
@@ -50,7 +54,7 @@ class Tour extends Model
     }
     public function wishlist()
     {
-        return $this->hasMany(Wishlist::class);
+        return $this->hasMany(Wishlist::class, 'tour_id');
     }
     public function feedback()
     {
