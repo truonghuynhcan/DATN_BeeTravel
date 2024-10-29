@@ -31,7 +31,10 @@ Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');
 Route::get('/tour/{slug}', [UserTourController::class, 'chitiet'])->name('chitiet');
 Route::get('/tour-chi-tiet/{slug}', [UserTourController::class, 'chitiet'])->name('tour_chi_tiet');
 // Route::get('/tour/{id}', [UserTourController::class, 'chitietid'])->name('tour_chi_tiet');
-// Route::get('/tour/price', [UserTourController::class, 'getPrice']);
+Route::get('/tour/price', [UserTourController::class, 'getPrice']);
+Route::post('/tour/search', [UserTourController::class, 'searchTours'])->name('tour.search');
+Route::get('/tour/filter', [UserTourController::class, 'filter'])->name('tour.filter');
+Route::get('/category/{id}', [UserTourController::class, 'showToursByCategory'])->name('tour.category');
 
 
 // * Thanh toán ----------------------------------------------------------------
