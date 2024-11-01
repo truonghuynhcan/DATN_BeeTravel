@@ -23,4 +23,8 @@ class NgayDi extends Model
     {
         return $this->belongsTo(Tour::class,'tour_id');
     }
+    public function order()
+    {
+        return $this->hasMany(Order::class,'ngaydi_id');
+    }
 }

@@ -48,10 +48,6 @@ class Tour extends Model
     {
         return $this->hasMany(NgayDi::class, 'tour_id');
     }
-    public function order()
-    {
-        return $this->hasMany(Order::class);
-    }
     public function wishlist()
     {
         return $this->hasMany(Wishlist::class, 'tour_id');
