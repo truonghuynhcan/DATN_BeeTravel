@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [UserPageController::class, 'home'])->name('home');
 Route::get('/gioi-thieu', [UserPageController::class, 'about'])->name('about');
 //Route::get('/lien-he', [UserPageController::class, 'contact'])->name('contact');
-
+// SEARCH TOUR TỔNG QUÁT
+Route::get('/search-tong-quat', [UserTourController::class, 'fullsearch'])->name('search_tong_quat');
+Route::post('/search_tong_quat/search_all', [UserTourController::class, 'Allsearch'])->name('search_tong_quat.search_all');
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
