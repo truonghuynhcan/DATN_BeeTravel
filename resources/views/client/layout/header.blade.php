@@ -119,6 +119,8 @@
 </form>
                         <!-- <li><a class="dropdown-item" href="#">Đăng xuất</a></li> -->
                         @endauth
+                        <li class="p-2">Search Tour Tổng Quát</li>
+                        <li class="p-2"><a class="container-fluid btn btn-primary" href="{{ route('search_tong_quat') }}">Search Tour</a></li>
                     </ul>
                 </li>
             </ul>
