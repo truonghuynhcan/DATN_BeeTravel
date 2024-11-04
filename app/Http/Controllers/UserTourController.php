@@ -14,7 +14,10 @@ class UserTourController extends Controller
     {
         $categories = Category::all();
         $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->limit(9)->get();
-        $news = News::latest()->take(4)->get();
+        $news = News::select('id', 'title', 'image_url', 'created_at') // thêm các cột bạn muốn lấy
+            ->latest()
+            ->take(4)
+            ->get();
         $tours = Tour::paginate(9);
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
@@ -23,7 +26,7 @@ class UserTourController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        $tours = Tour::where('category_id', $id)->paginate(10); 
+        $tours = Tour::where('category_id', $id)->paginate(10);
 
         $categories = Category::all();
         $news = News::all();
@@ -51,21 +54,30 @@ class UserTourController extends Controller
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
 
-    public function chitiet($slug)
+
+
+    public function chitiet($id)
     {
         $categories = Category::all();
-        $tour = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->where('slug', '=', $slug)->first();
 
-        $images = [
-            'assets/image_tour/',
+        $tour = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')
+            ->where('id', '=', $id)
+            ->first();
+
+        if (!$tour) {
+            abort(404);
+        }
+
+        $images = array_merge([$tour->image_url], [
             'assets/image_tour/tour02.webp',
             'assets/image_tour/tour03.webp',
-            'assets/image_tour/tour03.webp',
             // Thêm các ảnh khác nếu có
-        ];
+        ]);
 
         return view('client.tour_chi_tiet', compact('images', 'categories', 'tour'));
     }
+
+
     // public function show($id)
     // {
     //     $tour = Tour::with('ngayDi')->find($id);

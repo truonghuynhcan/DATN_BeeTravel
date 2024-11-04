@@ -1,12 +1,13 @@
 :root {
     --blue-color: #0E487C;
     --primary-color: #B7D6F9;
-    --secondary-color: #2ecc71; 
+    --secondary-color: #2ecc71;
     --accent-color: #e74c3c;
-    --gia-color: #FE0808;    
-    --background-color: #ecf0f1; 
-    --text-color: #2c3e50;      
+    --gia-color: #FE0808;
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
 }
+
 /* product */
 
 .product h3 {
@@ -21,10 +22,10 @@
 }
 
 .product .short-line {
-    width: 200px; 
-    height: 3px; 
-    background-color:white; 
-    border: none; 
+    width: 200px;
+    height: 3px;
+    background-color: white;
+    border: none;
     margin: 10px auto;
 }
 
@@ -34,13 +35,13 @@
     margin-right: 10px;
 }
 
-.button-container .muiten{
-    width: 50px;           
-    height: 50px; 
+.button-container .muiten {
+    width: 50px;
+    height: 50px;
     margin-left: 5px;
-    margin-bottom: 10px;      
-    background-color: #0E487C;  
-    color: white;         
+    margin-bottom: 10px;
+    background-color: #0E487C;
+    color: white;
     border: none;
     border-radius: 50%;
     font-size: 24px;
@@ -51,17 +52,17 @@
     transition: background-color 0.3s;
 }
 
-.them{
+.them {
     background-color: #0E487C;
     color: white;
     border: none;
     margin-top: 10px;
     margin-bottom: 10px;
-    
+
 }
 
 .them:hover {
-    background-color:#6fabef;
+    background-color: #6fabef;
 }
 
 
@@ -80,11 +81,30 @@
 }
 
 .yeuthich .short-line {
-    width: 200px; 
-    height: 3px; 
-    background-color:#0E487C; 
-    border: none; 
+    width: 200px;
+    height: 3px;
+    background-color: #0E487C;
+    border: none;
     margin: 10px auto;
+}
+
+/* Bỏ chấm trong danh sách */
+.yeuthich .card-img-overlay li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.yeuthich .card-img-overlay li a {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.yeuthich .card-img-overlay li a:hover {
+    color: yellow;
 }
 
 .address {
@@ -93,6 +113,7 @@
 }
 
 .address a {
+    font-size: 18px;
     margin-right: 30px;
     color: gray;
     text-decoration: none;
@@ -106,7 +127,7 @@
     margin-top: 20px;
 }
 
-.yeuthich .col-3{
+.yeuthich .col-3 {
     position: relative;
     margin-top: 10px;
 }
@@ -143,7 +164,7 @@
     display: flex;
 }
 
-.dichvu .commitment i{
+.dichvu .commitment i {
     margin-right: 10px;
     margin-left: 5px;
     font-size: 50px;
