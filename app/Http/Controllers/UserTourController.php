@@ -21,6 +21,32 @@ class UserTourController extends Controller
         $tours = Tour::paginate(9);
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
+    public function fullsearch()
+    {
+        $searchCategory = Category::all();
+        $news = News::all();
+        $search = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start');
+        $search = Tour::paginate(6);
+        return view('client.search_tong_quat', compact('search', 'searchCategory','news'));
+    }
+    public function Allsearch(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        if (empty($keyword)) {
+            // Nếu từ khóa rỗng, chuyển hướng về trang tìm kiếm
+            return redirect()->route('search_tong_quat')->with('error', 'Vui lòng nhập từ khóa để thực hiện tìm kiếm.');
+        }
+        $searchCategory = Category::all();
+        $news = News::where('title', 'like', "%$keyword%")
+        ->orwhere('description', 'like', "%$keyword%")
+        ->orderby('id', 'desc')
+        ->paginate(4);
+        $search = Tour::where('title', 'like', "%$keyword%")
+            ->orwhere('featured', 'like', "%$keyword%")
+            ->orderby('id', 'desc')
+            ->paginate(6);
+        return view('client.search_tong_quat', compact('search', 'searchCategory','news'));
+    }
 
     public function showToursByCategory($id)
     {

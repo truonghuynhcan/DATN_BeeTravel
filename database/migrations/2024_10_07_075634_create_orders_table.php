@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tour_id');
+            $table->unsignedBigInteger('ngaydi_id');
             $table->unsignedBigInteger('user_id')->nullable();
            
             // thong tin lien he
@@ -29,7 +29,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('tour_id')->references('id')->on('tours')->onDelete('cascade');
+            $table->foreign('ngaydi_id')->references('id')->on('ngay_di')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

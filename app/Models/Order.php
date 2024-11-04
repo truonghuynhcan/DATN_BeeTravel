@@ -12,11 +12,10 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'tour_id',
+        'ngaydi_id',
         'user_id',
         'gender',
         'fullname',
-        'phone',
         'email',
         'address',
         'is_paid',
@@ -27,9 +26,9 @@ class Order extends Model
     /**
      * Get the tour associated with the order.
      */
-    public function tour()
+    public function ngayDi()
     {
-        return $this->belongsTo(Tour::class);
+        return $this->belongsTo(NgayDi::class, 'ngaydi_id');
     }
 
     public function user()

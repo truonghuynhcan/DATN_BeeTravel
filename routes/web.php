@@ -10,13 +10,17 @@ use App\Http\Controllers\UserNewsController;
 use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\UserTourController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\UserNgayDiController;
+use App\Http\Controllers\UserOrderController;
 use Illuminate\Support\Facades\Route;
 
 // ! USER ==================================================================================================================================
 Route::get('/', [UserPageController::class, 'home'])->name('home');
 Route::get('/gioi-thieu', [UserPageController::class, 'about'])->name('about');
 //Route::get('/lien-he', [UserPageController::class, 'contact'])->name('contact');
-
+// SEARCH TOUR TỔNG QUÁT
+Route::get('/search-tong-quat', [UserTourController::class, 'fullsearch'])->name('search_tong_quat');
+Route::post('/search_tong_quat/search_all', [UserTourController::class, 'Allsearch'])->name('search_tong_quat.search_all');
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
@@ -39,10 +43,8 @@ Route::get('/tin-tuc/{id}', [UserNewsController::class, 'showNews'])->name('clie
 
 
 // * Thanh toán ----------------------------------------------------------------
-Route::get('/thanh-toan', function () {
-    return view('client.thanh_toan');
-})->name('thanh_toan');
-// Route::post('/tour/book', [UserTourController::class, 'bookTour'])->name('tour.book');
+Route::get('/thanh-toan/{id_tour}', [UserOrderController::class, 'viewThanhToan'])->name('thanh_toan');
+Route::post('/thanh-toan/loading/{tour_id}', [UserOrderController::class, 'thanhToan_'])->name('thanhtoan_');
 
 // * TIN TỨC ----------------------------------------------------------------
 Route::get('/news', [UserNewsController::class, 'news'])->name('news');
@@ -70,6 +72,10 @@ Route::prefix('tai-khoan')->group(function () {
     Route::get('/thong-bao', [UserAccountController::class, 'settingNotificationsOrderView'])->name('settingNotificationsOrder');
 });
 
+
+Route::prefix('api')->group(function(){
+    Route::get('/get-price/{date_id}', [UserNgayDiController::class, 'getPrice']);
+});
 
 
 
