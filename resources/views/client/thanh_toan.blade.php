@@ -7,19 +7,22 @@
         <div class="alert alert-danger">
             <h1>Task</h1>
             <ol>
-                <li>post form</li>
-                <li>chèn zô được db customer(xem như nhập đủ các trường)</li>
-                <li>chèn zô được db order(xem như nhập đủ các trường)</li>
+                <li>Xử lý lại thêm người đi 2 mà bị mất text đã nhập của người đi 1</li>
+                <li>Xử lý tự động điền lại dữ liệu cũ sau khi bắt lỗi</li>
+                <li>Thống nhất thêm với thầy là giá của cá nhân sẽ để đâu?</li>
                 <li>dùng js tính tổng >0 mới cho click thanh toán</li>
-                <li>bắt lỗi sau khi post</li>
                 <li> thêm trường auto điền giá trị cũ vào các form đã nhập</li>
                 <li>Xử lý lấy ngày đi tương lai gần nhất</li>
             </ol>
-
+            
         </div>
         <div class="alert alert-success">
             <h1>Done</h1>
             <ol>
+                <li>chèn zô được db customer</li>
+                <li>chèn zô được db order</li>
+                <li>bắt lỗi sau khi post</li>
+                <li>post form</li>
                 <li>kiểm tra input[name] - đã xong</li>
                 <li>sửa thực thể id user có thể bỏ trống(xem như nhập đủ các trường)</li>
                 <li>đổ dữ liệu</li>
@@ -257,8 +260,8 @@
                         <div class="form-group mb-2">
                             <label for="name">Họ và tên <span class="text-danger">*</span></label>
                             <div class="d-flex">
-                                <select name="user-quydanh" class="form-select w-auto" id="user-quydanh">
-                                    <option value="" selected>Chọn quý danh</option>
+                                <select name="user-quydanh" class="form-select w-auto fw-bold" id="user-quydanh">
+                                    <option value="" selected >Chọn quý danh</option>
                                     <option value="mr">Quý Ông</option>
                                     <option value="mrs">Quý Bà</option>
                                 </select>

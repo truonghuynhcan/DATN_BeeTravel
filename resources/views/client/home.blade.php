@@ -100,7 +100,7 @@ Trang chủ
                             <p class="card-text">Giá: <b class=" text-danger">10.890.000 ₫</b></p>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="#" class="btn btn-primary container-fluid">Đặt ngay</a>
+                            <a href="{{route('thanh_toan',$tour->id)}}" class="btn btn-primary container-fluid">Đặt ngay</a>
                         </div>
                     </div>
                 </div>
