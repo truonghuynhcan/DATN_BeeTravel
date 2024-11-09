@@ -86,16 +86,28 @@ Tour
                         <div class="row">
                             @if($news->count() > 0)
                             @foreach($news as $new)
-                            <div class="col-6 col-md-4 col-lg-4 col-xxl-3 mb-3">
+                            <div>
                                 <div class="new__item">
-                                    <a href="{{ route('news.detail', $new->id) }}">
-                                        <img src="{{ asset('storage/' . $new->hinh_anh) }}" alt="{{ $new->tieu_de }}" class="img-fluid">
+                                    <a href="{{ route('client.tin_tuc_chi_tiet', $new->id) }}"> <!-- Sửa từ $news->id thành $new->id -->
+                                        <img src="{{ asset('assets/image/'.$new->image_url) }}" alt="" class="img-fluid"> <!-- Sửa thuộc tính hinh_anh thành image_url -->
                                     </a>
                                     <div class="new__item__text">
-                                        <h5><a href="{{ route('news.detail', $new->id) }}">{{ $new->tieu_de }}</a></h5>
-                                        <p>{{ $new->tom_tat }}</p>
+                                        <h5>
+                                            <a href="{{ route('client.tin_tuc_chi_tiet', $new->id) }}">{{ $new->title }}</a> <!-- Sửa từ $news->id thành $new->id -->
+                                        </h5>
                                     </div>
-                                    <div class="new__item__date">{{ $new->created_at->format('d/m/Y') }}</div>
+                                    <div class="new__item__date">
+                                        {{ $new->created_at ? $new->created_at->format('d/m/Y') : 'N/A' }}
+                                    </div>
+                                    <style>
+                                        .new__item__text a{
+                                            text-decoration: none;
+                                            color: black;
+                                        }
+                                        .new__item__text a:hover{
+                                            color: #ffc107;
+                                        }
+                                    </style>
                                 </div>
                             </div>
                             @endforeach
@@ -106,7 +118,6 @@ Tour
                             @endif
                         </div>
                     </div>
-
                 </div>
             </div>
 

@@ -13,9 +13,10 @@ Thanh toán
             <!-- images -->
             <div class="row mb-4">
                 <div class="col-2 d-flex flex-column">
-                    @foreach ($images as $key => $image)
-                    <img id="img{{ $key }}" src="{{ asset($image) }}" alt="" class="mb-2" style="cursor: pointer;">
+                    @foreach ($images as $image)
+                    <img src="{{ asset($image) }}" alt="Tour Image">
                     @endforeach
+
                 </div>
                 <div class="col-10">
                     <div id="carouselExampleIndicators" class="carousel slide">
@@ -27,7 +28,7 @@ Thanh toán
                         <div class="carousel-inner">
                             @foreach ($images as $key => $image)
                             <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                                <img src="{{ asset($image) }}" class="d-block w-100" alt="...">
+                                <img src="{{ asset($image) }}" class="d-block w-100" alt="Tour Image {{ $key + 1 }}">
                             </div>
                             @endforeach
                         </div>
@@ -41,15 +42,18 @@ Thanh toán
                         </button>
                     </div>
                 </div>
-                <script>
-                    document.querySelectorAll('img[id^="img"]').forEach(function(image, index) {
-                        image.addEventListener('click', function() {
-                            var carousel = new bootstrap.Carousel(document.getElementById('carouselExampleIndicators'));
-                            carousel.to(index); // chuyển đến slide tương ứng với index
-                        });
-                    });
-                </script>
             </div>
+
+            <script>
+                document.querySelectorAll('img[id^="img"]').forEach(function(image, index) {
+                    image.addEventListener('click', function() {
+                        var carousel = new bootstrap.Carousel(document.getElementById('carouselExampleIndicators'));
+                        carousel.to(index); // chuyển đến slide tương ứng với index
+                    });
+                });
+            </script>
+
+
 
 
             <!-- Lịch khởi hành -->

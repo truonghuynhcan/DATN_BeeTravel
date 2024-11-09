@@ -112,31 +112,134 @@ Trang chủ
 <!-- product feature end -->
 
 
+
 <!-- Catagory-address -->
 <div class="container mb-3">
+    <!-- tin tức mới -->
+    <div class="row">
+        <div>
+            <div class="yeuthich">
+                <h3>TIN TỨC NỔI BẬT</h3>
+                <hr class="short-line">
+            </div>
+
+            <div class="row">
+                @foreach($latestNews as $item)
+                <div class="col-md-3 mb-3"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
+                    <div class="card h-100"> <!-- H-100 để các card có chiều cao bằng nhau -->
+                        <img src="{{$item->image_url}}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
+                        <div class="card-body d-flex flex-column"> <!-- Sử dụng flex để căn chỉnh nội dung -->
+                            <h6 class="card-title">{{$item->title}}</h6>
+                            <p class="card-text">{{$item->description}}</p>
+                            <a href="{{ route('client.tin_tuc_chi_tiet', $item->id) }}" class="btn btn-sm btn-outline-primary mt-auto">Đọc thêm</a> <!-- Nút ở dưới cùng -->
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     <div class="yeuthich">
         <h3>ĐIỂM ĐẾN YÊU THÍCH</h3>
         <hr class="short-line">
         <p>Hãy chọn một điểm đến du lịch nổi tiếng dưới đây để khám phá các chuyến đi độc quyền của chúng tôi với
             mức giá vô cùng hợp lý.</p>
         <div class="address">
-            <a href="">MIỀN BẮC</a>
-            <a href="">MIỀN NAM</a>
-            <a href="">MIỀN ĐÔNG NAM BỘ</a>
-            <a href="">MIỀN TÂY NAM BỘ</a>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-bac-tab" data-bs-toggle="pill" data-bs-target="#pills-bac" type="button" role="tab" aria-controls="pills-bac" aria-selected="true">Miền Bắc</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-trung-tab" data-bs-toggle="pill" data-bs-target="#pills-trung" type="button" role="tab" aria-controls="pills-trung" aria-selected="false">Miền Trung</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-taynguyen-tab" data-bs-toggle="pill" data-bs-target="#pills-taynguyen" type="button" role="tab" aria-controls="pills-taynguyen" aria-selected="false">Tây Nguyên</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-dnb-tab" data-bs-toggle="pill" data-bs-target="#pills-dnb" type="button" role="tab" aria-controls="pills-dnb" aria-selected="false">Đông Nam Bộ</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-tay-tab" data-bs-toggle="pill" data-bs-target="#pills-tay" type="button" role="tab" aria-controls="pills-tay" aria-selected="false">Miền Tây</button>
+                </li>
+            </ul>
         </div>
 
-        {{-- mobile,taplet (6kv), laptop(8kv) --}}
-        <div class="row">
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="card text-bg-dark">
-                    <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
-                    <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
-                        <h5 class="card-title text-center">Địa điểm 0</h5>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-bac" role="tabpanel" aria-labelledby="pills-bac-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-trung" role="tabpanel" aria-labelledby="pills-trung-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-taynguyen" role="tabpanel" aria-labelledby="pills-taynguyen-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-dnb" role="tabpanel" aria-labelledby="pills-dnb-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-tay" role="tabpanel" aria-labelledby="pills-tay-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
+
+        {{-- mobile,taplet (6kv), laptop(8kv) --}}
+
     </div>
 
     <!-- dichvukhac -->
@@ -180,33 +283,6 @@ Trang chủ
             </div>
         </div>
     </div>
-
-    <!-- tin tức mới -->
-    <div class="row">
-        <div>
-            <div class="yeuthich">
-                <h3>TIN TỨC NỔI BẬT</h3>
-                <hr class="short-line">
-            </div>
-
-            <div class="row">
-                @foreach($latestNews as $item)
-                <div class="col-md-3 mb-3"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
-                    <div class="card h-100"> <!-- H-100 để các card có chiều cao bằng nhau -->
-                        <img src="{{$item->image_url}}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
-                        <div class="card-body d-flex flex-column"> <!-- Sử dụng flex để căn chỉnh nội dung -->
-                            <h6 class="card-title">{{$item->title}}</h6>
-                            <p class="card-text">{{$item->description}}</p>
-                            <a href="/tin_tuc_chi_tiet/{{$item->category_id}}" class="btn btn-sm btn-outline-primary mt-auto">Đọc thêm</a> <!-- Nút ở dưới cùng -->
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-
 
 
     {{-- Liên hệ --}}

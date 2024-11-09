@@ -34,16 +34,18 @@ class Tour extends Model
     // Thiết lập quan hệ 1-nhiều (1 admin - nhiều tour)
     public function admin()
     {
-        return $this->belongsTo(Admin::class,'admin_id');
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
     public function category()
     {
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
-    public function image()
+    // app/Models/Tour.php
+    public function images()
     {
-        return $this->hasMany(Image::class, 'tour_id');
+        return $this->hasMany(Image::class, 'tour_id', 'id'); // 'tour_id' là khóa ngoại trong bảng images
     }
+
     public function ngayDi()
     {
         return $this->hasMany(NgayDi::class, 'tour_id');
@@ -56,6 +58,4 @@ class Tour extends Model
     {
         return $this->hasMany(Feedback::class);
     }
-
-    
 }

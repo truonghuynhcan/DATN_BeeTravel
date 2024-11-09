@@ -12,7 +12,6 @@ class UserPageController extends Controller
     {
         $categories = Category::all();
         $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->limit(9)->get();
-        
         $data = session('data', []);
         $latestNews = News::orderBy('created_at', 'desc')->take(4)->get();
         return view('client.home', compact('data','categories', 'tours', 'latestNews'));
