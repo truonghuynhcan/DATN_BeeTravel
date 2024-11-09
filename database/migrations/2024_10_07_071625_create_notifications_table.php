@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
 
             $table->string('image_url');
+            $table->enum('type', ['info', 'success', 'danger', 'warning']); 
             $table->string('title'); 
             $table->string('description');
             $table->boolean('seen')->default(false)->comment('thong bao da duoc xem hay chua');

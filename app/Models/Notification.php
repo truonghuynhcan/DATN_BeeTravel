@@ -12,14 +12,16 @@ class Notification extends Model
 
     protected $fillable = [
         'user_id',
+        'type',
         'image_url',
         'title',
         'description',
         'seen',
+        'created_at',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

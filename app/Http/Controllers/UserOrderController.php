@@ -8,9 +8,25 @@ use App\Models\Order;
 use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserOrderController extends Controller
 {
+
+    public function viewThanhToanThanhCong($order_id)
+    {
+        $order = Order::where('user_id',Auth::id())->with('ngayDi','customer')->find($order_id);
+        if (!$order) {
+            // Nếu không có đơn hàng, quay lại trang trước
+            return redirect()->route('home');
+        } else {
+            $tour = Tour::select('id', 'admin_id','title', 'slug' ,'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
+            return view('client.thanh_toan_thanh_cong', compact('order', 'tour'));
+        }
+    }
+
+
+
     public function thanhToan_(Request $request)
     {
         $validated = $request->validate([
@@ -156,17 +172,14 @@ class UserOrderController extends Controller
             }
         }
 
-        redirect()->route('home');
-    }
-    protected function insert_customer($orderId, $item)
-    {
-        $customer = new Customer();
-        $customer->order_id = $orderId;
-        $customer->gender = $item->gender;
-        $customer->name = $item->name;
-        $customer->birth_date = $item->birth_date;
-        $customer->phone = $item->phone;
-        $customer->price = $item->price;
+        createNotification(
+            'success',
+            'Đặt tour thành công',
+            'tên tour / Khởi hành',
+            'imrs2.png',  // hoặc null nếu không có ảnh nền
+            null  // hoặc null nếu muốn thông báo cho user hiện tại
+        );
+        return redirect()->route('thanh_toan_thanh_cong', $order->id);
     }
 
 

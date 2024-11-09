@@ -33,10 +33,10 @@ class Order extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function customer()
     {
-        return $this->hasMany(Customer::class);
+        return $this->hasMany(Customer::class, 'order_id');
     }
 }

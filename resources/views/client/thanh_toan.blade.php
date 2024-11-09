@@ -7,6 +7,7 @@
         <div class="alert alert-danger">
             <h1>Task</h1>
             <ol>
+                <li><strong>thanh toán xong thì hiện bill</strong></li>
                 <li>Xử lý lại thêm người đi 2 mà bị mất text đã nhập của người đi 1</li>
                 <li>Xử lý tự động điền lại dữ liệu cũ sau khi bắt lỗi</li>
                 <li>Thống nhất thêm với thầy là giá của cá nhân sẽ để đâu?</li>
