@@ -10,6 +10,7 @@ use App\Http\Controllers\UserNewsController;
 use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\UserTourController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserNgayDiController;
 use App\Http\Controllers\UserOrderController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ Route::get('/tin-tuc/{id}', [UserNewsController::class, 'showNews'])->name('clie
 // * Thanh toán ----------------------------------------------------------------
 Route::get('/thanh-toan/{id_tour}', [UserOrderController::class, 'viewThanhToan'])->name('thanh_toan');
 Route::post('/thanh-toan/loading/{tour_id}', [UserOrderController::class, 'thanhToan_'])->name('thanhtoan_');
+Route::get('/thanh-toan-thanh-cong/{order_id}', [UserOrderController::class, 'viewThanhToanThanhCong'])->name('thanh_toan_thanh_cong');
 
 // * TIN TỨC ----------------------------------------------------------------
 Route::get('/news', [UserNewsController::class, 'news'])->name('news');
@@ -70,11 +72,15 @@ Route::prefix('tai-khoan')->group(function () {
     Route::get('/tour-cua-toi', [UserAccountController::class, 'myTourView'])->name('myTour');
 
     Route::get('/thong-bao', [UserAccountController::class, 'settingNotificationsOrderView'])->name('settingNotificationsOrder');
+    Route::get('/notifications/danh-dau-da-doc-tat-ca', [NotificationController::class, 'seenAll'])->name('notifications.seenAll');
+    Route::get('/notifications/danh-dau-da-doc/{id}', [NotificationController::class, 'seen'])->name('notifications.seen');
+
 });
 
 
 Route::prefix('api')->group(function(){
     Route::get('/get-price/{date_id}', [UserNgayDiController::class, 'getPrice']);
+    Route::get('/notifications', [NotificationController::class, 'getUserNotificationCount']);
 });
 
 

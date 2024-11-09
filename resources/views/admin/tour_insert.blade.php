@@ -11,8 +11,8 @@
             menubar: true,
             plugins: [
                 'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                'anchor', 'searchreplace', 'visualblocks', 'advcode', 'fullscreen',
-                'insertdatetime', 'media', 'table', 'powerpaste', 'code'
+                'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code'
             ],
             toolbar: 'undo redo | insert | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code',
             powerpaste_allow_local_images: true,

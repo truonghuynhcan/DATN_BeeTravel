@@ -27,60 +27,32 @@
             <a href="" class="text-center nav-link link-body-emphasis">Quá hạn thanh toán</a>
         </div>
         <div class="p-2">
-            <div class="d-flex justify-content-center align-items-center"style="height: 100px;">
-                <span>Bạn chưa đăng ký tour nào</span>
-            </div>
-            <div class="card border-0 mb-3">
-                <div class="row g-0">
-                    <div class="col-md-2 d-flex align-items-center">
-                        <img src="../assets/image/tour01.webp" class="img-fluid object-fit-cover rounded" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Nhật Bản: Osaka - Kyoto - Nagoya - Tokyo -Núi Phú Sĩ - Làng cổ Oshino Hakkai | Thưởng thức bò Wagyu</h5>
-                            <p class="card-text">Ngày khởi hành <span><input type="date" value="2024-12-24" class="border px-2 text-primary fw-bold" disabled></span></p>
+            @if ($orders->isEmpty())
+                <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+                    <span>Bạn chưa đăng ký tour nào</span>
+                </div>
+            @else
+                @foreach ($orders as $item)
+                    <div class="card border-0 mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <img src="{{ asset('') }}assets/image_tour/{{ $item->ngayDi->tour->image_url }}" class="img-fluid object-fit-cover rounded">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $item->ngayDi->tour->title }}</h5>
+                                    <p class="card-text">Ngày khởi hành <span><input type="dateTime" value="{{ $item->ngayDi->start_date }}" class="border px-2 text-primary fw-bold" disabled></span></p>
+                                </div>
+                            </div>
+                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                <a href="{{ route('thanh_toan_thanh_cong', $item->id) }}" class="btn btn-outline-primary">Xem đơn</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-2 d-flex justify-content-center align-items-center">
-                        <a href="" class="btn btn-outline-primary">Xem đơn</a>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="card border-0 mb-3">
-                <div class="row g-0">
-                    <div class="col-md-2 d-flex align-items-center">
-                        <img src="../assets/image/tour01.webp" class="img-fluid object-fit-cover rounded" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Nhật Bản: Osaka - Kyoto - Nagoya - Tokyo -Núi Phú Sĩ - Làng cổ Oshino Hakkai | Thưởng thức bò Wagyu</h5>
-                            <p class="card-text">Ngày khởi hành <span><input type="date" value="2024-12-24" class="border px-2 text-primary fw-bold" disabled></span></p>
-                        </div>
-                    </div>
-                    <div class="col-2 d-flex justify-content-center align-items-center">
-                        <a href="" class="btn btn-outline-primary">Xem đơn</a>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="card border-0 mb-3">
-                <div class="row g-0">
-                    <div class="col-md-2 d-flex align-items-center">
-                        <img src="../assets/image/tour01.webp" class="img-fluid object-fit-cover rounded" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Nhật Bản: Osaka - Kyoto - Nagoya - Tokyo -Núi Phú Sĩ - Làng cổ Oshino Hakkai | Thưởng thức bò Wagyu</h5>
-                            <p class="card-text">Ngày khởi hành <span><input type="date" value="2024-12-24" class="border px-2 text-primary fw-bold" disabled></span></p>
-                        </div>
-                    </div>
-                    <div class="col-2 d-flex justify-content-center align-items-center">
-                        <a href="" class="btn btn-outline-primary">Xem đơn</a>
-                    </div>
-                </div>
-            </div>
-            <hr>
+                    <hr>
+                @endforeach
+            @endif
         </div>
+
     </div>
 @endsection
