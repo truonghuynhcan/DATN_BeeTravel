@@ -3,7 +3,7 @@
     <!-- head profile -->
     <section>
         <div class="card text-bg-dark">
-            <img alt="..." src="../assets/image/head01.jpg" class="card-img object-fit-cover" height="200px" width="100%">
+            <img src="{{asset('')}}assets/image/head01.jpg" class="card-img object-fit-cover" height="200px" width="100%">
             <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
                 <h2 class="card-title">Thông tin của tôi</h2>
             </div>
@@ -19,11 +19,11 @@
                 <div class="card border-0 mb-3" style="background-color: inherit;">
                     <div class="row g-0">
                         <div class="col-md-3 d-flex align-items-center">
-                            <img src="../assets/image/logo_BeeTravel.png" width="100%" class="object-fit-cover rounded-circle bg-body" alt="...">
+                            <img src="{{ asset('assets/image_avatar/' . (Auth::user()->image_url??'user.jpg')) }}" width="100%" class="object-fit-cover rounded-circle bg-body">
                         </div>
                         <div class="col-md-9">
                             <div class="card-body">
-                                <h5 class="card-title h6">Du Lịch Cùng Bee Travel</h5>
+                                <h5 class="card-title h6">{{Auth::user()->name}}</h5>
                                 <p class="card-text"><small class="text-body-secondary"><i class="bi bi-pen"></i> Sửa hồ sơ</small></p>
                             </div>
                         </div>
