@@ -11,9 +11,8 @@ class News extends Model
     protected $table = 'news';  // Tên bảng trong cơ sở dữ liệu
 
     // Khai báo các trường có thể được fill
-    protected $fillable = ['title', 'content', 'image_url','admin_id', 'category_id','is_hidden'];
-
-    // Mối quan hệ với Category
+    protected $fillable = ['id', 'image_url', 'title', 'slug', 'description', 'content', 'is_hidden', 'admin_id', 'category_id'  ];
+   // Mối quan hệ với Category
     public function NewsCategory()
     {
         return $this->belongsTo(NewsCategory::class, 'category_id'); // Mối quan hệ

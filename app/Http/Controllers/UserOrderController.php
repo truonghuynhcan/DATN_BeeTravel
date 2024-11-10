@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\createNotification;
 use App\Models\Customer;
 use App\Models\NgayDi;
 use App\Models\Order;
@@ -172,13 +173,19 @@ class UserOrderController extends Controller
             }
         }
 
-        createNotification(
-            'success',
-            'Đặt tour thành công',
-            'tên tour / Khởi hành',
-            'imrs2.png',  // hoặc null nếu không có ảnh nền
-            null  // hoặc null nếu muốn thông báo cho user hiện tại
-        );
+        // Kiểm tra nếu chưa đăng nhập thif không cần thêm thông báo
+        if (Auth::check()) {
+            // lấy id tour từ ngày đi người dùng đã chọn
+            $ngaydi = NgayDi::select('start_date', 'tour_id')->find($order->ngaydi_id);
+            $tour_title = Tour::select('title')->find($ngaydi->tour_id);
+            $noti = createNotification(
+                'success',
+                'Đặt tour thành công',
+                'Tour: '.$tour_title.' </br>Khởi hành: '. $ngaydi->start_date,
+                'imrs2.png',  // hoặc null nếu không có ảnh nền
+            );
+        }
+
         return redirect()->route('thanh_toan_thanh_cong', $order->id);
     }
 
