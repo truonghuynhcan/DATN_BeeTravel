@@ -35,6 +35,33 @@ class AdminController extends Controller
         // /api/admins?name=John to filter admins whose name contains "John".
     }
 
+    public function index_tt(Request $request)
+    {
+        $query = Admin::query();
+
+        // Apply selective filters if any are present in the request
+        if ($request->has('role')) {
+            $query->where('role', $request->input('role'));
+        }
+
+        if ($request->has('is_block')) {
+            $query->where('is_block', $request->input('is_block'));
+        }
+
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        // Fetch data based on the query or return all admins if no filters are applied
+        $admins = $query->get();
+
+        return response()->json($admins, 200);
+        // /api/admins to fetch all admins.
+        // /api/admins?role=admin to filter admins by role.
+        // /api/admins?is_block=false to filter non-blocked admins.
+        // /api/admins?name=John to filter admins whose name contains "John".
+    }
+
     /**
      * Show the form for creating a new resource.
      */

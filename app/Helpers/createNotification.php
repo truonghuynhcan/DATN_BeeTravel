@@ -14,7 +14,7 @@ if (!function_exists('createNotification')) {
      * @param int|null $userId - ID người dùng nhận thông báo (null nếu là user hiện tại)
      * @return Notification
      */
-    function createNotification(string $type, string $title, string $content, ?string $backgroundImage = null, ?int $userId = null)
+    function createNotification(string $type, string $title, string $content, ?string $backgroundImage = null)
     {
         // Lấy ID người dùng hiện tại nếu userId không được truyền vào
         $userId = $userId ?? Auth::id();
@@ -26,7 +26,7 @@ if (!function_exists('createNotification')) {
         $notification->description = $content;
         $notification->image_url = $backgroundImage;
         $notification->seen=0; // thông báo chưa được xem flase (0)
-        $notification->user_id = $userId??Auth::id();
+        $notification->user_id = Auth::id();
         $notification->save();
 
         // Gửi thông báo tới người dùng (nếu cần, bạn có thể tùy chỉnh thêm)

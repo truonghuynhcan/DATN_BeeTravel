@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\NewsCategory;
 use Illuminate\Http\Request;
 
 class AdminCategoryController extends Controller
@@ -13,6 +14,17 @@ class AdminCategoryController extends Controller
     public function index()
     {
         $cate = Category::all();
+
+        $return = [
+            'status' => true,
+            'message' => 'Lấy dữ liệu category tours thành công!',
+            'data' => $cate,
+        ];
+        return response()->json($return, 200);
+    }
+    public function index_tt()
+    {
+        $cate = NewsCategory::all();
 
         $return = [
             'status' => true,

@@ -11,8 +11,8 @@
             menubar: true,
             plugins: [
                 'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                'anchor', 'searchreplace', 'visualblocks', 'advcode', 'fullscreen',
-                'insertdatetime', 'media', 'table', 'powerpaste', 'code'
+                'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code'
             ],
             toolbar: 'undo redo | insert | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code',
             powerpaste_allow_local_images: true,
@@ -21,7 +21,7 @@
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
         });
     </script>
-    <form action="{{ route('admin.tourEdit_') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.tourEdit_update',$tour->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top z-1">
             <h2 class="">Sửa tour #{{ $tour->id }}</h2>
@@ -258,7 +258,7 @@
                     <h5>Ảnh đại diện <span class="text-danger">*</span></h5>
                     </p>
                     <label for="fileUpload" class="form-label">
-                        <img id="mainImage" src="{{ asset('assets/image/' . $tour->image_url ?? 'img_phaceholder.jpg') }}" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
+                        <img id="mainImage" src="{{ asset('assets/image_tour/' . $tour->image_url ?? 'img_phaceholder.jpg') }}" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
                     </label>
                     <input name="image_url" type="file" class="form-control mb-3" accept="image/*" id="fileUpload">
 

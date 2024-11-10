@@ -23,6 +23,11 @@ class NewsCategory extends Model
     //     'slug',
     //     'image_url',
     // ];
+    protected $fillable = [
+        'title',
+        'slug',
+        'image_url',
+    ];
     use HasFactory;
     protected $table='news_categories';
     protected $primaryKey = 'id';
