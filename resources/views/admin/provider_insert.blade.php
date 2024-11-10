@@ -118,15 +118,15 @@
                         <label for="role" class="h5">Quyền hạng người dùng</label>
                     </div>
                     <input type="role" name="role" value="{{ old('role') }}" id="role" class="form-control mb-3"> -->
-                    <div class="d-flex gap-3 justify-content-between">
+                    <!-- <div class="d-flex gap-3 justify-content-between">
                     <label for="role" class="h5">Phân Quyền</label>
                     </div>
 
-                    <!-- Hiển thị giá trị -->
+                    
                     <span class="form-control mb-3" id="role-display">{{ old('role', 'provider') }}
-                    </span>
+                    </span> -->
 
-                    <!-- Lưu giá trị trong trường ẩn -->
+                    
                     <input type="hidden" name="role" value="{{ old('role', 'provider') }}" id="role">
                 </section>
 

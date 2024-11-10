@@ -98,34 +98,7 @@ class AdminTourController extends Controller
         // 404 - not found
         // 403 - forbidden thiếu quyền
     }
-    public function news($admin_id)
-    {
-        // Lấy role của admin (chỉ lấy trường cần thiết để tiết kiệm tài nguyên)
-        $role = Admin::where('id', $admin_id)->value('role');
-
-        // Kiểm tra role để trả về tours tương ứng
-        if ($role == 'admin') {
-            // Lấy tất cả news
-            $news = News::select('id', 'image_url', 'title', 'slug','description','content', 'is_hidden', 'admin_id', 'category_id')
-                ->with(['Admin:id,name', 'NewsCategory:id,title']) // khi sử dụng with ->luôn có cột id
-                ->get();
-        } else {
-            // Lấy tour thuộc về đối tác (admin_id)
-            $news = News::select('id', 'image_url', 'title', 'slug','description','content',  'is_hidden', 'category_id')
-                ->with(['NewsCategory',])
-                ->where('admin_id', $admin_id)->get();
-        }
-        // trả kết quả
-        $return = [
-            'status' => true,
-            'message' => 'Lấy dữ liệu tours thành công!',
-            'data' => $news,
-        ];
-        return response()->json($return, 200);
-        // 200 - thành công
-        // 404 - not found
-        // 403 - forbidden thiếu quyền
-    }
+    
 
     // ! Thêm tour
     // ! Thêm tour
