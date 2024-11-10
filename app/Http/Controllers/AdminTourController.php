@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Image;
 use App\Models\NgayDi;
+use App\Models\News;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,15 +17,55 @@ use Number;
 class AdminTourController extends Controller
 {
     public function tourEdit($tour_id){
-        $tour = Tour::with(['category', 'ngayDi', 'image', 'admin'])->withCount('wishlist')->find($tour_id);
+        $tour = Tour::with(['category', 'ngayDi', 'images', 'admin'])->withCount('wishlist')->find($tour_id);
         if (!$tour) {
             return redirect()->back()->withErrors('Tour not found!');
         }
         return view('admin.tour_edit', compact('tour'));
     }
-    public function tourEdit_(Request $request){
-        return redirect()->back();
+    
+    public function tourEdit_update(Request $request,$tour_id){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string',
+            'category_id' => 'required|exists:news_categories,id',
+            'admin_id' => 'required|exists:admins,id',
+        ]);
+    
+        $tour = Tour::find($tour_id);
+        if (!$tour) {
+            return redirect()->back()->withErrors('Tour không tồn tại!');
+        }
+    
+        $tour->title = $request->title;
+        $tour->slug = $request->slug;
+        $tour->category_id = $request->category_id;
+        $tour->admin_id = $request->admin_id;
+        $tour->save();
+        return redirect()->route('admin.tourManagement')->with('success', 'Cập nhật tour thành công!');
     }
+    public function category_tour()
+{
+    
+    // Lấy tất cả news
+    // $category_new = NewsCategory::select('id', 'image_url', 'title', 'slug')
+    //     ->get();
+    //     $return = [
+    //         'status' => true,
+    //         'message' => 'Lấy dữ liệu tours thành công!',
+    //         'data' => $category_new,
+    //     ];
+        // Lấy tất cả danh mục tin tức
+        $category_tour = Category::all(); // Hoặc bạn có thể thêm điều kiện nếu cần
+    
+        // Trả về kết quả
+        return response()->json([
+            'status' => true,
+            'message' => 'Lấy danh sách danh mục thành công!',
+            'data' => $category_tour,
+        ], 200);
+    
+}
 
     // ! Tạo api lấy danh sách tour
     // ! Tạo api lấy danh sách tour
@@ -50,6 +92,34 @@ class AdminTourController extends Controller
             'status' => true,
             'message' => 'Lấy dữ liệu tours thành công!',
             'data' => $tours,
+        ];
+        return response()->json($return, 200);
+        // 200 - thành công
+        // 404 - not found
+        // 403 - forbidden thiếu quyền
+    }
+    public function news($admin_id)
+    {
+        // Lấy role của admin (chỉ lấy trường cần thiết để tiết kiệm tài nguyên)
+        $role = Admin::where('id', $admin_id)->value('role');
+
+        // Kiểm tra role để trả về tours tương ứng
+        if ($role == 'admin') {
+            // Lấy tất cả news
+            $news = News::select('id', 'image_url', 'title', 'slug','description','content', 'is_hidden', 'admin_id', 'category_id')
+                ->with(['Admin:id,name', 'NewsCategory:id,title']) // khi sử dụng with ->luôn có cột id
+                ->get();
+        } else {
+            // Lấy tour thuộc về đối tác (admin_id)
+            $news = News::select('id', 'image_url', 'title', 'slug','description','content',  'is_hidden', 'category_id')
+                ->with(['NewsCategory',])
+                ->where('admin_id', $admin_id)->get();
+        }
+        // trả kết quả
+        $return = [
+            'status' => true,
+            'message' => 'Lấy dữ liệu tours thành công!',
+            'data' => $news,
         ];
         return response()->json($return, 200);
         // 200 - thành công

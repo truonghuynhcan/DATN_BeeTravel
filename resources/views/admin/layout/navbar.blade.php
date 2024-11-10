@@ -13,30 +13,30 @@
         </a>
         <a href="{{route('admin.tourManagement')}}" class="list-group-item list-group-item-action">Tất cả tour</a>
         <a href="{{route('admin.tourInsert')}}" class="list-group-item list-group-item-action">Thêm tour</a>
-        <a href="danh-muc-tour.html" class="list-group-item list-group-item-action">Danh mục tour</a>
+        <a href="{{route('admin.CateToursManagement')}}" class="list-group-item list-group-item-action">Danh mục tour</a>
     </div>
     <div class="list-group mb-3">
-        <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+        <a href="{{route('admin.newsManagement')}}" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
             Quản lý Tin tức
         </a>
-        <a href="tat-ca-tin-tuc.html" class="list-group-item list-group-item-action">Tất cả tin tức</a>
-        <a href="add-new-tin.html" class="list-group-item list-group-item-action">Thêm tin tức</a>
-        <a href="danh-muc-tin-tuc.html" class="list-group-item list-group-item-action">Danh mục tin tức</a>
+        <a href="{{route('admin.newsManagement')}}" class="list-group-item list-group-item-action">Tất cả tin tức</a>
+        <a href="{{route('admin.newInsert')}}" class="list-group-item list-group-item-action">Thêm tin tức</a>
+        <a href="{{route('admin.CateNewsManagement')}}" class="list-group-item list-group-item-action">Danh mục tin tức</a>
     </div>
 
     <!-- Show khi là admin -->
     @auth('admin')
         @if (Auth::guard('admin')->user()->role == 'admin')
             <div class="list-group mb-3">
-                <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+                <a href="{{route('admin.usersManagement')}}" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
                     Quản lý Người dùng
                 </a>
-                <a href="" class="list-group-item list-group-item-action">Tất cả đối tác</a>
-                <a href="" class="list-group-item list-group-item-action">Thêm đối tác</a>
-                <a href="" class="list-group-item list-group-item-action">Tất cả Khách hàng</a>
-                <a href="" class="list-group-item list-group-item-action">Thêm khách hàng</a>
-                <a href="" class="list-group-item list-group-item-action">Tất cả Admin</a>
-                <a href="" class="list-group-item list-group-item-action">Thêm admin</a>
+                <a href="{{route('admin.providesManagement')}}" class="list-group-item list-group-item-action">Tất cả đối tác</a>
+                <a href="{{route('admin.providerInsert')}}" class="list-group-item list-group-item-action">Thêm đối tác</a>
+                <a href="{{route('admin.personsManagement')}}" class="list-group-item list-group-item-action">Tất cả Khách hàng</a>
+                <a href="{{route('admin.personInsert')}}" class="list-group-item list-group-item-action">Thêm khách hàng</a>
+                <a href="{{route('admin.adminusersManagement')}}" class="list-group-item list-group-item-action">Tất cả Admin</a>
+                <a href="{{route('admin.adminInsert')}}" class="list-group-item list-group-item-action">Thêm admin</a>
             </div>
         @endif
     @endauth

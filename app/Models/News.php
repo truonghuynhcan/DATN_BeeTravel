@@ -11,13 +11,21 @@ class News extends Model
     protected $table = 'news';  // Tên bảng trong cơ sở dữ liệu
 
     // Khai báo các trường có thể được fill
-    protected $fillable = ['title', 'content', 'image_url', 'category_id'];
+    protected $fillable = ['title', 'content', 'image_url','admin_id', 'category_id','is_hidden'];
 
     // Mối quan hệ với Category
-    public function Category()
+    public function NewsCategory()
     {
-        return $this->belongsTo(NewCategory::class, 'category_id'); // Mối quan hệ
+        return $this->belongsTo(NewsCategory::class, 'category_id'); // Mối quan hệ
     }
+    public function Admin()
+    {
+        return $this->belongsTo(Admin::class, 'admin_id'); // Mối quan hệ
+    }
+    // public function images()
+    // {
+    //     return $this->hasMany(Image::class, 'tour_id', 'id'); // 'tour_id' là khóa ngoại trong bảng images
+    // }
 
     public static function getNew($limit = 1){
         return self::latest()->limit($limit)->get();

@@ -1,16 +1,16 @@
 @extends('admin.layout.index')
 @section('title')
-    Quản lý tour
+    Quản lý tin tức 
 @endsection
 @section('main')
     <header class="bg-body rounded p-2 d-flex justify-content-between mb-2">
-        <h2 class="">Quản lý tour</h2>
-        <a href="{{route('admin.tourInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm tour mới</a>
+        <h2 class="">Quản lý tin tức</h2>
+        <a href="{{route('admin.newInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm tin tức mới</a>
     </header>
-    <div class="alert alert-danger">
+    <div class="alert alert-warning">
         <h4>Todo</h4>
         <ul>
-            <li>Làm thêm lọc tour</li>
+            <li>Đang thực hiện</li>
         </ul>
     </div>
     <section class="bg-body rounded p-2">
@@ -54,30 +54,27 @@
                     @else
                         <th scope="col" class="text-center">Ngày Khởi Hành</th>
                     @endif
-                    <th scope="col" class="text-end">Giá</th>
-                    <th scope="col" class="text-center">Người đăng ký</th>
+                    <th scope="col" class="text-end">Mô tả tin tức </th>
+                    <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <th scope="col" class="text-center">Trạng thái</th>
                     <th scope="col">Hành động</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr ng-repeat="tour in tours">
-                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_tour/@{{ tour.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
-                    <td>@{{ tour.title }}</td>
-                    <td class="text-center">@{{ tour.category.ten_danh_muc }}</td>
-                    @if (Auth::guard('admin')->user()->role == 'admin')
-                        <td class="text-center">@{{ tour.admin.name }}</td>
-                    @else
-                        <td class="text-center">@{{ tour.ngay_di[0].start_date || 'Chưa có' | date:'dd/MM/yyyy'}}</td>
-                    @endif
-                    <td class="text-end">@{{ tour.ngay_di[0].price || 0  | number}}</td>
+                <tr ng-repeat="newItem in news">
+                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_new/@{{ newItem.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
+                    <td>@{{ newItem.title }}</td>
+                    <td class="text-center">@{{ newItem.news_category.title }}</td>
+                    <td class="text-center">@{{ newItem.admin.name }}</td>
                     <!-- Người đăng ký -->
-                    <td class="text-center">0</td>
+                    <td class="text-center">@{{ newItem.description }}</td>
+                    <!-- Người đăng ký -->
+                    <!-- <td class="text-center">@{{ newItem.content }}</td> -->
                     <!-- trạng thái -->
-                    <td class="text-center" ng-bind="tour.is_hidden !== 0 ? 'Ẩn' : 'Hiện'"></td>
+                    <td class="text-center" ng-bind=" newItem.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td>
 
                     <td>
-                        <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info">Sửa</a>
+                        <a href="/admin/sua-tintuc/@{{ newItem.id }}" class="btn btn-info">Sửa</a>
                         <button class="btn btn-outline-danger">Xóa</button>
                     </td>
                 </tr>
@@ -89,12 +86,12 @@
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
-            $http.get('/admin/api/danh-sach-tour/{{ Auth::guard("admin")->user()->id }}').then(
+            $http.get('/admin/api/danh-sach-new/{{ Auth::guard("admin")->user()->id }}').then(
                 function(res) { // success
-                    $scope.tours = res.data.data;
+                    $scope.news = res.data.data;
                 },
                 function(res) { // error
-                    console.error('Lỗi khi lấy danh sách tours:', error); // Ghi lỗi
+                    console.error('Lỗi khi lấy danh sách tours:', res); // Ghi lỗi
                 }
             )
         };
