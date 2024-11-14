@@ -92,7 +92,7 @@ class AdminNewController extends Controller
     //     ];
         // Lấy tất cả danh mục tin tức
         $category_new = NewsCategory::all(); // Hoặc bạn có thể thêm điều kiện nếu cần
-    
+        // $category_new = NewsCategory::withCount('news')->get();
         // Trả về kết quả
         return response()->json([
             'status' => true,
@@ -101,6 +101,57 @@ class AdminNewController extends Controller
         ], 200);
     
 }
+
+public function catenewInsert_(Request $request)
+    {
+        $validated = $request->validate(
+            [
+                //  * Provider information
+                'title' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255'],
+            ],
+            [
+                // 'admin_id.required' => 'Bạn chưa chọn đối tác.',
+                // 'admin_id.integer' => 'ID của admin phải là số nguyên.',
+                // 'admin_id.exists' => 'Admin không tồn tại trong hệ thống.',
+
+                // 'category_id.required' => 'Bạn chưa chọn Danh mục cho tin tức .',
+                // 'category_id.integer' => 'ID của danh mục phải là số nguyên.',
+                // 'category_id.exists' => 'Danh mục không tồn tại trong hệ thống.',
+
+                // * Provider Information
+                'title.required' => 'Tên danh mục tin tức là bắt buộc.',
+                'title.max' => 'Tên danh mục tin tức không được vượt quá :max ký tự.',
+
+                // 'tour_nuoc_ngoai.required' => 'Loại tour là bắt buộc phải điền.',
+
+
+                // * Ảnh
+                // 'image_url.required' => 'Cần thêm ảnh đại diện',
+                // 'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
+                // 'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
+                // 'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
+
+            ]
+        );
+
+        $catenew = new NewsCategory();
+        $catenew->title = $validated['title'];
+
+        if (!empty($validated['slug'])) {
+            $catenew->slug = $validated['slug'];
+        } else {
+            $catenew->slug = Str::slug($validated['ten_danh_muc']);
+        }
+        // $catenew->tour_nuoc_ngoai = $validated['tour_nuoc_ngoai'];
+        $catenew->save();
+
+
+        
+        // if (isset($validated['departure-date']) && !empty($validated['departure-date']) && !$validated['departure-date'][0]===null) {
+        // }
+        return redirect()->route('admin.CateNewsManagement')->with('success', 'Category news added successfully!');
+    }
 
 
     // ! Thêm tour

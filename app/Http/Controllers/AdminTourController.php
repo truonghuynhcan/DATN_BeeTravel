@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Image;
@@ -57,7 +58,7 @@ class AdminTourController extends Controller
     //     ];
         // Lấy tất cả danh mục tin tức
         $category_tour = Category::all(); // Hoặc bạn có thể thêm điều kiện nếu cần
-    
+        $category_tour = Category::withCount('tours')->get();
         // Trả về kết quả
         return response()->json([
             'status' => true,
@@ -66,6 +67,57 @@ class AdminTourController extends Controller
         ], 200);
     
 }
+public function catetourInsert_(Request $request)
+    {
+        $validated = $request->validate(
+            [
+                //  * Provider information
+                'ten_danh_muc' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255'],
+                'tour_nuoc_ngoai' => ['required', 'string', 'max:255'],
+            ],
+            [
+                // 'admin_id.required' => 'Bạn chưa chọn đối tác.',
+                // 'admin_id.integer' => 'ID của admin phải là số nguyên.',
+                // 'admin_id.exists' => 'Admin không tồn tại trong hệ thống.',
+
+                // 'category_id.required' => 'Bạn chưa chọn Danh mục cho tin tức .',
+                // 'category_id.integer' => 'ID của danh mục phải là số nguyên.',
+                // 'category_id.exists' => 'Danh mục không tồn tại trong hệ thống.',
+
+                // * Provider Information
+                'ten_danh_muc.required' => 'Tên danh mục tour là bắt buộc.',
+                'ten_danh_muc.max' => 'Tên danh mục tour không được vượt quá :max ký tự.',
+
+                'tour_nuoc_ngoai.required' => 'Loại tour là bắt buộc phải điền.',
+
+
+                // * Ảnh
+                // 'image_url.required' => 'Cần thêm ảnh đại diện',
+                // 'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
+                // 'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
+                // 'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
+
+            ]
+        );
+
+        $catetour = new Category();
+        $catetour->ten_danh_muc = $validated['ten_danh_muc'];
+
+        if (!empty($validated['slug'])) {
+            $catetour->slug = $validated['slug'];
+        } else {
+            $catetour->slug = Str::slug($validated['ten_danh_muc']);
+        }
+        $catetour->tour_nuoc_ngoai = $validated['tour_nuoc_ngoai'];
+        $catetour->save();
+
+
+        
+        // if (isset($validated['departure-date']) && !empty($validated['departure-date']) && !$validated['departure-date'][0]===null) {
+        // }
+        return redirect()->route('admin.CateToursManagement')->with('success', 'Category tours added successfully!');
+    }
 
     // ! Tạo api lấy danh sách tour
     // ! Tạo api lấy danh sách tour

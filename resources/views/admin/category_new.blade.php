@@ -5,7 +5,7 @@
 @section('main')
     <header class="bg-body rounded p-2 d-flex justify-content-between mb-2">
         <h2 class="">Quản lý danh mục tin tức</h2>
-        <a href="" class="btn btn-primary" style="height: fit-content;">Thêm danh mục tin tức</a>
+        <a href="{{route('admin.catenewInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm danh mục tin tức</a>
     </header>
     <div class="alert alert-warning">
         <h4>Todo</h4>
@@ -22,6 +22,7 @@
                     <th scope="col" class="text-center">Ảnh</th>
                     <th scope="col" class="text-center">Tên danh mục tin tức</th>
                     <th scope="col" class="text-center">Slug tin tức</th>
+                    <!-- <th scope="col" class="text-center">Số lượng tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
                     <th scope="col">Hành động</th>
@@ -33,6 +34,7 @@
                     <td class="text-center">@{{ cate.title }}</td>
                     <!-- Người đăng ký -->
                     <td class="text-center">@{{ cate.slug }}</td>
+                    <!-- <td class="text-center">@{{ cate.news_count }}</td> Hiển thị số lượng tin tức -->
                     <!-- Người đăng ký -->
                     <!-- <td class="text-center">@{{ cate.content }}</td> -->
                     <!-- trạng thái -->

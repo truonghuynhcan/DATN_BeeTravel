@@ -114,7 +114,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::post('/them-tt/loading', [AdminNewController::class, 'newInsert_'])->name('newInsert_');
 
     Route::view('/quan-ly-dmtt', 'admin.category_new')->name('CateNewsManagement');
+    Route::view('/them-catenew', 'admin.catenew_insert')->name('catenewInsert');
+    Route::post('/them-catenew/loading', [AdminNewController::class, 'catenewInsert_'])->name('catenewInsert_');
+
     Route::view('/quan-ly-dmtour', 'admin.category_tour')->name('CateToursManagement');
+    Route::view('/them-catetour', 'admin.catetour_insert')->name('catetourInsert');
+    Route::post('/them-catetour/loading', [AdminTourController::class, 'catetourInsert_'])->name('catetourInsert_');
 
     Route::view('/quan-ly-users', 'admin.users')->name('usersManagement');
     // Provide đối tác
