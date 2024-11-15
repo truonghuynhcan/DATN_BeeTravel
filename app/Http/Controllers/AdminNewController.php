@@ -102,6 +102,31 @@ class AdminNewController extends Controller
     
 }
 
+public function catenewEdit($catenew_id){
+    $category_new = NewsCategory::with(['news'])->find($catenew_id);
+    if (!$category_new) {
+        return redirect()->back()->withErrors('Category new not found!');
+    }
+    return view('admin.catenew_edit', compact('category_new'));
+}
+
+public function catenewEdit_update(Request $request,$catenew_id){
+    $request->validate([
+        'title' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255'],
+    ]);
+
+    $catenew_id = NewsCategory::find($catenew_id);
+    if (!$catenew_id) {
+        return redirect()->back()->withErrors('Category new không tồn tại!');
+    }
+
+    $catenew_id->title = $request->title;
+    $catenew_id->slug = $request->slug;
+    $catenew_id->save();
+    return redirect()->route('admin.CateNewsManagement')->with('success', 'Cập nhật category new thành công!');
+}
+
 public function catenewInsert_(Request $request)
     {
         $validated = $request->validate(

@@ -1,12 +1,12 @@
 @extends('admin.layout.index')
 @section('title')
-    Thêm danh mục tour
+    Thêm danh mục tin tức
 @endsection
 @section('main')
-    <form action="{{ route('admin.catetourInsert_') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.catenewEdit_update', $category_new->id)}}" method="post" enctype="multipart/form-data">
         @csrf
         <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top z-1">
-            <h2 class="">Thêm danh mục tour mới</h2>
+            <h2 class="">Sửa danh mục category tin tức: {{ $category_new->id }}</h2>
             <div>
                 <button type="submit" name="post" id="post-btn" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
                 <button type="submit" name="draft" id="draft-btn" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
@@ -61,7 +61,7 @@
             <!-- NỘI DUNG CHI TIẾT TIN TỨC-->
             <div class="col-9">
                 <section class="bg-body rounded mb-3">
-                    <input name="ten_danh_muc" value="{{ old('ten_danh_muc') }}" id="ten_danh_muc" class="form-control form-control-lg" type="text" placeholder="Tên danh mục tour (không vượt quá 255 ký tự) " aria-label=".form-control-lg example">
+                    <input name="title" value="{{ old('title') ?? $category_new->title }}" id="title" class="form-control form-control-lg" type="text" placeholder="Tên danh mục tin tức (không vượt quá 255 ký tự) " aria-label=".form-control-lg example">
                 </section>
 
                 {{-- Nổi bật --}}
@@ -93,21 +93,21 @@
                             </label>
                         </div>
                     </div>
-                    <input type="text" name="slug" value="{{ old('slug') }}" id="slug" class="form-control mb-3">
+                    <input type="text" name="slug" value="{{ old('slug') ?? $category_new->slug}}" id="slug" class="form-control mb-3">
                     <!-- <label for="sub_title" class="h5">Mô tả ngắn <span class="text-danger">*</span></label>
                     <textarea name="sub_title" id="sub_title" class="form-control">{{ old('sub_title') }}</textarea> -->
                 </section>
 
                 {{-- JS auto slug --}}
                 <script>
-                    const cateInput = document.getElementById('ten_danh_muc');
+                    const cateInput = document.getElementById('title');
                     const slugInput = document.getElementById('slug');
                     const autoSlugCheck = document.getElementById('autoSlugCheck');
 
                     cateInput.addEventListener('input', function() {
                         if (autoSlugCheck.checked) { // Chỉ tạo slug nếu checkbox được chọn
-                            const ten_danh_muc = this.value;
-                            const slug = ten_danh_muc
+                            const title = this.value;
+                            const slug = title
                                 .toLowerCase()
                                 .replace(/đ/g, 'd') // Chuyển "đ" thành "d"
                                 .normalize('NFD') // Chuẩn hóa để tách dấu ra khỏi chữ cái
@@ -138,7 +138,7 @@
                         <label for="number" class="h5">Loại tour</label>
                     </div>   
                 </section> -->
-                <section class="bg-body rounded p-2 mb-3">
+                <!-- <section class="bg-body rounded p-2 mb-3">
     <div class="d-flex gap-3 justify-content-between">
         <label for="tourType" class="h5">Loại tour</label>
     </div>
@@ -152,7 +152,7 @@
             <label for="international">Tour nước ngoài</label>
         </div>
     </div>
-</section>
+</section> -->
 
 
 
@@ -215,12 +215,12 @@
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
-            $http.get('/admin/api/danh-sach-category-tour').then(
+            $http.get('/admin/api/danh-sach-category-new').then(
                 function(res) { // success
-                    $scope.category_tour = res.data.data;
+                    $scope.category_new = res.data.data;
                 },
                 function(res) { // error
-                    console.error('Lỗi khi lấy danh sách tours:', res); // Ghi lỗi
+                    console.error('Lỗi khi lấy danh sách news:', res); // Ghi lỗi
                 }
             )
         };

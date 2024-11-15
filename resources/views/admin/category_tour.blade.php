@@ -43,7 +43,7 @@
                     <!-- <td class="text-center" ng-bind=" tourcate.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
                     <td>
-                        <a href="" class="btn btn-info">Sửa</a>
+                        <a href="/admin/sua-category-tour/@{{ tourcate.id }}" class="btn btn-info">Sửa</a>
                         <button class="btn btn-outline-danger">Xóa</button>
                     </td>
                 </tr>
@@ -55,7 +55,7 @@
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
-            $http.get('api/danh-sach-category-tour').then(
+            $http.get('/admin/api/danh-sach-category-tour').then(
                 function(res) { // success
                     $scope.category_tour = res.data.data;
                 },

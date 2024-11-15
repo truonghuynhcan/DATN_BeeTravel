@@ -46,7 +46,7 @@
                     <!-- <td class="text-center" ng-bind=" useradmin.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
                     <td>
-                        <a href="" class="btn btn-info">Sửa</a>
+                        <a href="/admin/sua-provider/@{{ userprovide.id }}" class="btn btn-info">Sửa</a>
                         <button class="btn btn-outline-danger">Xóa</button>
                     </td>
                 </tr>

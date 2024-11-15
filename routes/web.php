@@ -116,24 +116,35 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::view('/quan-ly-dmtt', 'admin.category_new')->name('CateNewsManagement');
     Route::view('/them-catenew', 'admin.catenew_insert')->name('catenewInsert');
     Route::post('/them-catenew/loading', [AdminNewController::class, 'catenewInsert_'])->name('catenewInsert_');
+    Route::get('/sua-category-new/{id}', [AdminNewController::class, 'catenewEdit'])->name('catenewEdit');
+    Route::post('/sua-category-new/{id}', [AdminNewController::class, 'catenewEdit_update'])->name('catenewEdit_update');
 
     Route::view('/quan-ly-dmtour', 'admin.category_tour')->name('CateToursManagement');
     Route::view('/them-catetour', 'admin.catetour_insert')->name('catetourInsert');
     Route::post('/them-catetour/loading', [AdminTourController::class, 'catetourInsert_'])->name('catetourInsert_');
+    Route::get('/sua-category-tour/{id}', [AdminTourController::class, 'catetourEdit'])->name('catetourEdit');
+    Route::post('/sua-category-tour/{id}', [AdminTourController::class, 'catetourEdit_update'])->name('catetourEdit_update');
 
     Route::view('/quan-ly-users', 'admin.users')->name('usersManagement');
     // Provide đối tác
     Route::view('/quan-ly-provide', 'admin.users_provide')->name('providesManagement');
     Route::view('/them-provider', 'admin.provider_insert')->name('providerInsert');
     Route::post('/them-provider/loading', [AdminUsersController::class, 'providerInsert_'])->name('providerInsert_');
+    Route::get('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit'])->name('providerEdit');
+    Route::post('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit_update'])->name('providerEdit_update');
     // Person đối tác
     Route::view('/quan-ly-person', 'admin.users_person')->name('personsManagement');
     Route::view('/them-person', 'admin.person_insert')->name('personInsert');
     Route::post('/them-person/loading', [AdminUsersController::class, 'personInsert_'])->name('personInsert_');
+    Route::get('/sua-person/{id}', [AdminUsersController::class, 'personEdit'])->name('personEdit');
+    Route::post('/sua-person/{id}', [AdminUsersController::class, 'personEdit_update'])->name('personEdit_update');
     // Admin đối tác
     Route::view('/quan-ly-admin', 'admin.users_admin')->name('adminusersManagement');
     Route::view('/them-admin', 'admin.admin_insert')->name('adminInsert');
     Route::post('/them-admin/loading', [AdminUsersController::class, 'adminInsert_'])->name('adminInsert_');
+    Route::get('/sua-adminuser/{id}', [AdminUsersController::class, 'adminEdit'])->name('adminEdit');
+    Route::post('/sua-adminuser/{id}', [AdminUsersController::class, 'adminEdit_update'])->name('adminEdit_update');
+
 
     Route::get('/sua-tour/{id}', [AdminTourController::class, 'tourEdit'])->name('tourEdit');
     Route::post('/sua-tour/{id}', [AdminTourController::class, 'tourEdit_update'])->name('tourEdit_update');

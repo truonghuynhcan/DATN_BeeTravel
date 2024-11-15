@@ -67,6 +67,33 @@ class AdminTourController extends Controller
         ], 200);
     
 }
+
+public function catetourEdit($catetour_id){
+    $category_tour = Category::with(['tours'])->find($catetour_id);
+    if (!$category_tour) {
+        return redirect()->back()->withErrors('Category tour not found!');
+    }
+    return view('admin.catetour_edit', compact('category_tour'));
+}
+
+public function catetourEdit_update(Request $request,$catetour_id){
+    $request->validate([
+        'ten_danh_muc' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255'],
+                'tour_nuoc_ngoai' => ['required', 'string', 'max:255'],
+    ]);
+
+    $catetour_id = Category::find($catetour_id);
+    if (!$catetour_id) {
+        return redirect()->back()->withErrors('Category tour không tồn tại!');
+    }
+
+    $catetour_id->ten_danh_muc = $request->ten_danh_muc;
+    $catetour_id->slug = $request->slug;
+    $catetour_id->tour_nuoc_ngoai = $request->tour_nuoc_ngoai;
+    $catetour_id->save();
+    return redirect()->route('admin.CateToursManagement')->with('success', 'Cập nhật category tour thành công!');
+}
 public function catetourInsert_(Request $request)
     {
         $validated = $request->validate(

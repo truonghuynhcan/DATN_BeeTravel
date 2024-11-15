@@ -215,7 +215,7 @@
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
-            $http.get('api/danh-sach-category-new').then(
+            $http.get('/admin/api/danh-sach-category-new').then(
                 function(res) { // success
                     $scope.category_new = res.data.data;
                 },

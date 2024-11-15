@@ -1,12 +1,12 @@
 @extends('admin.layout.index')
 @section('title')
-    Thêm danh mục tour
+    Sửa danh mục category tour
 @endsection
 @section('main')
-    <form action="{{ route('admin.catetourInsert_') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.catetourEdit_update',$category_tour->id ) }}" method="post" enctype="multipart/form-data">
         @csrf
         <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top z-1">
-            <h2 class="">Thêm danh mục tour mới</h2>
+            <h2 class="">Sửa danh mục tour: {{ $category_tour->id }} </h2>
             <div>
                 <button type="submit" name="post" id="post-btn" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
                 <button type="submit" name="draft" id="draft-btn" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
@@ -61,7 +61,7 @@
             <!-- NỘI DUNG CHI TIẾT TIN TỨC-->
             <div class="col-9">
                 <section class="bg-body rounded mb-3">
-                    <input name="ten_danh_muc" value="{{ old('ten_danh_muc') }}" id="ten_danh_muc" class="form-control form-control-lg" type="text" placeholder="Tên danh mục tour (không vượt quá 255 ký tự) " aria-label=".form-control-lg example">
+                    <input name="ten_danh_muc" value="{{ old('ten_danh_muc') ?? $category_tour->ten_danh_muc}}" id="ten_danh_muc" class="form-control form-control-lg" type="text" placeholder="Tên danh mục tour (không vượt quá 255 ký tự) " aria-label=".form-control-lg example">
                 </section>
 
                 {{-- Nổi bật --}}
@@ -93,7 +93,7 @@
                             </label>
                         </div>
                     </div>
-                    <input type="text" name="slug" value="{{ old('slug') }}" id="slug" class="form-control mb-3">
+                    <input type="text" name="slug" value="{{ old('slug') ?? $category_tour->slug}}" id="slug" class="form-control mb-3">
                     <!-- <label for="sub_title" class="h5">Mô tả ngắn <span class="text-danger">*</span></label>
                     <textarea name="sub_title" id="sub_title" class="form-control">{{ old('sub_title') }}</textarea> -->
                 </section>
