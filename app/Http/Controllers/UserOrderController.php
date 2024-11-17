@@ -16,12 +16,12 @@ class UserOrderController extends Controller
 
     public function viewThanhToanThanhCong($order_id)
     {
-        $order = Order::where('user_id',Auth::id())->with('ngayDi','customer')->find($order_id);
+        $order = Order::where('user_id', Auth::id())->with('ngayDi', 'customer')->find($order_id);
         if (!$order) {
             // Nếu không có đơn hàng, quay lại trang trước
             return redirect()->route('home');
         } else {
-            $tour = Tour::select('id', 'admin_id','title', 'slug' ,'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
+            $tour = Tour::select('id', 'admin_id', 'title', 'slug', 'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
             return view('client.thanh_toan_thanh_cong', compact('order', 'tour'));
         }
     }
@@ -55,7 +55,7 @@ class UserOrderController extends Controller
             'user-quydanh' => 'required|in:mr,mrs',
             'user-fullname' => 'required|string|max:255',
             'user-email' => 'nullable|email',
-            'user-phone' => 'required|numeric|digits_between:9,15',
+            'user-phone' => 'required|numeric|digits_between:9,11',
             'user-address' => 'required|string|max:255',
 
             // Mã giảm giá
@@ -104,7 +104,7 @@ class UserOrderController extends Controller
             'user-email.email' => 'Email không đúng định dạng.',
             'user-phone.required' => 'Vui lòng nhập số điện thoại.',
             'user-phone.numeric' => 'Số điện thoại phải là số.',
-            'user-phone.digits_between' => 'Số điện thoại phải từ 9 đến 15 chữ số.',
+            'user-phone.digits_between' => 'Số điện thoại có độ dài từ 9 đến 11 số.',
             'user-address.required' => 'Vui lòng nhập địa chỉ.',
             'user-address.string' => 'Địa chỉ phải là chuỗi ký tự.',
             'user-address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
@@ -135,6 +135,12 @@ class UserOrderController extends Controller
 
         // người lớn, trẻ em, trẻ nhỏ, em bé
         $customer_type = ['adult', 'child', 'toddler', 'infant'];
+        $count = [
+            'adult' => 0,
+            'child' => 0,
+            'toddler' => 0,
+            'infant' => 0,
+        ];
         foreach ($customer_type as $type) {
             if (isset($validated["{$type}-quydanh"])) {
                 foreach ($validated["{$type}-quydanh"] as $key => $quydanh) {
@@ -144,35 +150,17 @@ class UserOrderController extends Controller
                         $customer->gender = $quydanh;
                         $customer->name = $validated["{$type}-name"][$key];
                         $customer->birth_date = $validated["{$type}-birthday"][$key];
-
-                        // Lấy giá từ ngày đi tùy theo loại khách hàng
-                        $ngayDi = NgayDi::find($order->ngaydi_id);
-                        if ($ngayDi) {
-                            switch ($type) {
-                                case 'adult':
-                                    $price_nem = $ngayDi->price;
-                                    break;
-                                case 'child':
-                                    $price_nem = $ngayDi->price_tre_em;
-                                    break;
-                                case 'toddler':
-                                    $price_nem = $ngayDi->price_tre_nho;
-                                    break;
-                                case 'infant':
-                                    $price_nem = $ngayDi->price_em_be;
-                                    break;
-                            }
-                            $customer->price = $price_nem;
-                        } else {
-                            // Xử lý khi không tìm thấy giá trị của $ngayDi (có thể gán giá mặc định là 0)
-                            $customer->price = 0;
-                        }
                         $customer->save();
+                        $count[$type] += 1;
                     }
                 }
             }
         }
-
+        $order->adult_count = $count['adult'];
+        $order->child_count = $count['child'];
+        $order->toddler_count = $count['toddler'];
+        $order->infant_count = $count['infant'];
+        $order->save();
         // Kiểm tra nếu chưa đăng nhập thif không cần thêm thông báo
         if (Auth::check()) {
             // lấy id tour từ ngày đi người dùng đã chọn
@@ -181,7 +169,7 @@ class UserOrderController extends Controller
             $noti = createNotification(
                 'success',
                 'Đặt tour thành công',
-                'Tour: '.$tour_title.' </br>Khởi hành: '. $ngaydi->start_date,
+                'Tour: ' . $tour_title . ' </br>Khởi hành: ' . $ngaydi->start_date,
                 'imrs2.png',  // hoặc null nếu không có ảnh nền
             );
         }

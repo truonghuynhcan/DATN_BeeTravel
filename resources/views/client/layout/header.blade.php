@@ -116,11 +116,7 @@
                              <li>
                                  <hr class="dropdown-divider">
                              </li>
-                             <form action="{{ route('dangxuat') }}" method='post'>
-                                 @csrf
-                                 <!-- <button class="btn btn-primary rounded-pill">Đăng Xuất</button> -->
-                                 <li><button class="dropdown-item">Đăng xuất</button></li>
-                             </form>
+                             <li><a class="dropdown-item" href="{{ route('dangxuat') }}">Đăng xuất</a></li>
                              <!-- <li><a class="dropdown-item" href="#">Đăng xuất</a></li> -->
                          @endauth
                          <li class="p-2"><a class="container-fluid btn btn-primary" href="{{ route('search_tong_quat') }}">Search Tour</a></li>

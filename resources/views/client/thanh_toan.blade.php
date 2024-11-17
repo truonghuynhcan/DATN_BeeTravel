@@ -15,7 +15,7 @@
                 <li> thêm trường auto điền giá trị cũ vào các form đã nhập</li>
                 <li>Xử lý lấy ngày đi tương lai gần nhất</li>
             </ol>
-            
+
         </div>
         <div class="alert alert-success">
             <h1>Done</h1>
@@ -262,24 +262,24 @@
                             <label for="name">Họ và tên <span class="text-danger">*</span></label>
                             <div class="d-flex">
                                 <select name="user-quydanh" class="form-select w-auto fw-bold" id="user-quydanh">
-                                    <option value="" selected >Chọn quý danh</option>
+                                    <option value="" selected>Chọn quý danh</option>
                                     <option value="mr">Quý Ông</option>
                                     <option value="mrs">Quý Bà</option>
                                 </select>
-                                <input name="user-fullname" type="text" class="form-control" value="{{ old('user-fullname')??( auth()->check() ? auth()->user()->name : '') }}" placeholder="Họ và tên: " id="name">
+                                <input name="user-fullname" type="text" class="form-control" value="{{ old('user-fullname') ?? (auth()->check() ? auth()->user()->name : '') }}" placeholder="Họ và tên: " id="name">
                             </div>
                         </div>
                         <div class="form-group mb-2">
                             <label for="email">Email</label>
-                            <input name="user-email" type="email" value="{{ old('user-email')??( auth()->check() ? auth()->user()->email : '' )}}" class="form-control" id="email">
+                            <input name="user-email" type="email" value="{{ old('user-email') ?? (auth()->check() ? auth()->user()->email : '') }}" class="form-control" id="email">
                         </div>
                         <div class="form-group mb-2">
                             <label for="phone">Số điện thoại <span class="text-danger">*</span></label>
-                            <input name="user-phone" type="tel" value="{{ old('user-phone')??( auth()->check() ? auth()->user()->phone : '' )}}" class="form-control" id="phone">
+                            <input name="user-phone" type="tel" value="{{ old('user-phone') ?? (auth()->check() ? auth()->user()->phone : '') }}" class="form-control" id="phone">
                         </div>
                         <div class="form-group mb-2">
                             <label for="address">Địa chỉ <span class="text-danger">*</span></label>
-                            <input name="user-address" type="text" value="{{ old('user-address')??( auth()->check() ? auth()->user()->address : '') }}" class="form-control" id="address">
+                            <input name="user-address" type="text" value="{{ old('user-address') ?? (auth()->check() ? auth()->user()->address : '') }}" class="form-control" id="address">
                         </div>
                     </div>
                 </section>
