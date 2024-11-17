@@ -181,6 +181,8 @@ class UserOrderController extends Controller
     public function viewThanhToan($id_tour)
     {
         $now = Carbon::now();
+        // echo $now->format('Y-m-d H:i:s');
+
         $tour = Tour::select('id', 'title', 'duration')
             ->with([
                 'ngayDi' => function ($query) use ($now) {
@@ -189,7 +191,7 @@ class UserOrderController extends Controller
                 }
             ])
             ->find($id_tour);
-
+                // dd($tour);
         return view('client.thanh_toan', compact('tour'));
     }
 }
