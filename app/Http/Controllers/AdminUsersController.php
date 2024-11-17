@@ -154,6 +154,35 @@ class AdminUsersController extends Controller
         return redirect()->route('admin.providesManagement')->with('success', 'Provider added successfully!');
     }
 
+public function providerEdit($provider_id){
+    $providers = Admin::with(['news','tours','voucher'])->find($provider_id);
+    if (!$providers) {
+        return redirect()->back()->withErrors('Provider new not found!');
+    }
+    return view('admin.provider_edit', compact('providers'));
+}
+
+public function providerEdit_update(Request $request,$provider_id){
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'max:255'],
+                'password' => ['required', 'string', 'max:255'],
+                'phone' => ['required', 'string', 'max:255'],
+                'role' => ['required', 'string','max:255'],
+    ]);
+
+    $providers = Admin::find($provider_id);
+    if (!$providers) {
+        return redirect()->back()->withErrors('Provider new không tồn tại!');
+    }
+    $providers->name = $request->name;
+        $providers->phone = $request->phone;
+        $providers->password = Hash::make($request->password);
+        $providers->email = $request->email;
+        $providers->role = 'provider';
+    $providers->save();
+    return redirect()->route('admin.providesManagement')->with('success', 'Cập nhật provider thành công!');
+}
     public function adminInsert_(Request $request)
     {
         $validated = $request->validate(
@@ -266,6 +295,65 @@ class AdminUsersController extends Controller
         // }
 
         return redirect()->route('admin.personsManagement')->with('success', 'Person added successfully!');
+    }
+    public function personEdit($person_id){
+        $persons = User::with(['order','wishlist','feedback','notifications'])->find($person_id);
+        if (!$persons) {
+            return redirect()->back()->withErrors('Person not found!');
+        }
+        return view('admin.person_edit', compact('persons'));
+    }
+    
+    public function personEdit_update(Request $request,$person_id){
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'max:255'],
+                    'password' => ['required', 'string', 'max:255'],
+                    'phone' => ['required', 'string', 'max:255'],
+                    'address' => ['required', 'string','max:255'],
+        ]);
+    
+        $persons = User::find($person_id);
+        if (!$persons) {
+            return redirect()->back()->withErrors('Person new không tồn tại!');
+        }
+        $persons->name = $request->name;
+            $persons->phone = $request->phone;
+            $persons->password = Hash::make($request->password);
+            $persons->email = $request->email;
+            $persons->address = $request->address;
+        $persons->save();
+        return redirect()->route('admin.personsManagement')->with('success', 'Cập nhật person thành công!');
+    }
+
+    public function adminEdit($admin_id){
+        $adminusers = Admin::with(['news','tours','voucher'])->find($admin_id);
+        if (!$adminusers) {
+            return redirect()->back()->withErrors('Admin new not found!');
+        }
+        return view('admin.admin_edit', compact('adminusers'));
+    }
+    
+    public function adminEdit_update(Request $request,$admin_id){
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'max:255'],
+                    'password' => ['required', 'string', 'max:255'],
+                    'phone' => ['required', 'string', 'max:255'],
+                    'role' => ['required', 'string','max:255'],
+        ]);
+    
+        $adminusers = Admin::find($admin_id);
+        if (!$adminusers) {
+            return redirect()->back()->withErrors('Admin không tồn tại!');
+        }
+        $adminusers->name = $request->name;
+            $adminusers->phone = $request->phone;
+            $adminusers->password = Hash::make($request->password);
+            $adminusers->email = $request->email;
+            $adminusers->role = 'admin';
+        $adminusers->save();
+        return redirect()->route('admin.adminusersManagement')->with('success', 'Cập nhật admin thành công!');
     }
     
     /**
