@@ -14,9 +14,8 @@ Thanh toán
             <div class="row mb-4">
                 <div class="col-2 d-flex flex-column">
                     @foreach ($images as $image)
-                    <img src="{{ asset($image) }}" alt="Tour Image">
+                    <img src="{{ asset('assets/image_tour',$image) }}" alt="Tour Image">
                     @endforeach
-
                 </div>
                 <div class="col-10">
                     <div id="carouselExampleIndicators" class="carousel slide">

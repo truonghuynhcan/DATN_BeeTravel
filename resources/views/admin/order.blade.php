@@ -73,7 +73,6 @@
                     <td scope="col" class="text-center"><input type="datetime-local" disabled value="@{{order.created_at}}" class="border-0 bg-none"></td>
                     <td scope="col" class="text-center">
                         <a href="">Sửa</a>
-                        <a href="">Xóa</a>
                     </td>
                 </tr>
             </tbody>

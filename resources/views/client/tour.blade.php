@@ -146,7 +146,7 @@ Tour
                                 </svg>
                                 <span class="text-body position-absolute start-50 top-50 translate-middle">Mới</span>
                             </div>
-                            <img src="{{ asset('assets/image/'.$tour->image_url) }}" height="450px" class="card-img object-fit-fill" alt="...">
+                            <img src="{{ asset('assets/image_tour/'.$tour->image_url) }}" height="450px" class="card-img object-fit-fill" alt="...">
                             <div class="card-img-overlay m-3 p-2 bg-body text-body" style="top:inherit">
                                 <h5 class="card-title">
                                     <a href="/tour/{{$tour->id}}" class="text-decoration-none text-body fs-6">
@@ -165,7 +165,7 @@ Tour
                                     <p class="card-text">Giá: <b class="text-danger">{{ number_format($tour->price, 0, ',', '.') }} ₫</b></p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <a href="#" class="btn btn-primary container-fluid">Đặt ngay</a>
+                                    <a href="{{route('thanh_toan',$tour->id)}}" class="btn btn-primary container-fluid">Đặt ngay</a>
                                 </div>
                             </div>
                         </div>

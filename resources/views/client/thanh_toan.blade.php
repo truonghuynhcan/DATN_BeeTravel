@@ -61,10 +61,10 @@
                                 <td>Ngày khởi hành</td>
                                 <td class="d-flex gap-2">
                                     <select class="form-select form-select-sm form-select-date" name="ngaykhoihanh" style="width: fit-content;" onchange="fetchPrice()">
-                                        @if (old('ngaykhoihanh'))
+                                        {{-- @if (old('ngaykhoihanh'))
                                             <option value="{{ old('ngaykhoihanh') }}" selected>làm js tìm</option>
-                                        @endif
-                                        @foreach ($tour->ngaydi as $item)
+                                        @endif --}}
+                                        @foreach ($tour->ngayDi as $item)
                                             <option value="{{ $item->id }}">{{ $item->start_date }}</option>
                                         @endforeach
                                     </select>
@@ -96,7 +96,13 @@
                             <label for="name">Họ và tên <span class="text-danger">*</span></label>
                             <div class="d-flex">
                                 <select name="user-quydanh" class="form-select w-auto fw-bold" id="user-quydanh">
-                                    <option value="" selected>Chọn quý danh</option>
+                                    @if (old('user-quydanh') == 'mr')
+                                        <option value="mr">Quý Ông</option>
+                                    @endif
+                                    @if (old('user-quydanh') == 'mrs')
+                                        <option value="mrs">Quý Bà</option>
+                                    @endif
+                                    <option value="0">Chọn quý danh</option>
                                     <option value="mr">Quý Ông</option>
                                     <option value="mrs">Quý Bà</option>
                                 </select>
@@ -257,7 +263,7 @@
                                     newForm.innerHTML = `
                                         <div class="col-md-4">
                                           <select name="${type}-quydanh[]" class="form-select" id="${type}-quydanh-${i}" aria-label="Floating label select example">
-                                            <option value="" selected>Quý danh</option>
+                                            <option value="0" selected>Quý danh</option>
                                             <option value="mr">Quý Ông</option>
                                             <option value="mrs">Quý Bà</option>
                                           </select>
