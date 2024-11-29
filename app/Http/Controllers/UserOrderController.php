@@ -122,7 +122,7 @@ class UserOrderController extends Controller
         // nhập thông tin
         $order = new Order();
         $order->ngaydi_id = $validated['ngaykhoihanh']; // lấy id ngày khởi hành
-        $order->user_id = $validated['user_id'] ?? null;
+        $order->user_id = auth()->id ?? null;
         $order->gender = $validated['user-quydanh'];
         $order->fullname = $validated['user-fullname'];
         $order->phone = $validated['user-phone'];
