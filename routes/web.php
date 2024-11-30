@@ -24,6 +24,9 @@ Route::get('/gioi-thieu', [UserPageController::class, 'about'])->name('about');
 // SEARCH TOUR TỔNG QUÁT
 Route::get('/search-tong-quat', [UserTourController::class, 'fullsearch'])->name('search_tong_quat');
 Route::post('/search_tong_quat/search_all', [UserTourController::class, 'Allsearch'])->name('search_tong_quat.search_all');
+// SEARCH TOUR TỔNG QUÁT TRANG CHỦ
+
+Route::post('/search_home/homesearch_all', [UserTourController::class, 'homesearchfull'])->name('search_homefull.homesearch_all');
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
@@ -104,7 +107,7 @@ Route::post('/dang-ky-doi-tac/loading', [AdminLoginController::class, 'register_
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_provider'])->group(function () {
     // Route cho logout admin
     Route::post('/dang-xuat', [AdminLoginController::class, 'logout'])->name('logout');
-    
+
     Route::view('/quan-ly-tour', 'admin.tour')->name('tourManagement');
     Route::view('/them-tour', 'admin.tour_insert')->name('tourInsert');
     Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
@@ -148,7 +151,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
 
     Route::get('/sua-tour/{id}', [AdminTourController::class, 'tourEdit'])->name('tourEdit');
     Route::post('/sua-tour/{id}', [AdminTourController::class, 'tourEdit_update'])->name('tourEdit_update');
-
+    // Route::delete('/tours/{id}', [AdminTourController::class, 'destroy'])->name('tour_destroy');
+    
     Route::get('/sua-tintuc/{id}', [AdminNewController::class, 'newEdit'])->name('newEdit');
     Route::put('/sua-tintuc/{id}', [AdminNewController::class, 'newEdit_update'])->name('newEdit_update');
     // Route::post('/sua-tintuc/loading', [AdminNewController::class, 'newEdit_'])->name('newEdit_');

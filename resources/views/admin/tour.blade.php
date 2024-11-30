@@ -76,10 +76,10 @@
                     <!-- trạng thái -->
                     <td class="text-center" ng-bind="tour.is_hidden !== 0 ? 'Ẩn' : 'Hiện'"></td>
 
-                    <td>
-                        <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info">Sửa</a>
-                        <button class="btn btn-outline-danger">Xóa</button>
-                    </td>
+                    <td class="text-center">
+            <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info">Sửa</a>
+            <button class="btn btn-outline-danger">Xóa</button>
+        </td>
                 </tr>
             </tbody>
         </table>

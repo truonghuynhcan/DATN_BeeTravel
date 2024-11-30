@@ -191,7 +191,7 @@ public function catenewInsert_(Request $request)
                 //  * Tour information
                 'title' => ['required', 'string', 'max:255'],
                 'slug' => ['nullable', 'string', 'max:255'],
-                'content' => ['required', 'string', 'max:255'],
+                'content' => ['required', 'string'],
                 'description' => ['required', 'string','max:255'],
 
                 // * Ảnh chính và ảnh phụ
@@ -285,9 +285,9 @@ public function catenewInsert_(Request $request)
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-    }
+{
+    //
+}
 
     /**
      * Show the form for creating a new resource.
@@ -332,8 +332,8 @@ public function catenewInsert_(Request $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    //
+}
 }

@@ -55,6 +55,22 @@ Trang chủ
     </div>
 </div>
 
+<nav class="navbar bg-body-tertiary ">
+  <div class="container-fluid form justify-content-center align-items-center">
+    <form class="d-flex" role="homesearch" action="{{ route('search_homefull.homesearch_all') }}" method="POST">
+    @csrf
+      <input class="form-control me-2 " type="text" name="keyword" placeholder="Tìm kiếm tổng quát" value="{{ old('keyword') }}">
+      <button class="btn btn-warning" type="submit">SEARCH</button>
+    </form>
+    </div>
+    <!-- Hiển thị thông báo lỗi nếu có -->
+     <div class="col-sm-4 ">
+        @if(session('error'))
+            <div class="alert alert-danger mt-2 fw-bold fst-italic ">{{ session('error') }}</div>
+        @endif
+    </div>
+  
+</nav>
 
 <!-- product feature start -->
 <section class=" mb-4 py-4 bg-secondary bg-opacity-25">
@@ -72,6 +88,7 @@ Trang chủ
             </div>
         </div>
         <div class="row">
+        @if($tours->count() > 0)
             @foreach($tours as $tour)
             <div class="col-12 col-md-6 col-lg-3 col-xxl-3 mb-3 tour-hidden">
                 <div class="card text-bg-dark position-relative">
@@ -81,7 +98,7 @@ Trang chủ
                         </svg>
                         <span class="text-body position-absolute start-50 top-50 translate-middle">Mới</span>
                     </div>
-                    <img src="assets/image/{{$tour->image_url}}" height="450px" class="card-img oject-fit-fill" alt="...">
+                    <img src="assets/image_tour/{{$tour->image_url}}" height="450px" class="card-img oject-fit-fill" alt="...">
                     <div class="card-img-overlay m-3 p-2 bg-body text-body" style="top:inherit">
                         <h5 class="card-title">
                             <a href="/tour/{{$tour->id}}" class="text-decoration-none text-body fs-6">
@@ -106,6 +123,15 @@ Trang chủ
                 </div>
             </div>
             @endforeach
+            @else
+                    <div class="container p-3">
+                        <div class="row">
+                        <div class="alert alert-warning text-center">
+                            <p class="fw-bold fst-italic">Không tìm thấy tour bạn vừa nhập. </p>
+                        </div>
+                        </div>
+                    </div>
+                    @endif
             <a href="{{ route('tour') }}" class=" them btn ">Xem tất cả</a>
         </div>
 </section>
@@ -124,10 +150,11 @@ Trang chủ
             </div>
 
             <div class="row">
+            @if($latestNews->count() > 0)
                 @foreach($latestNews as $item)
                 <div class="col-md-3 mb-3"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
                     <div class="card h-100"> <!-- H-100 để các card có chiều cao bằng nhau -->
-                        <img src="{{$item->image_url}}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
+                        <img src="assets/image_new/{{$item->image_url}}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
                         <div class="card-body d-flex flex-column"> <!-- Sử dụng flex để căn chỉnh nội dung -->
                             <h6 class="card-title">{{$item->title}}</h6>
                             <p class="card-text">{{$item->description}}</p>
@@ -136,6 +163,15 @@ Trang chủ
                     </div>
                 </div>
                 @endforeach
+                @else
+                            <div class="container p-3">
+                        <div class="row">
+                        <div class="alert alert-warning text-center">
+                            <p class="fw-bold fst-italic">Không tìm thấy tin tức nào như bạn đã tìm kiếm hiện tại. </p>
+                        </div>
+                        </div>
+                    </div>
+                            @endif
             </div>
         </div>
     </div>

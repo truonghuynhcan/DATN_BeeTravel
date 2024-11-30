@@ -366,6 +366,10 @@ public function catetourInsert_(Request $request)
     public function index()
     {
         //
+        // Lấy tất cả tour không có bản ghi booking liên quan
+    // $tours = Tour::doesntHave('category', 'ngayDi', 'images', 'Admin')->get(); // Thay 'bookings' bằng mối quan hệ thật sự
+
+    // return view('admin.CateToursManagement', compact('tours'));
     }
 
     /**
@@ -411,8 +415,27 @@ public function catetourInsert_(Request $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    // $tour = Tour::find($id);
+    
+    // if (!$tour) {
+    //     return redirect()->back()->withErrors('Tour không tồn tại!');
+    // }
+
+    // // Kiểm tra nếu có bản ghi nào tham chiếu đến tin tức này qua Admin
+    // // và Comments (hoặc bất kỳ mối quan hệ nào khác mà bạn có)
+    // $hasAdmin = $tour->admin()->exists(); // Kiểm tra mối quan hệ với Admin
+    // $hasCate = $tour->category()->exists(); // Kiểm tra mối quan hệ với Comments
+    // $hasngayDi = $tour->ngayDi()->exists(); // Kiểm tra mối quan hệ với Comments
+    // $hasimages = $tour->images()->exists(); // Kiểm tra mối quan hệ với Comments
+    // if ($hasAdmin || $hasCate || $hasngayDi || $hasimages) {
+    //     return redirect()->back()->withErrors('Không thể xóa tin tức có liên quan!');
+    // }
+
+    // // Xóa tour nếu không có bản ghi nào tham chiếu
+    // $tour->delete();
+
+    // return redirect()->route('admin.tourManagement')->with('success', 'Xóa tour thành công!');
+}
 }
