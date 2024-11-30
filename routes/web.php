@@ -27,7 +27,7 @@ Route::get('/search-tong-quat', [UserTourController::class, 'fullsearch'])->name
 Route::post('/search_tong_quat/search_all', [UserTourController::class, 'Allsearch'])->name('search_tong_quat.search_all');
 // SEARCH TOUR TỔNG QUÁT TRANG CHỦ
 
-Route::post('/search_home/homesearch_all', [UserTourController::class, 'homesearchfull'])->name('search_homefull.homesearch_all');
+Route::post('/', [UserTourController::class, 'homesearchfull'])->name('search_homefull.homesearch_all');
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
