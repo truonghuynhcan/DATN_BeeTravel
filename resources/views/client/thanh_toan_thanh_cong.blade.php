@@ -63,7 +63,7 @@
                         <th class="text-primary">{{$order->id}}</th>
                     </tr>
                     <tr>
-                        <td>Trạng thái đặt chỗ</td>
+                        <td>Trạng thái thanh toán</td>
                         <th>{{$order->is_paid==0?'Chưa thanh toán': 'Đã thanh toán'}}</th>
                     </tr>
                     <tr>

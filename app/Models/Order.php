@@ -20,6 +20,10 @@ class Order extends Model
         'address',
         'is_paid',
         'voucher_code',
+        'adult_count',
+        'child_count',
+        'toddler_count',
+        'infant_count',
         'total_price',
     ];
 

@@ -16,12 +16,12 @@ class UserOrderController extends Controller
 
     public function viewThanhToanThanhCong($order_id)
     {
-        $order = Order::where('user_id',Auth::id())->with('ngayDi','customer')->find($order_id);
+        $order = Order::where('user_id', Auth::id())->with('ngayDi', 'customer')->find($order_id);
         if (!$order) {
             // Nếu không có đơn hàng, quay lại trang trước
             return redirect()->route('home');
         } else {
-            $tour = Tour::select('id', 'admin_id','title', 'slug' ,'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
+            $tour = Tour::select('id', 'admin_id', 'title', 'slug', 'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
             return view('client.thanh_toan_thanh_cong', compact('order', 'tour'));
         }
     }
@@ -55,7 +55,7 @@ class UserOrderController extends Controller
             'user-quydanh' => 'required|in:mr,mrs',
             'user-fullname' => 'required|string|max:255',
             'user-email' => 'nullable|email',
-            'user-phone' => 'required|numeric|digits_between:9,15',
+            'user-phone' => 'required|numeric|digits_between:9,10',
             'user-address' => 'required|string|max:255',
 
             // Mã giảm giá
@@ -69,42 +69,42 @@ class UserOrderController extends Controller
             'ngaykhoihanh.required' => 'Vui lòng chọn ngày khởi hành.',
             'ngaykhoihanh.exists' => 'Ngày khởi hành không hợp lệ.',
 
-            'adult-quydanh.*.in' => 'Quý danh người lớn phải là "mr" hoặc "mrs".',
+            'adult-quydanh.*.in' => 'Chọn Quý danh người lớn phải là "Quý ông" hoặc "Quý bà".',
             'adult-name.*.string' => 'Tên người lớn phải là chuỗi ký tự.',
             'adult-name.*.max' => 'Tên người lớn không được vượt quá 255 ký tự.',
             'adult-birthday.*.date' => 'Ngày sinh của người lớn phải là ngày hợp lệ.',
             'adult-birthday.*.before' => 'Ngày sinh của người lớn phải trước ngày hôm nay.',
             'adult-birthday.*.after' => 'Ngày sinh của người lớn không hợp lệ (phải lớn hơn 12 tuổi).',
 
-            'child-quydanh.*.in' => 'Quý danh trẻ em phải là "mr" hoặc "mrs".',
+            'child-quydanh.*.in' => 'Vui lòng chọn quý danh trẻ em phải là "Quý ông" hoặc "Quý bà".',
             'child-name.*.string' => 'Tên trẻ em phải là chuỗi ký tự.',
             'child-name.*.max' => 'Tên trẻ em không được vượt quá 255 ký tự.',
             'child-birthday.*.date' => 'Ngày sinh của trẻ em phải là ngày hợp lệ.',
             'child-birthday.*.before' => 'Ngày sinh của trẻ em không hợp lệ (phải nhỏ hơn 12 tuổi).',
             'child-birthday.*.after' => 'Ngày sinh của trẻ em không hợp lệ (phải lớn hơn 5 tuổi).',
 
-            'toddler-quydanh.*.in' => 'Quý danh trẻ nhỏ phải là "mr" hoặc "mrs".',
+            'toddler-quydanh.*.in' => 'Vui lòng chọn quý danh trẻ nhỏ phải là "Quý ông" hoặc "Quý bà".',
             'toddler-name.*.string' => 'Tên trẻ nhỏ phải là chuỗi ký tự.',
             'toddler-name.*.max' => 'Tên trẻ nhỏ không được vượt quá 255 ký tự.',
             'toddler-birthday.*.date' => 'Ngày sinh của trẻ nhỏ phải là ngày hợp lệ.',
             'toddler-birthday.*.before' => 'Ngày sinh của trẻ nhỏ không hợp lệ (phải nhỏ hơn 5 tuổi).',
             'toddler-birthday.*.after' => 'Ngày sinh của trẻ nhỏ không hợp lệ (phải lớn hơn 2 tuổi).',
 
-            'infant-quydanh.*.in' => 'Quý danh em bé phải là "mr" hoặc "mrs".',
+            'infant-quydanh.*.in' => 'Vui lòng chọn quý danh em bé phải là "Quý ông" hoặc "Quý bà".',
             'infant-name.*.string' => 'Tên em bé phải là chuỗi ký tự.',
             'infant-name.*.max' => 'Tên em bé không được vượt quá 255 ký tự.',
             'infant-birthday.*.date' => 'Ngày sinh của em bé phải là ngày hợp lệ.',
             'infant-birthday.*.after' => 'Ngày sinh của em bé không hợp lệ (phải nhỏ hơn 2 tuổi).',
 
             'user-quydanh.required' => 'Vui lòng chọn quý danh cho người dùng.',
-            'user-quydanh.in' => 'Quý danh người dùng phải là "mr" hoặc "mrs".',
+            'user-quydanh.in' => 'Vui lòng chọn quý danh người dùng phải là "Quý ông" hoặc "Quý bà".',
             'user-fullname.required' => 'Vui lòng nhập họ và tên.',
             'user-fullname.string' => 'Họ và tên phải là chuỗi ký tự.',
             'user-fullname.max' => 'Họ và tên không được vượt quá 255 ký tự.',
             'user-email.email' => 'Email không đúng định dạng.',
             'user-phone.required' => 'Vui lòng nhập số điện thoại.',
             'user-phone.numeric' => 'Số điện thoại phải là số.',
-            'user-phone.digits_between' => 'Số điện thoại phải từ 9 đến 15 chữ số.',
+            'user-phone.digits_between' => 'Số điện thoại có độ dài từ 9 đến 10 số.',
             'user-address.required' => 'Vui lòng nhập địa chỉ.',
             'user-address.string' => 'Địa chỉ phải là chuỗi ký tự.',
             'user-address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
@@ -122,7 +122,7 @@ class UserOrderController extends Controller
         // nhập thông tin
         $order = new Order();
         $order->ngaydi_id = $validated['ngaykhoihanh']; // lấy id ngày khởi hành
-        $order->user_id = $validated['user_id'] ?? null;
+        $order->user_id = auth()->id ?? null;
         $order->gender = $validated['user-quydanh'];
         $order->fullname = $validated['user-fullname'];
         $order->phone = $validated['user-phone'];
@@ -135,6 +135,13 @@ class UserOrderController extends Controller
 
         // người lớn, trẻ em, trẻ nhỏ, em bé
         $customer_type = ['adult', 'child', 'toddler', 'infant'];
+        $count = [
+            'adult' => 0,
+            'child' => 0,
+            'toddler' => 0,
+            'infant' => 0,
+        ];
+        $has_adult=false;
         foreach ($customer_type as $type) {
             if (isset($validated["{$type}-quydanh"])) {
                 foreach ($validated["{$type}-quydanh"] as $key => $quydanh) {
@@ -144,35 +151,28 @@ class UserOrderController extends Controller
                         $customer->gender = $quydanh;
                         $customer->name = $validated["{$type}-name"][$key];
                         $customer->birth_date = $validated["{$type}-birthday"][$key];
-
-                        // Lấy giá từ ngày đi tùy theo loại khách hàng
-                        $ngayDi = NgayDi::find($order->ngaydi_id);
-                        if ($ngayDi) {
-                            switch ($type) {
-                                case 'adult':
-                                    $price_nem = $ngayDi->price;
-                                    break;
-                                case 'child':
-                                    $price_nem = $ngayDi->price_tre_em;
-                                    break;
-                                case 'toddler':
-                                    $price_nem = $ngayDi->price_tre_nho;
-                                    break;
-                                case 'infant':
-                                    $price_nem = $ngayDi->price_em_be;
-                                    break;
-                            }
-                            $customer->price = $price_nem;
-                        } else {
-                            // Xử lý khi không tìm thấy giá trị của $ngayDi (có thể gán giá mặc định là 0)
-                            $customer->price = 0;
-                        }
                         $customer->save();
+                        $count[$type] += 1;
+
+                        // Cần phải có ít nhất 1 người lớn
+                        if ($type == "adult") {
+                            $has_adult=true;
+                        }
                     }
                 }
             }
         }
 
+        // nếu ko có ngườilớn
+        if (!$has_adult) {
+            $order->delete();
+            return redirect()->back()->with('error','Cần phải có ít nhất 1 người lớn')->withInput();
+        }
+        $order->adult_count = $count['adult'];
+        $order->child_count = $count['child'];
+        $order->toddler_count = $count['toddler'];
+        $order->infant_count = $count['infant'];
+        $order->save();
         // Kiểm tra nếu chưa đăng nhập thif không cần thêm thông báo
         if (Auth::check()) {
             // lấy id tour từ ngày đi người dùng đã chọn
@@ -181,7 +181,7 @@ class UserOrderController extends Controller
             $noti = createNotification(
                 'success',
                 'Đặt tour thành công',
-                'Tour: '.$tour_title.' </br>Khởi hành: '. $ngaydi->start_date,
+                'Tour: ' . $tour_title . ' </br>Khởi hành: ' . $ngaydi->start_date,
                 'imrs2.png',  // hoặc null nếu không có ảnh nền
             );
         }
@@ -193,6 +193,7 @@ class UserOrderController extends Controller
     public function viewThanhToan($id_tour)
     {
         $now = Carbon::now();
+
         $tour = Tour::select('id', 'title', 'duration')
             ->with([
                 'ngayDi' => function ($query) use ($now) {
@@ -202,6 +203,18 @@ class UserOrderController extends Controller
             ])
             ->find($id_tour);
 
+        //Nếu ngày đi không có thì ko cho đặt tour
+        // Nếu tour không tồn tại
+        if (!$tour) {
+            return redirect()->back()->with('error', 'Tour không tồn tại!');
+        }
+
+        // Nếu ngày đi trống (ngayDi là một collection)
+        if ($tour->ngayDi->isEmpty()) {
+            return redirect()->back()->with('error', 'Hiện tour này chưa có lịch mới! Bạn có thể liên hệ Đối tác để biết thêm thông tin.');
+        }
+
+        // Hiển thị trang thanh toán
         return view('client.thanh_toan', compact('tour'));
     }
 }

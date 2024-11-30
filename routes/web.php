@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AdminTourController;
 use App\Http\Controllers\AdminNewController;
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\UserAccountController;
@@ -33,7 +34,8 @@ Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
 Route::post('/dang-nhap', [UserLoginController::class, 'login'])->name('login_loading');
 Route::get('/dang-ky', [UserPageController::class, 'register'])->name('register');
 Route::post('/dang-ky', [UserLoginController::class, 'register'])->name('register_loading');
-Route::post('/dangxuat', [UserLoginController::class, 'logout'])->name('dangxuat');
+Route::post('/dang-xuat', [UserLoginController::class, 'logout'])->name('dangxuat');
+Route::get('/dang-xuat', [UserLoginController::class, 'logout'])->name('dangxuat');
 
 
 // * Tour ----------------------------------------------------------------
@@ -83,7 +85,7 @@ Route::prefix('tai-khoan')->group(function () {
 });
 
 
-Route::prefix('api')->group(function(){
+Route::prefix('api')->group(function () {
     Route::get('/get-price/{date_id}', [UserNgayDiController::class, 'getPrice']);
     Route::get('/notifications', [NotificationController::class, 'getUserNotificationCount']);
 });
@@ -108,10 +110,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     // Route cho logout admin
     Route::post('/dang-xuat', [AdminLoginController::class, 'logout'])->name('logout');
 
+    Route::view('/quan-ly-don-hang', 'admin.order')->name('order');
     Route::view('/quan-ly-tour', 'admin.tour')->name('tourManagement');
     Route::view('/them-tour', 'admin.tour_insert')->name('tourInsert');
     Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
-    
+
     Route::view('/quan-ly-tt', 'admin.news')->name('newsManagement');
     Route::view('/them-tt', 'admin.new_insert')->name('newInsert');
     Route::post('/them-tt/loading', [AdminNewController::class, 'newInsert_'])->name('newInsert_');
@@ -160,17 +163,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     // Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
 
     // Route::get('/quan-ly-tour', [TourController::class, 'quanLyTour'])->name('quanLyTour');
-    Route::prefix('/api')->group(function(){
-        Route::get('/danh-sach-tour/{admin_id}', [AdminTourController::class,'tours']);
-        Route::get('/danh-muc-tour', [AdminCategoryController::class,'index']); // lấy danh mục categories tour
-        Route::get('/danh-sach-admin', [AdminController::class,'index']); // lấy danh mục categories tour
-        Route::get('/danh-sach-category-tour', [AdminTourController::class,'category_tour']);
+    Route::prefix('/api')->group(function () {
+        Route::get('/danh-sach-don-hang/{admin_id}', [AdminOrderController::class, 'order']);
 
-         //New Admin
-    Route::get('/danh-sach-new/{admin_id}', [AdminNewController::class,'news']);
-    Route::get('/danh-muc-new', [AdminCategoryController::class,'index_tt']); // lấy danh mục categories new
-    Route::get('/danh-sach-admin', [AdminController::class,'index_tt']); // lấy danh mục categories tour
-    Route::get('/danh-sach-category-new', [AdminNewController::class,'category_new']);
+
+        Route::get('/danh-sach-tour/{admin_id}', [AdminTourController::class, 'tours']);
+        Route::get('/danh-muc-tour', [AdminCategoryController::class, 'index']); // lấy danh mục categories tour
+        Route::get('/danh-sach-admin', [AdminController::class, 'index']); // lấy danh mục categories tour
+        Route::get('/danh-sach-category-tour', [AdminTourController::class, 'category_tour']);
+
+        //New Admin
+        Route::get('/danh-sach-new/{admin_id}', [AdminNewController::class, 'news']);
+        Route::get('/danh-muc-new', [AdminCategoryController::class, 'index_tt']); // lấy danh mục categories new
+        Route::get('/danh-sach-admin', [AdminController::class, 'index_tt']); // lấy danh mục categories tour
+        Route::get('/danh-sach-category-new', [AdminNewController::class, 'category_new']);
         // Admin role user
         Route::get('/danh-sach-useradmin', [AdminUsersController::class, 'getAdmins']);
         Route::get('/danh-sach-user', [AdminUsersController::class, 'getAllUsers']);
@@ -178,7 +184,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
         Route::get('/danh-sach-person', [AdminUsersController::class, 'getAllPersons']);
         Route::get('/danh-sach-adminusers', [AdminUsersController::class, 'getAdminUsers']);
     });
-    
+
 });
 // Setup danh mục tin tức
 
