@@ -15,7 +15,7 @@ class News extends Model
    // Mối quan hệ với Category
     public function NewsCategory()
     {
-        return $this->belongsTo(NewsCategory::class, 'category_id'); // Mối quan hệ
+        return $this->belongsTo(NewsCategory::class, 'category_id','id'); // Mối quan hệ
     }
     public function Admin()
     {

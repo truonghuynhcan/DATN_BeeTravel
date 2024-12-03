@@ -18,7 +18,6 @@ class Customer extends Model
         'name',
         'birth_date',
         'phone',
-        'price',
     ];
 
     /**

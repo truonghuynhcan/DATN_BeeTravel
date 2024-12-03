@@ -23,9 +23,12 @@
                 <label for="exampleInputPassword1" class="form-label">Mật khẩu</label>
                 <input type="password" name="password" class="form-control border-black" id="exampleInputPassword1">
             </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input border-black" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Lưu mật khẩu</label>
+            <div class="mb-3 d-flex justify-content-between align-item-center">
+                <div class=" form-check">
+                    <input type="checkbox" class="form-check-input border-black" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Lưu mật khẩu</label>
+                </div>
+                <a href="">Quên mật khẩu</a>
             </div>
             <button type="submit" class="mb-3 container-fluid btn btn-primary">Đăng nhập</button>
             <a class="container-fluid btn btn-outline-primary" href="{{route('register_admin')}}">Đăng ký</a>

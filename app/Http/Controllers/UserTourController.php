@@ -13,22 +13,30 @@ class UserTourController extends Controller
     public function tour()
     {
         $categories = Category::all();
-        $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->limit(9)->get();
+        $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')
+            ->orderBy('created_at', 'desc') // Sắp xếp từ mới đến cũ
+            ->paginate(12); // Phân trang với 12 tour mỗi trang
+
+        // $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->limit(12)->get();
+        // $tours = Tour::paginate(9);
         $news = News::select('id', 'title', 'image_url', 'created_at') // thêm các cột bạn muốn lấy
             ->latest()
             ->take(4)
             ->get();
-        $tours = Tour::paginate(9);
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
+
+
     public function fullsearch()
     {
         $searchCategory = Category::all();
         $news = News::all();
         $search = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start');
         $search = Tour::paginate(6);
-        return view('client.search_tong_quat', compact('search', 'searchCategory','news'));
+        return view('client.search_tong_quat', compact('search', 'searchCategory', 'news'));
     }
+
+
     public function Allsearch(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -38,15 +46,16 @@ class UserTourController extends Controller
         }
         $searchCategory = Category::all();
         $news = News::where('title', 'like', "%$keyword%")
-        ->orwhere('description', 'like', "%$keyword%")
-        ->orderby('id', 'desc')
-        ->paginate(4);
+            ->orwhere('description', 'like', "%$keyword%")
+            ->orderby('id', 'desc')
+            ->paginate(4);
         $search = Tour::where('title', 'like', "%$keyword%")
             ->orwhere('featured', 'like', "%$keyword%")
             ->orderby('id', 'desc')
             ->paginate(6);
-        return view('client.search_tong_quat', compact('search', 'searchCategory','news'));
+        return view('client.search_tong_quat', compact('search', 'searchCategory', 'news'));
     }
+
 
     public function showToursByCategory($id)
     {
@@ -71,12 +80,25 @@ class UserTourController extends Controller
         }
 
         $categories = Category::all();
-        $news = News::latest()->take(4)->get();
 
-        $tours = Tour::where('title', 'like', "%$keyword%")
-            ->orWhere('description', 'like', "%$keyword%")
-            ->orderby('id', 'desc')
-            ->paginate(10);
+        $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')
+        ->where('title', 'like', "%$keyword%")
+            ->orderBy('created_at', 'desc') // Sắp xếp từ mới đến cũ
+            ->paginate(12); // Phân trang với 12 tour mỗi trang
+
+        // $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->limit(12)->get();
+        // $tours = Tour::paginate(9);
+        $news = News::select('id', 'title', 'image_url', 'created_at') // thêm các cột bạn muốn lấy
+            ->latest()
+            ->take(4)
+            ->get();
+
+        // $news = News::latest()->take(4)->get();
+
+        // $tours = Tour::where('title', 'like', "%$keyword%")
+        //     ->orWhere('description', 'like', "%$keyword%")
+        //     ->orderby('id', 'desc')
+        //     ->paginate(10);
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
 
@@ -147,4 +169,23 @@ class UserTourController extends Controller
 
     //     return redirect()->back()->withErrors('Tour hoặc ngày không hợp lệ.');
     // }
+
+    public function homesearchfull(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        if (empty($keyword)) {
+            // Nếu từ khóa rỗng, chuyển hướng về trang tìm kiếm
+            return redirect()->route('home')->with('error', 'Vui lòng nhập từ khóa để thực hiện tìm kiếm.');
+        }
+        $categories = Category::all();
+        $latestNews = News::where('title', 'like', "%$keyword%")
+        ->orwhere('description', 'like', "%$keyword%")
+        ->orderby('id', 'desc')
+        ->paginate(4);
+        $tours = Tour::where('title', 'like', "%$keyword%")
+            ->orwhere('featured', 'like', "%$keyword%")
+            ->orderby('id', 'desc')
+            ->paginate(6);
+        return view('client.home', compact('tours','categories', 'latestNews'));
+    }
 }

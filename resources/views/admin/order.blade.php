@@ -1,11 +1,11 @@
 @extends('admin.layout.index')
 @section('title')
-    Quản lý tour
+    Quản lý đơn hàng
 @endsection
 @section('main')
     <header class="bg-body rounded p-2 d-flex justify-content-between mb-2">
-        <h2 class="">Quản lý tour</h2>
-        <a href="{{route('admin.tourInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm tour mới</a>
+        <h2 class="">Quản lý đơn hàng</h2>
+        {{-- <a href="{{route('admin.tourInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm tour mới</a> --}}
     </header>
     <div class="alert alert-danger">
         <h4>Todo</h4>
@@ -46,40 +46,34 @@
         <table class="table table-hover table-striped table-bordered">
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">Ảnh</th>
-                    <th scope="col">Tên tour</th>
-                    <th scope="col" class="text-center">Danh mục</th>
+                    <th scope="col" class="text-center">Id ĐH</th>
+                    <th scope="col">Tên KH</th>
                     @if (Auth::guard('admin')->user()->role == 'admin')
                         <th scope="col" class="text-center">Đối tác</th>
                     @else
-                        <th scope="col" class="text-center">Ngày Khởi Hành</th>
+                        <th scope="col" class="text-center">SĐT</th>
                     @endif
-                    <th scope="col" class="text-end">Giá</th>
-                    <th scope="col" class="text-center">Người đăng ký</th>
                     <th scope="col" class="text-center">Trạng thái</th>
-                    <th scope="col">Hành động</th>
+                    <th scope="col" class="text-end">Tổng tiền</th>
+                    <th scope="col" class="text-center">Ngày đặt</th>
+                    <th scope="col" class="text-center">Hành động</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr ng-repeat="tour in tours">
-                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_tour/@{{ tour.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
-                    <td>@{{ tour.title }}</td>
-                    <td class="text-center">@{{ tour.category.ten_danh_muc }}</td>
+                <tr ng-repeat="order in order_list | orderBy:'-id'">
+                    <td scope="col" class="text-center">@{{order.id}}</td>
+                    <td scope="col">@{{order.fullname}}</td>
                     @if (Auth::guard('admin')->user()->role == 'admin')
-                        <td class="text-center">@{{ tour.admin.name }}</td>
+                        <td scope="col" class="text-center"><a href="@{{order.admin_id}}">@{{order.admin_name}}</a></td>
                     @else
-                        <td class="text-center">@{{ tour.ngay_di[0].start_date || 'Chưa có' | date:'dd/MM/yyyy'}}</td>
+                        <td scope="col" class="text-center">@{{order.phone}}</td>
                     @endif
-                    <td class="text-end">@{{ tour.ngay_di[0].price || 0  | number}}</td>
-                    <!-- Người đăng ký -->
-                    <td class="text-center">0</td>
-                    <!-- trạng thái -->
-                    <td class="text-center" ng-bind="tour.is_hidden !== 0 ? 'Ẩn' : 'Hiện'"></td>
-
-                    <td class="text-center">
-            <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info">Sửa</a>
-            <button class="btn btn-outline-danger">Xóa</button>
-        </td>
+                    <td scope="col" class="text-center">@{{order.status}}</td>
+                    <td scope="col" class="text-end">@{{order.total_price | number}} ₫</td>
+                    <td scope="col" class="text-center"><input type="datetime-local" disabled value="@{{order.created_at}}" class="border-0 bg-none"></td>
+                    <td scope="col" class="text-center">
+                        <a href="">Sửa</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -89,12 +83,14 @@
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
-            $http.get('/admin/api/danh-sach-tour/{{ Auth::guard("admin")->user()->id }}').then(
+            $http.get('/admin/api/danh-sach-don-hang/{{ Auth::guard('admin')->user()->id }}').then(
                 function(res) { // success
-                    $scope.tours = res.data.data;
+                    $scope.order_list = res.data.data;
+                    console.log($scope.order_list);
+
                 },
                 function(res) { // error
-                    console.error('Lỗi khi lấy danh sách tours:', error); // Ghi lỗi
+                    console.error('Lỗi khi lấy danh sách đơn hàng:', error); // Ghi lỗi
                 }
             )
         };

@@ -116,11 +116,7 @@
                              <li>
                                  <hr class="dropdown-divider">
                              </li>
-                             <form action="{{ route('dangxuat') }}" method='post'>
-                                 @csrf
-                                 <!-- <button class="btn btn-primary rounded-pill">Đăng Xuất</button> -->
-                                 <li><button class="dropdown-item">Đăng xuất</button></li>
-                             </form>
+                             <li><a class="dropdown-item" href="{{ route('dangxuat') }}">Đăng xuất</a></li>
                              <!-- <li><a class="dropdown-item" href="#">Đăng xuất</a></li> -->
                          @endauth
                          <li class="p-2"><a class="container-fluid btn btn-primary" href="{{ route('search_tong_quat') }}">Search Tour</a></li>
@@ -231,5 +227,32 @@
      </script>
 
  </header>
+     <!-- Modal Bootstrap -->
+     <div class="modal" id="errorModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="errorModalLabel">Thông báo</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p> {{ session('error') }}</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+     <!-- Hiển thị Modal nếu có lỗi -->
+     <script>
+         document.addEventListener('DOMContentLoaded', function() {
+             @if (session('error'))
+                 // Kích hoạt popup
+                 var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                 errorModal.show();
+             @endif
+         });
+     </script>
 
  <!-- header END -->

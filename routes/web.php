@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AdminTourController;
 use App\Http\Controllers\AdminNewController;
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\UserAccountController;
@@ -24,13 +25,17 @@ Route::get('/gioi-thieu', [UserPageController::class, 'about'])->name('about');
 // SEARCH TOUR TỔNG QUÁT
 Route::get('/search-tong-quat', [UserTourController::class, 'fullsearch'])->name('search_tong_quat');
 Route::post('/search_tong_quat/search_all', [UserTourController::class, 'Allsearch'])->name('search_tong_quat.search_all');
+// SEARCH TOUR TỔNG QUÁT TRANG CHỦ
+
+Route::post('/', [UserTourController::class, 'homesearchfull'])->name('search_homefull.homesearch_all');
 
 // * login/register/logout ----------------------------------------------------------------
 Route::get('/dang-nhap', [UserPageController::class, 'login'])->name('login');
 Route::post('/dang-nhap', [UserLoginController::class, 'login'])->name('login_loading');
 Route::get('/dang-ky', [UserPageController::class, 'register'])->name('register');
 Route::post('/dang-ky', [UserLoginController::class, 'register'])->name('register_loading');
-Route::post('/dangxuat', [UserLoginController::class, 'logout'])->name('dangxuat');
+Route::post('/dang-xuat', [UserLoginController::class, 'logout'])->name('dangxuat');
+Route::get('/dang-xuat', [UserLoginController::class, 'logout'])->name('dangxuat');
 
 
 // * Tour ----------------------------------------------------------------
@@ -80,7 +85,7 @@ Route::prefix('tai-khoan')->group(function () {
 });
 
 
-Route::prefix('api')->group(function(){
+Route::prefix('api')->group(function () {
     Route::get('/get-price/{date_id}', [UserNgayDiController::class, 'getPrice']);
     Route::get('/notifications', [NotificationController::class, 'getUserNotificationCount']);
 });
@@ -104,35 +109,53 @@ Route::post('/dang-ky-doi-tac/loading', [AdminLoginController::class, 'register_
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_provider'])->group(function () {
     // Route cho logout admin
     Route::post('/dang-xuat', [AdminLoginController::class, 'logout'])->name('logout');
-    
+
+    Route::view('/quan-ly-don-hang', 'admin.order')->name('order');
     Route::view('/quan-ly-tour', 'admin.tour')->name('tourManagement');
     Route::view('/them-tour', 'admin.tour_insert')->name('tourInsert');
     Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
-    
+
     Route::view('/quan-ly-tt', 'admin.news')->name('newsManagement');
     Route::view('/them-tt', 'admin.new_insert')->name('newInsert');
     Route::post('/them-tt/loading', [AdminNewController::class, 'newInsert_'])->name('newInsert_');
 
     Route::view('/quan-ly-dmtt', 'admin.category_new')->name('CateNewsManagement');
+    Route::view('/them-catenew', 'admin.catenew_insert')->name('catenewInsert');
+    Route::post('/them-catenew/loading', [AdminNewController::class, 'catenewInsert_'])->name('catenewInsert_');
+    Route::get('/sua-category-new/{id}', [AdminNewController::class, 'catenewEdit'])->name('catenewEdit');
+    Route::post('/sua-category-new/{id}', [AdminNewController::class, 'catenewEdit_update'])->name('catenewEdit_update');
+
     Route::view('/quan-ly-dmtour', 'admin.category_tour')->name('CateToursManagement');
+    Route::view('/them-catetour', 'admin.catetour_insert')->name('catetourInsert');
+    Route::post('/them-catetour/loading', [AdminTourController::class, 'catetourInsert_'])->name('catetourInsert_');
+    Route::get('/sua-category-tour/{id}', [AdminTourController::class, 'catetourEdit'])->name('catetourEdit');
+    Route::post('/sua-category-tour/{id}', [AdminTourController::class, 'catetourEdit_update'])->name('catetourEdit_update');
 
     Route::view('/quan-ly-users', 'admin.users')->name('usersManagement');
     // Provide đối tác
     Route::view('/quan-ly-provide', 'admin.users_provide')->name('providesManagement');
     Route::view('/them-provider', 'admin.provider_insert')->name('providerInsert');
     Route::post('/them-provider/loading', [AdminUsersController::class, 'providerInsert_'])->name('providerInsert_');
+    Route::get('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit'])->name('providerEdit');
+    Route::post('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit_update'])->name('providerEdit_update');
     // Person đối tác
     Route::view('/quan-ly-person', 'admin.users_person')->name('personsManagement');
     Route::view('/them-person', 'admin.person_insert')->name('personInsert');
     Route::post('/them-person/loading', [AdminUsersController::class, 'personInsert_'])->name('personInsert_');
+    Route::get('/sua-person/{id}', [AdminUsersController::class, 'personEdit'])->name('personEdit');
+    Route::post('/sua-person/{id}', [AdminUsersController::class, 'personEdit_update'])->name('personEdit_update');
     // Admin đối tác
     Route::view('/quan-ly-admin', 'admin.users_admin')->name('adminusersManagement');
     Route::view('/them-admin', 'admin.admin_insert')->name('adminInsert');
     Route::post('/them-admin/loading', [AdminUsersController::class, 'adminInsert_'])->name('adminInsert_');
+    Route::get('/sua-adminuser/{id}', [AdminUsersController::class, 'adminEdit'])->name('adminEdit');
+    Route::post('/sua-adminuser/{id}', [AdminUsersController::class, 'adminEdit_update'])->name('adminEdit_update');
+
 
     Route::get('/sua-tour/{id}', [AdminTourController::class, 'tourEdit'])->name('tourEdit');
     Route::post('/sua-tour/{id}', [AdminTourController::class, 'tourEdit_update'])->name('tourEdit_update');
-
+    // Route::delete('/tours/{id}', [AdminTourController::class, 'destroy'])->name('tour_destroy');
+    
     Route::get('/sua-tintuc/{id}', [AdminNewController::class, 'newEdit'])->name('newEdit');
     Route::put('/sua-tintuc/{id}', [AdminNewController::class, 'newEdit_update'])->name('newEdit_update');
     // Route::post('/sua-tintuc/loading', [AdminNewController::class, 'newEdit_'])->name('newEdit_');
@@ -140,17 +163,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     // Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
 
     // Route::get('/quan-ly-tour', [TourController::class, 'quanLyTour'])->name('quanLyTour');
-    Route::prefix('/api')->group(function(){
-        Route::get('/danh-sach-tour/{admin_id}', [AdminTourController::class,'tours']);
-        Route::get('/danh-muc-tour', [AdminCategoryController::class,'index']); // lấy danh mục categories tour
-        Route::get('/danh-sach-admin', [AdminController::class,'index']); // lấy danh mục categories tour
-        Route::get('/danh-sach-category-tour', [AdminTourController::class,'category_tour']);
+    Route::prefix('/api')->group(function () {
+        Route::get('/danh-sach-don-hang/{admin_id}', [AdminOrderController::class, 'order']);
 
-         //New Admin
-    Route::get('/danh-sach-new/{admin_id}', [AdminNewController::class,'news']);
-    Route::get('/danh-muc-new', [AdminCategoryController::class,'index_tt']); // lấy danh mục categories new
-    Route::get('/danh-sach-admin', [AdminController::class,'index_tt']); // lấy danh mục categories tour
-    Route::get('/danh-sach-category-new', [AdminNewController::class,'category_new']);
+
+        Route::get('/danh-sach-tour/{admin_id}', [AdminTourController::class, 'tours']);
+        Route::get('/danh-muc-tour', [AdminCategoryController::class, 'index']); // lấy danh mục categories tour
+        Route::get('/danh-sach-admin', [AdminController::class, 'index']); // lấy danh mục categories tour
+        Route::get('/danh-sach-category-tour', [AdminTourController::class, 'category_tour']);
+
+        //New Admin
+        Route::get('/danh-sach-new/{admin_id}', [AdminNewController::class, 'news']);
+        Route::get('/danh-muc-new', [AdminCategoryController::class, 'index_tt']); // lấy danh mục categories new
+        Route::get('/danh-sach-admin', [AdminController::class, 'index_tt']); // lấy danh mục categories tour
+        Route::get('/danh-sach-category-new', [AdminNewController::class, 'category_new']);
         // Admin role user
         Route::get('/danh-sach-useradmin', [AdminUsersController::class, 'getAdmins']);
         Route::get('/danh-sach-user', [AdminUsersController::class, 'getAllUsers']);
@@ -158,7 +184,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
         Route::get('/danh-sach-person', [AdminUsersController::class, 'getAllPersons']);
         Route::get('/danh-sach-adminusers', [AdminUsersController::class, 'getAdminUsers']);
     });
-    
+
 });
 // Setup danh mục tin tức
 

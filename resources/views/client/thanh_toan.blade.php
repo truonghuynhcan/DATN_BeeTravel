@@ -7,19 +7,19 @@
         <div class="alert alert-danger">
             <h1>Task</h1>
             <ol>
-                <li><strong>thanh toán xong thì hiện bill</strong></li>
+                <li>Xử lý lấy ngày đi tương lai gần nhất</li>
                 <li>Xử lý lại thêm người đi 2 mà bị mất text đã nhập của người đi 1</li>
-                <li>Xử lý tự động điền lại dữ liệu cũ sau khi bắt lỗi</li>
                 <li>Thống nhất thêm với thầy là giá của cá nhân sẽ để đâu?</li>
                 <li>dùng js tính tổng >0 mới cho click thanh toán</li>
                 <li> thêm trường auto điền giá trị cũ vào các form đã nhập</li>
-                <li>Xử lý lấy ngày đi tương lai gần nhất</li>
             </ol>
-            
+
         </div>
         <div class="alert alert-success">
             <h1>Done</h1>
             <ol>
+                <li>Xử lý tự động điền lại dữ liệu cũ sau khi bắt lỗi</li>
+                <li>thanh toán xong thì hiện bill</li>
                 <li>chèn zô được db customer</li>
                 <li>chèn zô được db order</li>
                 <li>bắt lỗi sau khi post</li>
@@ -61,10 +61,10 @@
                                 <td>Ngày khởi hành</td>
                                 <td class="d-flex gap-2">
                                     <select class="form-select form-select-sm form-select-date" name="ngaykhoihanh" style="width: fit-content;" onchange="fetchPrice()">
-                                        @if (old('ngaykhoihanh'))
+                                        {{-- @if (old('ngaykhoihanh'))
                                             <option value="{{ old('ngaykhoihanh') }}" selected>làm js tìm</option>
-                                        @endif
-                                        @foreach ($tour->ngaydi as $item)
+                                        @endif --}}
+                                        @foreach ($tour->ngayDi as $item)
                                             <option value="{{ $item->id }}">{{ $item->start_date }}</option>
                                         @endforeach
                                     </select>
@@ -86,7 +86,43 @@
                         </div>
                     </div>
                 </section>
-
+                <!-- Thông tin liên hệ -->
+                <section class="bg-body py-2 mb-3">
+                    <div class="p-2 border-bottom border-light-subtle">
+                        <strong class="text-primary">THÔNG TIN LIÊN HỆ</strong>
+                    </div>
+                    <div class="px-2 pt-2">
+                        <div class="form-group mb-2">
+                            <label for="name">Họ và tên <span class="text-danger">*</span></label>
+                            <div class="d-flex">
+                                <select name="user-quydanh" class="form-select w-auto fw-bold" id="user-quydanh">
+                                    @if (old('user-quydanh') == 'mr')
+                                        <option value="mr">Quý Ông</option>
+                                    @endif
+                                    @if (old('user-quydanh') == 'mrs')
+                                        <option value="mrs">Quý Bà</option>
+                                    @endif
+                                    <option value="0">Chọn quý danh</option>
+                                    <option value="mr">Quý Ông</option>
+                                    <option value="mrs">Quý Bà</option>
+                                </select>
+                                <input name="user-fullname" type="text" class="form-control" value="{{ old('user-fullname') ?? (auth()->check() ? auth()->user()->name : '') }}" placeholder="Họ và tên: " id="name">
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="email">Email</label>
+                            <input name="user-email" type="email" value="{{ old('user-email') ?? (auth()->check() ? auth()->user()->email : '') }}" class="form-control" id="email">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="phone">Số điện thoại <span class="text-danger">*</span></label>
+                            <input name="user-phone" type="tel" value="{{ old('user-phone') ?? (auth()->check() ? auth()->user()->phone : '') }}" class="form-control" id="phone">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="address">Địa chỉ <span class="text-danger">*</span></label>
+                            <input name="user-address" type="text" value="{{ old('user-address') ?? (auth()->check() ? auth()->user()->address : '') }}" class="form-control" id="address">
+                        </div>
+                    </div>
+                </section>
                 <!-- Thông tin hành khách -->
                 <section class="bg-body py-2 mb-3">
                     <div class="p-2 border-bottom border-light-subtle d-flex justify-content-between">
@@ -227,7 +263,7 @@
                                     newForm.innerHTML = `
                                         <div class="col-md-4">
                                           <select name="${type}-quydanh[]" class="form-select" id="${type}-quydanh-${i}" aria-label="Floating label select example">
-                                            <option value="" selected>Quý danh</option>
+                                            <option value="0" selected>Quý danh</option>
                                             <option value="mr">Quý Ông</option>
                                             <option value="mrs">Quý Bà</option>
                                           </select>
@@ -252,37 +288,7 @@
                     </div>
                 </section>
 
-                <!-- Thông tin liên hệ -->
-                <section class="bg-body py-2 mb-3">
-                    <div class="p-2 border-bottom border-light-subtle">
-                        <strong class="text-primary">THÔNG TIN LIÊN HỆ</strong>
-                    </div>
-                    <div class="px-2 pt-2">
-                        <div class="form-group mb-2">
-                            <label for="name">Họ và tên <span class="text-danger">*</span></label>
-                            <div class="d-flex">
-                                <select name="user-quydanh" class="form-select w-auto fw-bold" id="user-quydanh">
-                                    <option value="" selected >Chọn quý danh</option>
-                                    <option value="mr">Quý Ông</option>
-                                    <option value="mrs">Quý Bà</option>
-                                </select>
-                                <input name="user-fullname" type="text" class="form-control" value="{{ old('user-fullname')??( auth()->check() ? auth()->user()->name : '') }}" placeholder="Họ và tên: " id="name">
-                            </div>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="email">Email</label>
-                            <input name="user-email" type="email" value="{{ old('user-email')??( auth()->check() ? auth()->user()->email : '' )}}" class="form-control" id="email">
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="phone">Số điện thoại <span class="text-danger">*</span></label>
-                            <input name="user-phone" type="tel" value="{{ old('user-phone')??( auth()->check() ? auth()->user()->phone : '' )}}" class="form-control" id="phone">
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="address">Địa chỉ <span class="text-danger">*</span></label>
-                            <input name="user-address" type="text" value="{{ old('user-address')??( auth()->check() ? auth()->user()->address : '') }}" class="form-control" id="address">
-                        </div>
-                    </div>
-                </section>
+
 
 
                 <!-- Voucher giảm giá -->

@@ -5,7 +5,7 @@
 @section('main')
     <header class="bg-body rounded p-2 d-flex justify-content-between mb-2">
         <h2 class="">Quản lý danh mục tour</h2>
-        <a href="" class="btn btn-primary" style="height: fit-content;">Thêm danh mục tour</a>
+        <a href="{{route('admin.catetourInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm danh mục tour</a>
     </header>
     <div class="alert alert-warning">
         <h4>Todo</h4>
@@ -23,6 +23,7 @@
                     <th scope="col" class="text-center">Tên danh mục tour</th>
                     <th scope="col" class="text-center">Slug tour</th>
                     <th scope="col" class="text-center">Loại Tour</th>
+                    <th scope="col" class="text-center">Số lượng tour</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
                     <th scope="col">Hành động</th>
@@ -35,13 +36,14 @@
                     <!-- Người đăng ký -->
                     <td class="text-center">@{{ tourcate.slug }}</td>
                     <td class="text-center">@{{ tourcate.tour_nuoc_ngoai }}</td>
+                    <td class="text-center">@{{ tourcate.tours_count }}</td> <!-- Hiển thị số lượng tour -->
                     <!-- Người đăng ký -->
                     <!-- <td class="text-center">@{{ tourcate.content }}</td> -->
                     <!-- trạng thái -->
                     <!-- <td class="text-center" ng-bind=" tourcate.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
                     <td>
-                        <a href="" class="btn btn-info">Sửa</a>
+                        <a href="/admin/sua-category-tour/@{{ tourcate.id }}" class="btn btn-info">Sửa</a>
                         <button class="btn btn-outline-danger">Xóa</button>
                     </td>
                 </tr>
@@ -53,7 +55,7 @@
 @section('viewFunction')
     <script>
         viewFunction = function($scope, $http) {
-            $http.get('api/danh-sach-category-tour').then(
+            $http.get('/admin/api/danh-sach-category-tour').then(
                 function(res) { // success
                     $scope.category_tour = res.data.data;
                 },

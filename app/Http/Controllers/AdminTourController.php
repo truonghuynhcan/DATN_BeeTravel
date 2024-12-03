@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Image;
@@ -57,7 +58,7 @@ class AdminTourController extends Controller
     //     ];
         // Lấy tất cả danh mục tin tức
         $category_tour = Category::all(); // Hoặc bạn có thể thêm điều kiện nếu cần
-    
+        $category_tour = Category::withCount('tours')->get();
         // Trả về kết quả
         return response()->json([
             'status' => true,
@@ -66,6 +67,84 @@ class AdminTourController extends Controller
         ], 200);
     
 }
+
+public function catetourEdit($catetour_id){
+    $category_tour = Category::with(['tours'])->find($catetour_id);
+    if (!$category_tour) {
+        return redirect()->back()->withErrors('Category tour not found!');
+    }
+    return view('admin.catetour_edit', compact('category_tour'));
+}
+
+public function catetourEdit_update(Request $request,$catetour_id){
+    $request->validate([
+        'ten_danh_muc' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255'],
+                'tour_nuoc_ngoai' => ['required', 'string', 'max:255'],
+    ]);
+
+    $catetour_id = Category::find($catetour_id);
+    if (!$catetour_id) {
+        return redirect()->back()->withErrors('Category tour không tồn tại!');
+    }
+
+    $catetour_id->ten_danh_muc = $request->ten_danh_muc;
+    $catetour_id->slug = $request->slug;
+    $catetour_id->tour_nuoc_ngoai = $request->tour_nuoc_ngoai;
+    $catetour_id->save();
+    return redirect()->route('admin.CateToursManagement')->with('success', 'Cập nhật category tour thành công!');
+}
+public function catetourInsert_(Request $request)
+    {
+        $validated = $request->validate(
+            [
+                //  * Provider information
+                'ten_danh_muc' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255'],
+                'tour_nuoc_ngoai' => ['required', 'string', 'max:255'],
+            ],
+            [
+                // 'admin_id.required' => 'Bạn chưa chọn đối tác.',
+                // 'admin_id.integer' => 'ID của admin phải là số nguyên.',
+                // 'admin_id.exists' => 'Admin không tồn tại trong hệ thống.',
+
+                // 'category_id.required' => 'Bạn chưa chọn Danh mục cho tin tức .',
+                // 'category_id.integer' => 'ID của danh mục phải là số nguyên.',
+                // 'category_id.exists' => 'Danh mục không tồn tại trong hệ thống.',
+
+                // * Provider Information
+                'ten_danh_muc.required' => 'Tên danh mục tour là bắt buộc.',
+                'ten_danh_muc.max' => 'Tên danh mục tour không được vượt quá :max ký tự.',
+
+                'tour_nuoc_ngoai.required' => 'Loại tour là bắt buộc phải điền.',
+
+
+                // * Ảnh
+                // 'image_url.required' => 'Cần thêm ảnh đại diện',
+                // 'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
+                // 'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
+                // 'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
+
+            ]
+        );
+
+        $catetour = new Category();
+        $catetour->ten_danh_muc = $validated['ten_danh_muc'];
+
+        if (!empty($validated['slug'])) {
+            $catetour->slug = $validated['slug'];
+        } else {
+            $catetour->slug = Str::slug($validated['ten_danh_muc']);
+        }
+        $catetour->tour_nuoc_ngoai = $validated['tour_nuoc_ngoai'];
+        $catetour->save();
+
+
+        
+        // if (isset($validated['departure-date']) && !empty($validated['departure-date']) && !$validated['departure-date'][0]===null) {
+        // }
+        return redirect()->route('admin.CateToursManagement')->with('success', 'Category tours added successfully!');
+    }
 
     // ! Tạo api lấy danh sách tour
     // ! Tạo api lấy danh sách tour
@@ -287,6 +366,10 @@ class AdminTourController extends Controller
     public function index()
     {
         //
+        // Lấy tất cả tour không có bản ghi booking liên quan
+    // $tours = Tour::doesntHave('category', 'ngayDi', 'images', 'Admin')->get(); // Thay 'bookings' bằng mối quan hệ thật sự
+
+    // return view('admin.CateToursManagement', compact('tours'));
     }
 
     /**
@@ -332,8 +415,27 @@ class AdminTourController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    // $tour = Tour::find($id);
+    
+    // if (!$tour) {
+    //     return redirect()->back()->withErrors('Tour không tồn tại!');
+    // }
+
+    // // Kiểm tra nếu có bản ghi nào tham chiếu đến tin tức này qua Admin
+    // // và Comments (hoặc bất kỳ mối quan hệ nào khác mà bạn có)
+    // $hasAdmin = $tour->admin()->exists(); // Kiểm tra mối quan hệ với Admin
+    // $hasCate = $tour->category()->exists(); // Kiểm tra mối quan hệ với Comments
+    // $hasngayDi = $tour->ngayDi()->exists(); // Kiểm tra mối quan hệ với Comments
+    // $hasimages = $tour->images()->exists(); // Kiểm tra mối quan hệ với Comments
+    // if ($hasAdmin || $hasCate || $hasngayDi || $hasimages) {
+    //     return redirect()->back()->withErrors('Không thể xóa tin tức có liên quan!');
+    // }
+
+    // // Xóa tour nếu không có bản ghi nào tham chiếu
+    // $tour->delete();
+
+    // return redirect()->route('admin.tourManagement')->with('success', 'Xóa tour thành công!');
+}
 }

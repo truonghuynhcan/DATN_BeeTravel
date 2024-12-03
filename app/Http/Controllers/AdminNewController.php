@@ -92,7 +92,7 @@ class AdminNewController extends Controller
     //     ];
         // Lấy tất cả danh mục tin tức
         $category_new = NewsCategory::all(); // Hoặc bạn có thể thêm điều kiện nếu cần
-    
+        // $category_new = NewsCategory::withCount('news')->get();
         // Trả về kết quả
         return response()->json([
             'status' => true,
@@ -101,6 +101,82 @@ class AdminNewController extends Controller
         ], 200);
     
 }
+
+public function catenewEdit($catenew_id){
+    $category_new = NewsCategory::with(['news'])->find($catenew_id);
+    if (!$category_new) {
+        return redirect()->back()->withErrors('Category new not found!');
+    }
+    return view('admin.catenew_edit', compact('category_new'));
+}
+
+public function catenewEdit_update(Request $request,$catenew_id){
+    $request->validate([
+        'title' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255'],
+    ]);
+
+    $catenew_id = NewsCategory::find($catenew_id);
+    if (!$catenew_id) {
+        return redirect()->back()->withErrors('Category new không tồn tại!');
+    }
+
+    $catenew_id->title = $request->title;
+    $catenew_id->slug = $request->slug;
+    $catenew_id->save();
+    return redirect()->route('admin.CateNewsManagement')->with('success', 'Cập nhật category new thành công!');
+}
+
+public function catenewInsert_(Request $request)
+    {
+        $validated = $request->validate(
+            [
+                //  * Provider information
+                'title' => ['required', 'string', 'max:255'],
+                'slug' => ['nullable', 'string', 'max:255'],
+            ],
+            [
+                // 'admin_id.required' => 'Bạn chưa chọn đối tác.',
+                // 'admin_id.integer' => 'ID của admin phải là số nguyên.',
+                // 'admin_id.exists' => 'Admin không tồn tại trong hệ thống.',
+
+                // 'category_id.required' => 'Bạn chưa chọn Danh mục cho tin tức .',
+                // 'category_id.integer' => 'ID của danh mục phải là số nguyên.',
+                // 'category_id.exists' => 'Danh mục không tồn tại trong hệ thống.',
+
+                // * Provider Information
+                'title.required' => 'Tên danh mục tin tức là bắt buộc.',
+                'title.max' => 'Tên danh mục tin tức không được vượt quá :max ký tự.',
+
+                // 'tour_nuoc_ngoai.required' => 'Loại tour là bắt buộc phải điền.',
+
+
+                // * Ảnh
+                // 'image_url.required' => 'Cần thêm ảnh đại diện',
+                // 'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
+                // 'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
+                // 'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
+
+            ]
+        );
+
+        $catenew = new NewsCategory();
+        $catenew->title = $validated['title'];
+
+        if (!empty($validated['slug'])) {
+            $catenew->slug = $validated['slug'];
+        } else {
+            $catenew->slug = Str::slug($validated['ten_danh_muc']);
+        }
+        // $catenew->tour_nuoc_ngoai = $validated['tour_nuoc_ngoai'];
+        $catenew->save();
+
+
+        
+        // if (isset($validated['departure-date']) && !empty($validated['departure-date']) && !$validated['departure-date'][0]===null) {
+        // }
+        return redirect()->route('admin.CateNewsManagement')->with('success', 'Category news added successfully!');
+    }
 
 
     // ! Thêm tour
@@ -115,7 +191,7 @@ class AdminNewController extends Controller
                 //  * Tour information
                 'title' => ['required', 'string', 'max:255'],
                 'slug' => ['nullable', 'string', 'max:255'],
-                'content' => ['required', 'string', 'max:255'],
+                'content' => ['required', 'string'],
                 'description' => ['required', 'string','max:255'],
 
                 // * Ảnh chính và ảnh phụ
@@ -209,9 +285,9 @@ class AdminNewController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-    }
+{
+    //
+}
 
     /**
      * Show the form for creating a new resource.
@@ -256,8 +332,8 @@ class AdminNewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    //
+}
 }

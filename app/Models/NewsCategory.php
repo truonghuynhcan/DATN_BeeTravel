@@ -32,7 +32,7 @@ class NewsCategory extends Model
     protected $table='news_categories';
     protected $primaryKey = 'id';
     public function news(){
-        return $this->hasMany(News::class);
+        return $this->hasMany(News::class, 'category_id', 'id');
     
     }
 
