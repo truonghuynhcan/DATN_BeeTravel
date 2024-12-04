@@ -76,9 +76,6 @@
                      <li class="nav-item">
                          <a class="nav-link" href="{{ route('news') }}">Tin tức</a>
                      </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{{ route('thanh_toan', '1') }}">Thanh toán</a>
-                     </li>
 
                      <li class="nav-item">
                          {{-- <a class="nav-link" href="{{ route('tour_chi_tiet') }}">Tour desctiption</a> --}}

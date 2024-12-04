@@ -41,7 +41,28 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $item->ngayDi->tour->title }}</h5>
-                                    <p class="card-text">Ngày khởi hành <span><input type="dateTime" value="{{ $item->ngayDi->start_date }}" class="border px-2 text-primary fw-bold" disabled></span></p>
+                                    <p class="card-text m-0">Ngày khởi hành <span><input type="dateTime" value="{{ $item->ngayDi->start_date }}" class="border px-2 text-primary fw-bold" disabled></span></p>
+                                    @switch($item->status)
+                                        @case('confirmed')
+                                            <span class="badge text-bg-primary">Đã xác nhận</span>
+                                        @break
+
+                                        @case('waiting')
+                                            <span class="badge text-bg-secondary">Chờ xác nhận</span>
+                                        @break
+
+                                        @case('finished')
+                                            <span class="badge text-bg-success">Hoàn thành {{ $item->status }}</span>
+                                        @break
+
+                                        @case('cancel')
+                                            <span class="badge text-bg-dark">Hủy {{ $item->status }}</span>
+                                        @break
+
+                                        @default
+                                            <span class="badge text-bg-secondary">Unknown {{ $item->status }}</span>    
+                                    @endswitch
+
                                 </div>
                             </div>
                             <div class="col-2 d-flex justify-content-center align-items-center">
