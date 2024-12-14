@@ -16,6 +16,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserNgayDiController;
 use App\Http\Controllers\UserOrderController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 // ! USER ==================================================================================================================================
@@ -45,10 +46,9 @@ Route::get('/tour-chi-tiet/{slug}', [UserTourController::class, 'chitiet'])->nam
 Route::get('/tour/{id}', [UserTourController::class, 'chitietid'])->name('tour_chi_tiet');
 Route::get('/tour/price', [UserTourController::class, 'getPrice']);
 Route::post('/tour/search', [UserTourController::class, 'searchTours'])->name('tour.search');
-Route::get('/tour/filter', [UserTourController::class, 'filter'])->name('tour.filter');
+Route::get('/filter-tours', [UserTourController::class, 'filterTours'])->name('tour.filter');
 Route::get('/category/{id}', [UserTourController::class, 'showToursByCategory'])->name('tour.category');
 Route::get('/tin-tuc/{id}', [UserNewsController::class, 'showNews'])->name('client.tin_tuc_chi_tiet');
-
 
 // * Thanh toán ----------------------------------------------------------------
 Route::get('/thanh-toan/{id_tour}', [UserOrderController::class, 'viewThanhToan'])->name('thanh_toan');
@@ -114,6 +114,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::view('/quan-ly-tour', 'admin.tour')->name('tourManagement');
     Route::view('/them-tour', 'admin.tour_insert')->name('tourInsert');
     Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
+    
 
     Route::view('/quan-ly-tt', 'admin.news')->name('newsManagement');
     Route::view('/them-tt', 'admin.new_insert')->name('newInsert');
