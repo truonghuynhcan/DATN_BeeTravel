@@ -29,9 +29,10 @@ class UserAccountController extends Controller
 
     public function myTourView()
     {
-        $orders = Order::select('id', 'ngaydi_id', 'user_id')
+        $orders = Order::select('id', 'ngaydi_id', 'user_id','status')
             ->with(['ngayDi.tour:id,image_url,title,slug'])
             ->where('user_id', Auth::id())
+            ->orderBy('id','desc')
             ->get();
         // dd($orders);
         return view('client.user_booking', compact('orders'));

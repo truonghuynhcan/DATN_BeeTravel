@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('image_url')->nullable()->comment('anh bia cho tin tuc');
             $table->integer('reading')->nullable()->comment('luot xem');
             $table->timestamps();
-
+            // $table->boolean('featured')->default(false)->comment('vi tri tin tuc');
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('restrict');
             $table->foreign('category_id')->references('id')->on('news_categories')->onDelete('restrict');
         });

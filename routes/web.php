@@ -113,6 +113,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::view('/quan-ly-don-hang', 'admin.order')->name('order');
     Route::view('/quan-ly-tour', 'admin.tour')->name('tourManagement');
     Route::view('/them-tour', 'admin.tour_insert')->name('tourInsert');
+    // Route::get('/tour/create/option', [AdminTourController::class, 'createOption'])->name('tourInsert');
+    // Route::get('/tour/create', [AdminTourController::class, 'createOption'])->name('admin.tour_insert');
     Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
     
 
@@ -185,7 +187,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
         Route::get('/danh-sach-person', [AdminUsersController::class, 'getAllPersons']);
         Route::get('/danh-sach-adminusers', [AdminUsersController::class, 'getAdminUsers']);
     });
-
+    
 });
 // Setup danh mục tin tức
 

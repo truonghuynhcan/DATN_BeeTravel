@@ -11,6 +11,7 @@ class NgayDi extends Model
     protected $table ='ngay_di';
 
     protected $fillable = [
+        "id",
         'tour_id',
         'start_date',
         'price',

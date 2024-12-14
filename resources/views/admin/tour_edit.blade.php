@@ -58,14 +58,14 @@
                 </section>
 
                 {{-- Nổi bật --}}
-                @if (Auth::guard('admin')->user()->role == 'admin')
-                    <section class="bg-body rounded p-2 mb-3"> <!-- ẩn khi là đối tác -->
+                <!-- @if (Auth::guard('admin')->user()->role == 'admin')
+                    <section class="bg-body rounded p-2 mb-3"> 
                         <h5>Nổi bật</h5>
                         <div class="d-flex">
                             <div class="me-3">
                                 <label for="area" class="form-label">Chọn vị trí</label>
                                 <select name="featured" class="form-select form-select-sm" id="area" aria-label="Small select example">
-                                    <option value="{{ old('featured') ?? $tour->featured }}" selected>Mã vị trí</option>
+                                    <option value="" selected>Mã vị trí</option>
                                     <option value="">1</option>
                                     <option value="">2</option>
                                     <option value="">3</option>
@@ -75,14 +75,14 @@
                             <div class="me-3">
                                 <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
                                 <div class="d-flex">
-                                    <input name="features_start" type="date" class="form-control form-control-sm" id="date1">
+                                    <input name="featured_start" type="date" class="form-control form-control-sm" id="date1">
                                     <span class="mx-2">đến</span>
-                                    <input name="features_end" type="date" class="form-control form-control-sm" id="date2">
+                                    <input name="featured_end" type="date" class="form-control form-control-sm" id="date2">
                                 </div>
                             </div>
                         </div>
                     </section>
-                @endif
+                @endif -->
 
                 <section class="bg-body rounded p-2 mb-3">
                     <label for="slug" class="h5">Slug</label>
@@ -166,7 +166,7 @@
                     </div>
 
 
-                    <button type="button" id="add-departure" class="btn btn-outline-primary">+ thêm ngày giờ khởi hành</button>
+                    <button type="button" id="add-departure" class="btn btn-outline-primary">+ Thêm ngày giờ khởi hành</button>
                 </section>
                 <!-- JS CHO CHỨC NĂNG THÊM NGÀY ĐI -->
                 <script>
@@ -254,6 +254,7 @@
                     </select>
                 </section>
                 <section class="bg-body rounded mb-3 p-2">
+    <section class="bg-body rounded mb-3 p-2">
                     <p class="mb-2">
                     <h5>Ảnh đại diện <span class="text-danger">*</span></h5>
                     </p>
@@ -287,6 +288,7 @@
                         </div>
                     </div>
                 </section>
+</section>
 
                 <!-- js kiểm tra định dạng file và show ảnh demo khi người dùng upfile -->
                 <script>
@@ -341,17 +343,51 @@
 
 
 
-                <section class="bg-body rounded mb-3 p-2">
-                    <div class=" mb-3">
-                        <h6>Phương tiện di chuyển</h6>
-                        <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small>
-                        <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="{{ $tour->transport ?? null }}">
+<section class="bg-body rounded mb-3 p-2">
+                <div class=" mb-3">
+                    <h6>Phương tiện di chuyển</h6>
+                    <!-- <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small> -->
+                    <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="{{ old('transport') ?? $tour->transport}}">
+                </div>
+                <div class="mb-3">
+                    <h6>Thời gian diễn ra tour</h6>
+                    <div class="d-flex gap-2">
+                        <input type="number" name="ngay" id="days" class="form-control form-control-sm" min="0" placeholder="Số ngày">
+                        <span>Ngày</span>
+                        <input type="number" name="dem" id="nights" class="form-control form-control-sm" min="0" placeholder="Số đêm">
+                        <span>Đêm</span>
                     </div>
-                    <div class="">
-                        <h6>Thời gian diễn ra tour</h6>
-                        <input name="duration" type="text" class="form-control" id="duration" placeholder="2n1d, 4n5d, 7n7d" value="{{ $tour->duration ?? null }}">
-                    </div>
-                </section>
+                    <input name="duration" type="text" id="duration" value="{{ old('duration') ?? $tour->duration}}">
+                    <p id="error-message" style="color: red; display: none;">Ngày và đêm chỉ được chênh lệch tối đa 1.</p>
+                </div>
+                {{-- Function to update the duration value --}}
+                <script>
+                    function updateDuration() {
+                        const days = parseInt(document.getElementById('days').value) || 0;
+                        const nights = parseInt(document.getElementById('nights').value) || 0;
+                        const errorMessage = document.getElementById('error-message');
+                        const postBtn = document.getElementById('post-btn');
+                        const draftBtn = document.getElementById('draft-btn');
+
+                        // Check the difference between days and nights
+                        if (Math.abs(days - nights) > 1) {
+                            errorMessage.style.display = 'block';
+                            document.getElementById('duration').value = ''; // Clear duration if validation fails
+                            postBtn.disabled = true; // Disable buttons
+                            draftBtn.disabled = true;
+                        } else {
+                            errorMessage.style.display = 'none';
+                            document.getElementById('duration').value = `${days}N${nights}Đ`; // Update duration if validation passes
+                            postBtn.disabled = false; // Enable buttons
+                            draftBtn.disabled = false;
+                        }
+                    }
+
+                    // Attach event listeners to both inputs
+                    document.getElementById('days').addEventListener('input', updateDuration);
+                    document.getElementById('nights').addEventListener('input', updateDuration);
+                </script>
+            </section>
 
                 <section class="bg-body rounded mb-3 p-2">
                     <label for="">Số lượng đặt tour</label>

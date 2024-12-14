@@ -144,7 +144,7 @@
     </div>
     <div class="d-flex gap-3">
         <div>
-            <input type="radio" id="domestic" name="tour_nuoc_ngoai" value="0" {{ old('tour_nuoc_ngoai') == '0' ? 'checked' : '' }}>
+            <input type="radio" id="domestic" name="tour_nuoc_ngoai" value="0" {{ old('tour_nuoc_ngoai') == '0' ? 'checked' : '' }} >
             <label for="domestic">Tour trong nước</label>
         </div>
         <div>

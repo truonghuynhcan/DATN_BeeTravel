@@ -11,9 +11,22 @@ class UserPageController extends Controller
     public function home()
     {
         $categories = Category::all();
-        $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->limit(9)->get();
+        
+        $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured')
+        // ->where('featured', true) // Chỉ lấy tour nổi bật
+        // Lấy danh sách tour nổi bật, sắp xếp theo featured (false trước, true sau)
+    // $tours = Tour::where('featured', true)
+    //     ->orderBy('featured', 'asc') // Sắp xếp theo featured tăng dần
+        // ->orderBy('created_at', 'asc') // Sắp xếp theo created_at tăng dần
+        // ->limit(32)->get();
+        
+        
+        ->orderBy('featured', 'asc') // Sắp xếp theo featured tăng dần
+        ->get();
         $data = session('data', []);
-        $latestNews = News::orderBy('created_at', 'desc')->take(4)->get();
+        $latestNews = News::select('id', 'category_id', 'image_url', 'title', 'slug', 'description', 'content', 'reading')
+        ->orderBy('reading', 'asc') // Sắp xếp theo featured tăng dần
+        ->limit(4)->get();
         return view('client.home', compact('data','categories', 'tours', 'latestNews'));
     }
 

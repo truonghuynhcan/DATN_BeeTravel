@@ -201,25 +201,22 @@ class UserTourController extends Controller
             $q->select('tour_id', 'price', 'start_date');
         }]);
 
-        // Lọc theo danh mục
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-
         // Lọc theo giá
         if ($request->filled('price_range')) {
-            [$minPrice, $maxPrice] = explode('-', $request->price_range . '-');
+            $range = explode('-', $request->price_range);
+            $minPrice = isset($range[0]) ? (int)$range[0] : null;
+            $maxPrice = isset($range[1]) && $range[1] !== '' ? (int)$range[1] : null;
+
             $query->whereHas('ngayDi', function ($q) use ($minPrice, $maxPrice) {
-                if (!empty($minPrice)) {
-                    $q->where('price', '>=', (int)$minPrice);
+                if (!is_null($minPrice)) {
+                    $q->where('price', '>=', $minPrice);
                 }
-                if (!empty($maxPrice)) {
-                    $q->where('price', '<=', (int)$maxPrice);
+                if (!is_null($maxPrice)) {
+                    $q->where('price', '<=', $maxPrice);
                 }
             });
-            
         }
-        
+
 
         // Lọc theo ngày đi
         if ($request->filled('start_date')) {
