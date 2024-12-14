@@ -11,16 +11,139 @@ use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserOrderController extends Controller
 {
+
+    // ! TÌM ĐƠN HÀNG ĐÃ ĐẶT
+
+    // ? GET
+    public function orderFind()
+    {
+        return view('client.order_find');
+    }
+
+    // ? POST
+    public function orderFind_(Request $request)
+    {
+        // Xác thực dữ liệu người dùng
+        $validated = $request->validate([
+            'madonghang' => ['nullable', 'regex:/^#?[A-Za-z0-9]*$/'], // Cho phép mã đơn hàng trống hoặc bắt đầu với dấu #
+            'email' => 'nullable|email', // Email hợp lệ hoặc trống
+            'confirm_email' => 'nullable|regex:/^[0-9]{6}$/', // Mã xác nhận gồm 6 số
+            'phone' => ['nullable', 'regex:/^0[0-9]{9}$/'], // Số điện thoại hợp lệ
+        ], [
+            'confirm_email.regex' => 'Mã xác nhận phải là 6 chữ số.',
+            'email.email' => 'Email không hợp lệ.',
+            'phone.regex' => 'Số điện thoại không hợp lệ.',
+        ]);
+
+        // Kiểm tra nút nào được nhấn
+        $action = $request->input('action');
+
+        switch ($action) {
+            case 'xacnhan':
+                // Xử lý xác nhận tìm đơn hàng
+                return $this->handleXacNhan($request);
+
+            case 'guilai':
+                return $this->handleGuiMoi($request);
+
+            case 'guimoi':
+                // Xử lý gửi mã xác nhận mới
+                return $this->handleGuiMoi($request);
+
+            default:
+                // Trường hợp không hợp lệ
+                return back()->withErrors(['msg' => 'Hành động không hợp lệ.']);
+        }
+    }
+
+    protected function handleXacNhan($request)
+    {
+        // Loại bỏ dấu '#' khỏi mã đơn hàng (nếu có)
+        $madonghang = str_replace('#', '', $request->madonghang);
+
+        $sessionCode = session('confirmation_code'); // lấy code ra để so sánh
+        $inputCode = $request->confirm_email;
+
+        if ($sessionCode != $inputCode) {
+            return back()
+                ->withInput()
+                ->withErrors(['msg' => 'Hành động không hợp lệ.'])
+                ->withErrors(['confirm_email' => 'Mã xác nhận không đúng.'])
+                ->with('show_confirm_email', true);
+            ;
+        }
+
+        if (!empty($madonghang)) {
+            // nếu có thì chuyển thẳng qua trang chi tiết
+            $order = Order::select('id')->find($madonghang);
+            if ($order) {
+                // ? nếu có dữ liệu -> chuyển sang page trang chi tiết.
+                return redirect()->route("thanh_toan_thanh_cong", $order->id);
+            } else {
+                // ? nếu KO có dữ liệu -> back lại trang cùng với input.
+                return back()
+                    ->withInput()
+                    ->withErrors(['msg' => 'Mã đơn hàng không tồn tại'])
+                    ->with('show_confirm_email', true);
+            }
+        } else {
+            $orders = Order::select('id', 'user_id', 'ngaydi_id', 'total_price', 'status', 'is_paid')
+                ->with(['ngayDi.tour:id,image_url,title,slug'])
+                ->where("email", $request->email)
+                ->orderBy('id', 'desc')
+                ->get();
+
+            return back()->withInput()
+                ->with('success', 'Xem danh sách tour phía dưới.')
+                ->with('show_confirm_email', true)
+                ->with('orders', $orders);
+
+        }
+
+
+
+        // Logic xử lý xác nhận đơn hàng
+        return back()->with('success', 'Xác nhận tìm đơn hàng thành công.');
+    }
+
+    protected function handleGuiLai($request)
+    {
+        // Logic xử lý gửi lại mã
+        return back()->with('success', 'Mã đã được gửi lại.');
+    }
+
+    protected function handleGuiMoi($request)
+    {
+        // Tạo mã xác nhận và lưu vào session
+        $confirmationCode = random_int(100000, 999999);
+        session(['confirmation_code' => $confirmationCode, 'email' => $request->email]);
+
+        // Gửi email mã xác nhận
+        Mail::raw("$confirmationCode là mã xác nhận Bee Travel", function ($message) use ($request) {
+            $message->to($request->email)
+                ->subject('Mã xác nhận');
+        });
+
+        // Thông báo cho người dùng
+        return back()
+            ->withInput()
+            ->with('success', 'Mã xác nhận đã được gửi tới email của bạn.')
+            ->with('show_confirm_email', true);
+    }
+
+
+
 
     public function viewThanhToanThanhCong($order_id)
     {
         // ? check id người dùng phải trùng với id trong db thì mới xem được phần của mình
         $order_raw = Order::where('id', $order_id)->first();
 
-        if ($order_raw->user_id==null || $order_raw->user_id != Auth::id()) {
+        if ($order_raw->user_id == null || $order_raw->user_id != Auth::id()) {
             // ? NẾU ID TỪ DB NULL HOẶC KO TRÙNG
             return redirect()->route('login')->with('error', 'Bạn cần phải đăng nhập để xem tour đã đặt');
         } else {
@@ -147,7 +270,7 @@ class UserOrderController extends Controller
             'toddler' => 0,
             'infant' => 0,
         ];
-        $has_adult=false;
+        $has_adult = false;
         foreach ($customer_type as $type) {
             if (isset($validated["{$type}-quydanh"])) {
                 foreach ($validated["{$type}-quydanh"] as $key => $quydanh) {
@@ -162,7 +285,7 @@ class UserOrderController extends Controller
 
                         // Cần phải có ít nhất 1 người lớn
                         if ($type == "adult") {
-                            $has_adult=true;
+                            $has_adult = true;
                         }
                     }
                 }
@@ -172,7 +295,7 @@ class UserOrderController extends Controller
         // nếu ko có ngườilớn
         if (!$has_adult) {
             $order->delete();
-            return redirect()->back()->with('error','Cần phải có ít nhất 1 người lớn')->withInput();
+            return redirect()->back()->with('error', 'Cần phải có ít nhất 1 người lớn')->withInput();
         }
         $order->adult_count = $count['adult'];
         $order->child_count = $count['child'];

@@ -6,7 +6,6 @@
 <div class="container">
         <div class="row">
             <div class="col-7 p-lg-3">
-                <button type="button" class="btn-close" aria-label="Close"></button>
                 <p class="text-center text-uppercase fs-4 fst-italic p-4"><b>Đăng Nhập</b></p>
                 <form action="" method="post">
                     @csrf
