@@ -21,11 +21,9 @@
                     <th scope="col" class="text-center">Ảnh</th>
                     <th scope="col" class="text-center">Tên người dùng</th>
                     <th scope="col" class="text-center">Email</th>
-                    @if (Auth::guard('admin')->user()->role == 'admin')
-                        <th scope="col" class="text-center">Phân quyền</th>
-                    @else (Auth::guard('admin')->user()->role == 'provider')
-                        <th scope="col" class="text-center">Phân quyền</th>
-                    @endif
+                    @if (Auth::guard('admin')->user()->role == 'admin' || Auth::guard('admin')->user()->role == 'provider' || Auth::guard('admin')->user()->role == 'pending')
+    <th scope="col" class="text-center">Phân quyền</th>
+@endif
                     <th scope="col" class="text-end">Số điện thoại</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
@@ -94,7 +92,7 @@
     <script>
         viewFunction = function($scope, $http) {
             // Gửi yêu cầu lấy danh sách người dùng cho cả 'admin' và 'provider'
-        const roles = ['admin', 'provider']; // Mảng chứa cả hai vai trò
+        const roles = ['admin', 'provider','pending']; // Mảng chứa cả hai vai trò
         $http.get(`/admin/api/danh-sach-useradmin?roles=${roles.join(',')}`).then(
                 function(res) { // success
                     $scope.admins = res.data.data;

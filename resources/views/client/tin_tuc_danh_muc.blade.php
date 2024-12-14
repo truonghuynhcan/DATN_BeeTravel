@@ -40,7 +40,7 @@
         <div class="col-9 border-end ">
             <div class="card text-center">
             <a href="/tin_tuc_chi_tiet/{{$item->category_id}}">
-            <img src="{{ asset($item->image_url) }}" class="card-img-top" height="400px" alt="...">
+            <img src="assets/image_new/{{ asset($item->image_url) }}" class="card-img-top" height="400px" alt="...">
             </a>
                 <div class="card-body">
                     <h5 class="card-title">{{$item->title}}</h5>{{$item->description}}</p>
@@ -52,7 +52,7 @@
         <div class="col-3">
         @foreach($reading as $item)
             <div class="card text-center mb-3">
-                <img src="{{ asset($item->image_url) }}" class="card-img-top object-fit-cover" height="165px" alt="...">
+                <img src="assets/image_new/{{ asset($item->image_url) }}" class="card-img-top object-fit-cover" height="165px" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ $item->title }}</h5>
                 </div>

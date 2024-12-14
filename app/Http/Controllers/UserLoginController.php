@@ -52,6 +52,8 @@ class UserLoginController extends Controller
     function logout()
     {
         Auth::logout();
+        request()->session()->invalidate(); // Huỷ session hiện tại
+        request()->session()->regenerateToken(); // Tạo token mới cho bảo mật
         return redirect()->route('login');
     }
 }

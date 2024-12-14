@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\createNotification;
 use App\Models\Customer;
 use App\Models\NgayDi;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Tour;
 use Carbon\Carbon;
@@ -16,11 +17,16 @@ class UserOrderController extends Controller
 
     public function viewThanhToanThanhCong($order_id)
     {
-        $order = Order::where('user_id', Auth::id())->with('ngayDi', 'customer')->find($order_id);
-        if (!$order) {
-            // Nếu không có đơn hàng, quay lại trang trước
-            return redirect()->route('home');
+        // ? check id người dùng phải trùng với id trong db thì mới xem được phần của mình
+        $order_raw = Order::where('id', $order_id)->first();
+
+        if ($order_raw->user_id==null || $order_raw->user_id != Auth::id()) {
+            // ? NẾU ID TỪ DB NULL HOẶC KO TRÙNG
+            return redirect()->route('login')->with('error', 'Bạn cần phải đăng nhập để xem tour đã đặt');
         } else {
+            // ? NẾU ĐÚNG
+            // LẤY INFO ORDER & TOUR
+            $order = $order_raw->with('ngayDi', 'customer')->first();
             $tour = Tour::select('id', 'admin_id', 'title', 'slug', 'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
             return view('client.thanh_toan_thanh_cong', compact('order', 'tour'));
         }
@@ -122,7 +128,7 @@ class UserOrderController extends Controller
         // nhập thông tin
         $order = new Order();
         $order->ngaydi_id = $validated['ngaykhoihanh']; // lấy id ngày khởi hành
-        $order->user_id = auth()->id ?? null;
+        $order->user_id = Auth::id();
         $order->gender = $validated['user-quydanh'];
         $order->fullname = $validated['user-fullname'];
         $order->phone = $validated['user-phone'];
@@ -181,8 +187,8 @@ class UserOrderController extends Controller
             $noti = createNotification(
                 'success',
                 'Đặt tour thành công',
-                'Tour: ' . $tour_title . ' </br>Khởi hành: ' . $ngaydi->start_date,
-                'imrs2.png',  // hoặc null nếu không có ảnh nền
+                'Tour: ' . $tour_title->title . '.<br>Khởi hành lúc: ' . $ngaydi->start_date,
+                'dattourthanhcong.jpg',  // hoặc null nếu không có ảnh nền
             );
         }
 

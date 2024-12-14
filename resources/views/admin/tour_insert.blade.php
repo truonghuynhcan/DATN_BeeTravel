@@ -84,29 +84,253 @@ Thêm tour
 
             {{-- Nổi bật --}}
             @if (Auth::guard('admin')->user()->role == 'admin')
-            <section class="bg-body rounded p-2 mb-3"> <!-- ẩn khi là đối tác -->
-                <h5>Nổi bật</h5>
-                <div class="d-flex">
-                    <div class="me-3">
-                        <label for="area" class="form-label">Chọn vị trí</label>
-                        <select name="featured" class="form-select form-select-sm" id="area" aria-label="Small select example">
-                            <option selected>Mã vị trí</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                            <option value="">3</option>
-                            <option value="">4</option>
-                        </select>
-                    </div>
-                    <div class="me-3">
-                        <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
-                        <div class="d-flex">
-                            <input name="features_start" type="date" class="form-control form-control-sm" id="date1">
-                            <span class="mx-2">đến</span>
-                            <input name="features_end" type="date" class="form-control form-control-sm" id="date2">
-                        </div>
-                    </div>
-                </div>
-            </section>
+            
+
+            <!-- <section class="bg-body rounded p-2 mb-3"> 
+            <h5>Nổi bật</h5>
+<div class="d-flex">
+    <div class="me-3">
+        <label for="area" class="form-label">Chọn vị trí</label>
+        <select name="featured" class="form-select form-select-sm" id="area" aria-label="Small select example">
+            <option selected disabled>Chọn mã vị trí</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+    </div>
+    <div class="me-3">
+        <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
+        <div class="d-flex">
+            <input name="featured_start" type="date" class="form-control form-control-sm" id="date1" value="">
+            <span class="mx-2">đến</span>
+            <input name="featured_end" type="date" class="form-control form-control-sm" id="date2" value="">
+        </div>
+    </div>
+</div>
+            </section> -->
+            <section class="bg-body rounded p-2 mb-3"> 
+    <h5>Nổi bật</h5>
+    <div class="d-flex">
+    
+    <div class="me-3">
+            <label for="area" class="form-label">Chọn vị trí</label>
+            <select name="featured" class="form-select form-select-sm" id="area" aria-label="Small select example" onchange="updateAvailablePositions()">
+                <option selected disabled>Chọn mã vị trí</option>
+                @for ($i = 1; $i <= 30; $i++)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                @endfor
+            </select>
+        </div>
+        
+        <div class="me-3">
+            <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
+            <div class="d-flex">
+            <input name="featured_start" type="datetime-local" class="form-control form-control-sm" id="date1" onchange="updateTourVisibility()" required>
+            <input name="featured_end" type="datetime-local" class="form-control form-control-sm" id="date2" onchange="updateTourVisibility()" required>
+                <!-- <input name="featured_start" type="datetime-local" class="form-control form-control-sm" id="date1" onchange="updateTourVisibility()">
+                <span class="mx-2">đến</span>
+                <input name="featured_end" type="datetime-local" class="form-control form-control-sm" id="date2" onchange="updateTourVisibility()"> -->
+            </div>
+        </div>
+        
+    </div>
+</section>
+<script>
+    // Hàm cập nhật các vị trí có sẵn
+    function updateAvailablePositions() {
+        const selectElement = document.getElementById('area');
+        const selectedPosition = selectElement.value;
+
+        // Lặp qua tất cả các tùy chọn trong dropdown
+        for (let option of selectElement.options) {
+            // Kiểm tra nếu vị trí đã chọn là vị trí hiện tại
+            if (option.value === selectedPosition) {
+                option.style.display = 'none'; // Ẩn vị trí đã chọn
+            } else {
+                option.style.display = 'block'; // Hiện các vị trí khác
+            }
+        }
+
+        // Cập nhật danh sách tour hiển thị
+        updateTourVisibility();
+    }
+
+    // Hàm cập nhật hiển thị các tour
+    function updateTourVisibility() {
+        const startDate = document.getElementById('date1').value; // Lấy giá trị từ trường ngày bắt đầu
+        const endDate = document.getElementById('date2').value; // Lấy giá trị từ trường ngày kết thúc
+        const tourCards = document.querySelectorAll('.tour-card');
+
+        // Chuyển đổi ngày bắt đầu và kết thúc thành đối tượng Date nếu có giá trị
+        const start = startDate ? new Date(startDate) : null;
+        const end = endDate ? new Date(endDate) : null;
+
+        tourCards.forEach(card => {
+            const cardStartDate = new Date(card.getAttribute('data-start-date')); // Giá trị ngày bắt đầu của tour
+            const cardEndDate = new Date(card.getAttribute('data-end-date')); // Giá trị ngày kết thúc của tour
+
+            // Kiểm tra xem tour có nằm trong khoảng thời gian đã chọn không
+            const isAfterStartDate = start ? cardStartDate >= start : true;
+            const isBeforeEndDate = end ? cardEndDate <= end : true;
+
+            // Cập nhật hiển thị cho từng thẻ tour
+            if (isAfterStartDate && isBeforeEndDate) {
+                card.style.display = 'block'; // Hiện tour còn hiệu lực
+            } else {
+                card.style.display = 'none'; // Ẩn tour đã hết hạn
+            }
+        });
+    }
+</script>
+<!-- <script>
+    // Hàm cập nhật các vị trí có sẵn
+    function updateAvailablePositions() {
+        const selectElement = document.getElementById('area');
+        const selectedPosition = selectElement.value;
+
+        // Lặp qua tất cả các tùy chọn trong dropdown
+        for (let option of selectElement.options) {
+            if (option.value === selectedPosition) {
+                option.style.display = 'none'; // Ẩn vị trí đã chọn
+            } else {
+                option.style.display = 'block'; // Hiện các vị trí khác
+            }
+        }
+
+        // Cập nhật danh sách tour hiển thị
+        updateTourVisibility();
+    }
+
+    // Hàm cập nhật hiển thị các tour
+    function updateTourVisibility() {
+        const startDate = document.getElementById('date1').value; // Lấy giá trị từ trường ngày bắt đầu
+        const endDate = document.getElementById('date2').value; // Lấy giá trị từ trường ngày kết thúc
+        const tourCards = document.querySelectorAll('.tour-card');
+
+        tourCards.forEach(card => {
+            const cardStartDate = card.getAttribute('data-start-date'); // Giá trị ngày bắt đầu của tour
+            const cardEndDate = card.getAttribute('data-end-date'); // Giá trị ngày kết thúc của tour
+
+            const isAfterStartDate = startDate ? new Date(cardStartDate) >= new Date(startDate) : true;
+            const isBeforeEndDate = endDate ? new Date(cardEndDate) <= new Date(endDate) : true;
+
+            // Kiểm tra xem tour có nằm trong khoảng thời gian đã chọn không
+            if (isAfterStartDate && isBeforeEndDate) {
+                card.style.display = 'block'; // Hiện tour còn hiệu lực
+            } else {
+                card.style.display = 'none'; // Ẩn tour đã hết hạn
+            }
+        });
+    }
+</script> -->
+<!-- <script>
+    // Hàm cập nhật các vị trí có sẵn
+    function updateAvailablePositions() {
+        const selectElement = document.getElementById('area');
+        const selectedPosition = selectElement.value;
+
+        // Lặp qua tất cả các tùy chọn trong dropdown
+        Array.from(selectElement.options).forEach(option => {
+            if (option.value === selectedPosition) {
+                option.style.display = 'none'; // Ẩn vị trí đã chọn
+            } else {
+                option.style.display = 'block'; // Hiện các vị trí khác
+            }
+        });
+
+        // Cập nhật danh sách tour hiển thị
+        updateTourVisibility();
+    }
+
+    // Hàm cập nhật hiển thị các tour
+    function updateTourVisibility() {
+        const startDate = document.getElementById('date1').value; // Lấy giá trị từ trường featured_start
+        const endDate = document.getElementById('date2').value; // Lấy giá trị từ trường featured_end
+        const tourCards = document.querySelectorAll('.tour-card');
+
+        tourCards.forEach(card => {
+            const cardStartDate = card.getAttribute('data-start-date'); // Giá trị ngày bắt đầu của tour
+            const cardEndDate = card.getAttribute('data-end-date'); // Giá trị ngày kết thúc của tour
+
+            const isAfterStartDate = startDate ? new Date(cardStartDate) >= new Date(startDate) : true;
+            const isBeforeEndDate = endDate ? new Date(cardEndDate) <= new Date(endDate) : true;
+
+            // Kiểm tra xem tour có nằm trong khoảng thời gian đã chọn không
+            if (isAfterStartDate && isBeforeEndDate) {
+                card.style.display = 'block'; // Hiện tour còn hiệu lực
+            } else {
+                card.style.display = 'none'; // Ẩn tour đã hết hạn
+            }
+        });
+    }
+</script> -->
+            <!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectElement = document.getElementById('area');
+        const startDateInput = document.getElementById('date1');
+        const endDateInput = document.getElementById('date2');
+
+        // Lắng nghe sự kiện change cho dropdown
+        selectElement.addEventListener('change', function() {
+            const selectedValue = this.value;
+
+            // Cập nhật giá trị cho trường 'featured'
+            const featuredInput = document.createElement('input');
+            featuredInput.type = 'hidden';
+            featuredInput.name = 'featured';
+            featuredInput.value = selectedValue;
+
+            // Xóa input cũ nếu có
+            const existingFeaturedInput = document.querySelector('input[name="featured"]');
+            if (existingFeaturedInput) {
+                existingFeaturedInput.remove();
+            }
+
+            // Thêm input mới vào form
+            this.parentNode.appendChild(featuredInput);
+        });
+
+        // Lắng nghe sự kiện change cho các trường ngày
+        startDateInput.addEventListener('change', function() {
+            const startDateValue = this.value;
+
+            // Cập nhật giá trị cho trường 'featured_start'
+            const startInput = document.createElement('input');
+            startInput.type = 'date';
+            startInput.name = 'featured_start';
+            startInput.value = startDateValue;
+
+            // Xóa input cũ nếu có
+            const existingStartInput = document.querySelector('input[name="featured_start"]');
+            if (existingStartInput) {
+                existingStartInput.remove();
+            }
+
+            // Thêm input mới vào form
+            this.parentNode.appendChild(startInput);
+        });
+
+        endDateInput.addEventListener('change', function() {
+            const endDateValue = this.value;
+
+            // Cập nhật giá trị cho trường 'featured_end'
+            const endInput = document.createElement('input');
+            endInput.type = 'date';
+            endInput.name = 'featured_end';
+            endInput.value = endDateValue;
+
+            // Xóa input cũ nếu có
+            const existingEndInput = document.querySelector('input[name="featured_end"]');
+            if (existingEndInput) {
+                existingEndInput.remove();
+            }
+
+            // Thêm input mới vào form
+            this.parentNode.appendChild(endInput);
+        });
+    });
+</script> -->
             @endif
             <section class="bg-body rounded p-2 mb-3">
                 <div class="d-flex gap-3 justify-content-between">
@@ -200,7 +424,7 @@ Thêm tour
                     @endforeach
                 </div>
 
-                <button type="button" id="add-departure" class="btn btn-outline-primary">+ thêm ngày giờ khởi hành</button>
+                <button type="button" id="add-departure" class="btn btn-outline-primary">+ Thêm ngày giờ khởi hành</button>
                 <!-- JS CHO CHỨC NĂNG THÊM NGÀY ĐI -->
                 <script>
                     // Thêm sự kiện cho nút thêm ngày giờ khởi hành
@@ -355,9 +579,9 @@ Thêm tour
                 <div class=" mb-3">
                     <h6>Phương tiện di chuyển</h6>
                     <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small>
-                    <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="Xe Khách">
+                    <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="{{ old('transport') }}">
                 </div>
-                <div class="">
+                <div class="mb-3">
                     <h6>Thời gian diễn ra tour</h6>
                     <div class="d-flex gap-2">
                         <input type="number" name="ngay" id="days" class="form-control form-control-sm" min="0" placeholder="Số ngày">

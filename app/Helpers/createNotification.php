@@ -17,7 +17,7 @@ if (!function_exists('createNotification')) {
     function createNotification(string $type, string $title, string $content, ?string $backgroundImage = null)
     {
         // Lấy ID người dùng hiện tại nếu userId không được truyền vào
-        $userId = $userId ?? Auth::id();
+        $userId = Auth::id();
 
         // Tạo thông báo trong DB
         $notification = new Notification();

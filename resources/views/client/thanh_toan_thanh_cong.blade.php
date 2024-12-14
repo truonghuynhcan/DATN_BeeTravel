@@ -40,7 +40,7 @@
                     </p>
                 </div>
                 <div class="col-6 overflow-hidden">
-                    <img src="../assets/image/imrs2.png" alt="" class="w-100">
+                    <img src="{{asset('')}}/assets/image/imrs2.png" alt="" class="w-100">
                 </div>
             </div>
         </section>
@@ -48,8 +48,9 @@
 
         <section class="bg-body p-2 mb-3 rounded pt-3">
             <p>Chào quý khách <strong class="text-primary">{{$order->fullname}}</strong></p>
-            <p>Cảm ơn quý khách đã đặt dịch vụ của BeeTravel</p>
-            <p class="m-0">Nhân viên của chúng tôi sẽ liên hệ với Quý khách trong thời gian sớm nhất. Nếu có thắc mắc, quý khách vui lòng liên hệ qua số hotline <span class="text-primary">1900-13-15-17</span>. Xin chân thành cảm ơn Quý khách hàng!</p>
+            <p>Chuyến đi bắt đầu lúc: <strong>tại</strong> Tại: </p>
+            <p>Số người tham gia: </p>
+
         </section>
 
         <section class="bg-body py-2 mb-3 rounded">
