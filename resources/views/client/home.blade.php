@@ -87,10 +87,11 @@ Trang chủ
                 <button class="muiten"><i class="bi bi-arrow-right"></i></button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="tourCards">
             @if($tours->count() > 0)
             @foreach($tours as $tour)
-            <div class="col-12 col-md-6 col-lg-3 col-xxl-3 mb-3 tour-hidden">
+            
+            <div class="col-12 col-md-6 col-lg-3 col-xxl-3 mb-3 tour-hidden tour-card" data-position="{{ $tour->featured }}" data-end-date="{{ $tour->featured_end }}" data-start-date="{{ $tour->featured_start }}">
                 <div class="card text-bg-dark position-relative">
                     <div class="position-absolute start-0" style="top:5px;">
                         <svg width="80" height="40" viewBox="0 0 146 62" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,7 +108,7 @@ Trang chủ
                         </h5>
                         <div class="d-flex">
                             <i class="bi bi-geo-alt"></i>
-                            <p class="card-text">Khởi hành: <b>{{$tour->featured}}</b></p>
+                            <p class="card-text">Khởi hành: <b></b></p>
                         </div>
                         <div class="d-flex">
                             <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>
@@ -134,7 +135,9 @@ Trang chủ
             @endif
             <a href="{{ route('tour') }}" class=" them btn ">Xem tất cả</a>
         </div>
+        </div>
 </section>
+
 <!-- product feature end -->
 
 
@@ -147,12 +150,16 @@ Trang chủ
             <div class="yeuthich">
                 <h3>TIN TỨC NỔI BẬT</h3>
                 <hr class="short-line">
+                <div class="button-container">
+                <!-- <button class="muiten"><i class="bi bi-arrow-left"></i></button>
+                <button class="muiten"><i class="bi bi-arrow-right"></i></button> -->
+            </div>
             </div>
 
-            <div class="row">
+            <div class="row" id="tourNews">
                 @if($latestNews->count() > 0)
                 @foreach($latestNews as $item)
-                <div class="col-md-3 mb-3"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
+                <div class="col-md-3 mb-3 tour-new" data-position="{{ $item->reading }}"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
                     <div class="card h-100"> <!-- H-100 để các card có chiều cao bằng nhau -->
                         <img src="assets/image_new/{{$item->image_url}}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
                         <div class="card-body d-flex flex-column"> <!-- Sử dụng flex để căn chỉnh nội dung -->

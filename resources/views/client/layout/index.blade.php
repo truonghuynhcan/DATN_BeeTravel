@@ -85,6 +85,13 @@
             // Khởi tạo hiển thị tour ban đầu
             updateTourDisplay();
         });
+
+        //lọc tour
+        document.getElementById('price_range').addEventListener('change', function() {
+            if (this.value) {
+                this.form.submit();
+            }
+        });
     </script>
 
 
