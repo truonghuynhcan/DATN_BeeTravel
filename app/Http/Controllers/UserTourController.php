@@ -12,19 +12,28 @@ class UserTourController extends Controller
 {
     public function tour()
     {
+        // Lấy danh mục
         $categories = Category::all();
-        $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')
+
+        // Lấy danh sách tour với ngày đi và giá nhỏ nhất từ bảng ngay_di
+        $tours = Tour::with(['ngayDi' => function ($query) {
+            $query->select('tour_id', 'price', 'start_date')->orderBy('start_date', 'asc');
+        }])
+            ->select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')
             ->orderBy('created_at', 'desc') // Sắp xếp từ mới đến cũ
             ->paginate(12); // Phân trang với 12 tour mỗi trang
 
-        // $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->limit(12)->get();
-        // $tours = Tour::paginate(9);
-        $news = News::select('id', 'title', 'image_url', 'created_at') // thêm các cột bạn muốn lấy
+        // Lấy danh sách tin tức
+        $news = News::select('id', 'title', 'image_url', 'created_at') // Thêm các cột bạn muốn lấy
             ->latest()
             ->take(4)
             ->get();
+
+        // Trả dữ liệu về view
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
+
+
 
 
     public function fullsearch()
@@ -69,7 +78,6 @@ class UserTourController extends Controller
         return view('client.tour', compact('tours', 'categories', 'category', 'news'));
     }
 
-
     public function searchTours(Request $request)
     {
 
@@ -82,9 +90,9 @@ class UserTourController extends Controller
         $categories = Category::all();
 
         $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')
-        ->where('title', 'like', "%$keyword%")
-            ->orderBy('created_at', 'desc') // Sắp xếp từ mới đến cũ
-            ->paginate(12); // Phân trang với 12 tour mỗi trang
+            ->where('title', 'like', "%$keyword%")
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
 
         // $tours = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')->limit(12)->get();
         // $tours = Tour::paginate(9);
@@ -101,8 +109,6 @@ class UserTourController extends Controller
         //     ->paginate(10);
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
-
-
 
     public function chitiet($id)
     {
@@ -179,13 +185,67 @@ class UserTourController extends Controller
         }
         $categories = Category::all();
         $latestNews = News::where('title', 'like', "%$keyword%")
-        ->orwhere('description', 'like', "%$keyword%")
-        ->orderby('id', 'desc')
-        ->paginate(4);
+            ->orwhere('description', 'like', "%$keyword%")
+            ->orderby('id', 'desc')
+            ->paginate(4);
         $tours = Tour::where('title', 'like', "%$keyword%")
             ->orwhere('featured', 'like', "%$keyword%")
             ->orderby('id', 'desc')
             ->paginate(6);
-        return view('client.home', compact('tours','categories', 'latestNews'));
+        return view('client.home', compact('tours', 'categories', 'latestNews'));
+    }
+
+    public function filterTours(Request $request)
+    {
+        $query = Tour::with(['ngayDi' => function ($q) {
+            $q->select('tour_id', 'price', 'start_date');
+        }]);
+
+        // Lọc theo danh mục
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Lọc theo giá
+        if ($request->filled('price_range')) {
+            [$minPrice, $maxPrice] = explode('-', $request->price_range . '-');
+            $query->whereHas('ngayDi', function ($q) use ($minPrice, $maxPrice) {
+                if (!empty($minPrice)) {
+                    $q->where('price', '>=', (int)$minPrice);
+                }
+                if (!empty($maxPrice)) {
+                    $q->where('price', '<=', (int)$maxPrice);
+                }
+            });
+            
+        }
+        
+
+        // Lọc theo ngày đi
+        if ($request->filled('start_date')) {
+            $query->whereHas('ngayDi', function ($q) use ($request) {
+                $q->whereDate('start_date', '>=', $request->start_date);
+            });
+        }
+
+        // Lọc theo địa điểm
+        if ($request->filled('location')) {
+            $query->where('category_id', $request->location);
+        }
+
+        // Phân trang
+        $tours = $query->paginate(10);
+
+        // Lấy danh sách danh mục
+        $categories = Category::all();
+
+        $news = News::select('id', 'title', 'image_url', 'created_at') // Thêm các cột bạn muốn lấy
+            ->latest()
+            ->take(4)
+            ->get();
+
+        // dd($query->toSql(), $query->getBindings());
+
+        return view('client.tour', compact('tours', 'categories', 'news'));
     }
 }

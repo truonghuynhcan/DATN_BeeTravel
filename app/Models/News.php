@@ -11,7 +11,7 @@ class News extends Model
     protected $table = 'news';  // Tên bảng trong cơ sở dữ liệu
 
     // Khai báo các trường có thể được fill
-    protected $fillable = ['id', 'image_url', 'title', 'slug', 'description', 'content', 'is_hidden', 'admin_id', 'category_id'  ];
+    protected $fillable = ['id', 'image_url', 'title', 'slug', 'description', 'content', 'is_hidden','reading', 'admin_id', 'category_id'  ];
    // Mối quan hệ với Category
     public function NewsCategory()
     {

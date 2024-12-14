@@ -119,16 +119,43 @@ Tour
 
             <div class="col-lg-9">
                 <!-- Phần lọc tour -->
-                <div class="shop__filter mb-3">
-                    <form action="{{ route('tour.filter') }}" method="GET" class="d-flex ms-auto" style="width: 30%;">
-                        <select name="price_range" class="form-select me-2">
+                <form action="{{ route('tour.filter') }}" method="GET" class="d-flex mb-3">
+                    <!-- Đảm bảo tham số category_id được gửi -->
+                    <input type="hidden" name="category_id" value="{{ $category->id }}">
+
+                    <!-- Lọc giá -->
+                    <div class="me-3">
+                        <label for="price_range" class="form-label">Lọc theo giá</label>
+                        <select name="price_range" class="form-select form-select-sm price-range" onchange="this.form.submit()">
                             <option value="">Tất cả giá</option>
-                            <option value="1-5" {{ request('price_range') == '1-5' ? 'selected' : '' }}>1 triệu VND - 5 triệu VND</option>
-                            <option value="6-10" {{ request('price_range') == '6-10' ? 'selected' : '' }}>6 triệu VND - 10 triệu VND</option>
+                            <option value="0-5000000" {{ request('price_range') == '0-5000000' ? 'selected' : '' }}>Dưới 5.000.000 &#8363;</option>
+                            <option value="5000000-10000000" {{ request('price_range') == '5000000-10000000' ? 'selected' : '' }}>5.000.000 ₫ - 10.000.000 ₫</option>
+                            <option value="10000000-20000000" {{ request('price_range') == '10000000-20000000' ? 'selected' : '' }}>10.000.000 ₫ - 20.000.000 ₫</option>
+                            <option value="20000000-50000000" {{ request('price_range') == '20000000-50000000' ? 'selected' : '' }}>20.000.000 ₫ - 50.000.000 ₫</option>
+                            <option value="50000000-" {{ request('price_range') == '50000000-' ? 'selected' : '' }}>Trên 50.000.000 ₫</option>
                         </select>
-                        <button type="submit" class="btn btn-primary">Lọc</button>
-                    </form>
-                </div>
+                    </div>
+
+                    <!-- Lọc ngày -->
+                    <div class="me-3">
+                        <label for="start_date" class="form-label">Ngày đi</label>
+                        <input type="date" name="start_date" class="form-control form-control-sm" value="{{ request('start_date') }}" onchange="this.form.submit()">
+                    </div>
+
+                    <!-- Lọc địa điểm -->
+                    <div class="me-3">
+                        <label for="location" class="form-label">Lọc theo địa điểm</label>
+                        <select name="location" class="form-select form-select-sm" id="location" onchange="this.form.submit()">
+                            <option value="">Tất cả địa điểm</option>
+                            @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ request('location') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->ten_danh_muc }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </form>
+
 
                 <!-- Danh sách tour -->
                 <div class="row">
@@ -142,7 +169,7 @@ Tour
                                 </svg>
                                 <span class="text-body position-absolute start-50 top-50 translate-middle">Mới</span>
                             </div>
-                            <img src="assets/image_tour/{{ $tour->image_url }}" height="400px" class="card-img oject-fit-fill" alt="...">
+                            <img src="{{asset('')}}assets/image_tour/{{ $tour->image_url }}" height="400px" class="card-img oject-fit-fill" alt="...">
                             <div class="card-img-overlay m-3 p-2 bg-body text-body" style="top:inherit">
                                 <h5 class="card-title">
                                     <a href="/tour/{{ $tour->id }}" class="text-decoration-none text-body fs-6">
@@ -155,11 +182,18 @@ Tour
                                 </div>
                                 <div class="d-flex">
                                     <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>
-                                    <p class="card-text">Ngày đi: <b>{{ $tour->featured_start }}</b></p>
+                                    <p class="card-text">Ngày đi:
+                                        <b>{{ optional($tour->ngayDi->first())->start_date ? \Carbon\Carbon::parse($tour->ngayDi->first()->start_date)->format('d/m/Y') : 'Chưa có ngày đi' }}</b>
+                                    </p>
                                 </div>
-                                <div class="d-flex ">
-                                    <p class="card-text">Giá: <b class=" text-danger">10.890.000 ₫</b></p>
+                                <div class="d-flex">
+                                    <p class="card-text">Giá:
+                                        <b class="text-danger">
+                                            {{ $tour->ngayDi->min('price') ? number_format($tour->ngayDi->min('price')) . ' ₫' : 'Liên hệ' }}
+                                        </b>
+                                    </p>
                                 </div>
+
                                 <div class="d-flex justify-content-between">
                                     <a href="{{ route('thanh_toan', $tour->id) }}" class="btn btn-primary container-fluid">Đặt ngay</a>
                                 </div>

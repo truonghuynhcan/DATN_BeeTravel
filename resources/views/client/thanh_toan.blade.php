@@ -8,16 +8,13 @@
             <h1>Task</h1>
             <ol>
                 <li>Xử lý lấy ngày đi tương lai gần nhất</li>
-                <li>Xử lý lại thêm người đi 2 mà bị mất text đã nhập của người đi 1</li>
-                <li>Thống nhất thêm với thầy là giá của cá nhân sẽ để đâu?</li>
-                <li>dùng js tính tổng >0 mới cho click thanh toán</li>
-                <li> thêm trường auto điền giá trị cũ vào các form đã nhập</li>
             </ol>
 
         </div>
-        <div class="alert alert-success">
+        <div class="alert alert-success d-none">
             <h1>Done</h1>
             <ol>
+                <li> thêm trường auto điền giá trị cũ vào các form đã nhập</li>
                 <li>Xử lý tự động điền lại dữ liệu cũ sau khi bắt lỗi</li>
                 <li>thanh toán xong thì hiện bill</li>
                 <li>chèn zô được db customer</li>
@@ -60,14 +57,38 @@
                             <tr>
                                 <td>Ngày khởi hành</td>
                                 <td class="d-flex gap-2">
-                                    <select class="form-select form-select-sm form-select-date" name="ngaykhoihanh" style="width: fit-content;" onchange="fetchPrice()">
-                                        {{-- @if (old('ngaykhoihanh'))
-                                            <option value="{{ old('ngaykhoihanh') }}" selected>làm js tìm</option>
-                                        @endif --}}
+                                    <select id="ngaykhoihanh" class="form-select form-select-sm form-select-date" name="ngaykhoihanh" style="width: fit-content;" onchange="fetchPrice()">
                                         @foreach ($tour->ngayDi as $item)
                                             <option value="{{ $item->id }}">{{ $item->start_date }}</option>
                                         @endforeach
-                                    </select>
+
+                                        <script defer>
+                                            /**
+                                             * Tìm và chọn giá trị trong danh sách <select> dựa trên ID
+                                             * @param {string} selectId - ID của thẻ <select>
+                                             * @param {string} valueToFind - Giá trị cần tìm trong <option>
+                                             */
+                                            function selectOptionByValue(selectId, valueToFind) {
+                                                const selectElement = document.getElementById(selectId);
+                                                if (!selectElement) {
+                                                    console.warn(`Không tìm thấy thẻ <select> với ID: ${selectId}`);
+                                                    return;
+                                                }
+
+                                                // Duyệt qua các option để tìm giá trị
+                                                Array.from(selectElement.options).forEach(option => {
+                                                    if (option.value === valueToFind) {
+                                                        option.selected = true; // Đặt option là selected
+                                                    }
+                                                });
+                                            }
+
+                                            // Tự động áp dụng old() cho các <select> khi trang được tải lại
+                                            document.addEventListener("DOMContentLoaded", () => {
+                                                selectOptionByValue('ngaykhoihanh', "{{ old('ngaykhoihanh') }}");
+                                                selectOptionByValue('user-quydanh', "{{ old('user-quydanh') }}");
+                                            });
+                                        </script>
                                 </td>
                             </tr>
                             <tr>
