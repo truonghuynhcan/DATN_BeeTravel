@@ -82,7 +82,7 @@ class UserOrderController extends Controller
             $order = Order::select('id')->find($madonghang);
             if ($order) {
                 // ? nếu có dữ liệu -> chuyển sang page trang chi tiết.
-                return redirect()->route("thanh_toan_thanh_cong", $order->id);
+                return redirect()->route("thanh_toan_thanh_cong", [$order->id, $inputCode]);
             } else {
                 // ? nếu KO có dữ liệu -> back lại trang cùng với input.
                 return back()
@@ -103,11 +103,6 @@ class UserOrderController extends Controller
                 ->with('orders', $orders);
 
         }
-
-
-
-        // Logic xử lý xác nhận đơn hàng
-        return back()->with('success', 'Xác nhận tìm đơn hàng thành công.');
     }
 
     protected function handleGuiLai($request)
@@ -138,21 +133,34 @@ class UserOrderController extends Controller
 
 
 
-    public function viewThanhToanThanhCong($order_id)
+    // key là key khóa trỏ từ bên tìm cho khách vãng lai
+    public function viewThanhToanThanhCong($order_id, ?string $key = null)
     {
         // ? check id người dùng phải trùng với id trong db thì mới xem được phần của mình
-        $order_raw = Order::where('id', $order_id)->first();
+        $order_raw = Order::find($order_id);
 
-        if ($order_raw->user_id == null || $order_raw->user_id != Auth::id()) {
-            // ? NẾU ID TỪ DB NULL HOẶC KO TRÙNG
-            return redirect()->route('login')->with('error', 'Bạn cần phải đăng nhập để xem tour đã đặt');
-        } else {
-            // ? NẾU ĐÚNG
-            // LẤY INFO ORDER & TOUR
+        $sessionCode = session('confirmation_code'); // lấy code ra để so sánh
+        $email = session('email'); // lấy code ra để so sánh
+
+        if ($key==$sessionCode && $email==$order_raw->email) {
             $order = $order_raw->with('ngayDi', 'customer')->first();
             $tour = Tour::select('id', 'admin_id', 'title', 'slug', 'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
             return view('client.thanh_toan_thanh_cong', compact('order', 'tour'));
+
+        } else {
+            if ($order_raw->user_id == null || $order_raw->user_id != Auth::id()) {
+                // ? NẾU ID TỪ DB NULL HOẶC KO TRÙNG
+                return redirect()->route('login')->with('error', 'Bạn cần phải đăng nhập để xem tour đã đặt');
+            } else {
+                // ? NẾU ĐÚNG người dùng đã đăng nhập tìm tour
+                // LẤY INFO ORDER & TOUR
+                $order = $order_raw->with('ngayDi', 'customer')->first();
+                $tour = Tour::select('id', 'admin_id', 'title', 'slug', 'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
+                return view('client.thanh_toan_thanh_cong', compact('order', 'tour'));
+            }
         }
+
+
     }
 
 

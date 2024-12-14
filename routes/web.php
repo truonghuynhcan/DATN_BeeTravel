@@ -54,7 +54,7 @@ Route::get('/tin-tuc/{id}', [UserNewsController::class, 'showNews'])->name('clie
 // * Thanh toán ----------------------------------------------------------------
 Route::get('/thanh-toan/{id_tour}', [UserOrderController::class, 'viewThanhToan'])->name('thanh_toan');
 Route::post('/thanh-toan/loading/{tour_id}', [UserOrderController::class, 'thanhToan_'])->name('thanhtoan_');
-Route::get('/thanh-toan-thanh-cong/{order_id}', [UserOrderController::class, 'viewThanhToanThanhCong'])->name('thanh_toan_thanh_cong');
+Route::get('/thanh-toan-thanh-cong/{order_id}/{key?}', [UserOrderController::class, 'viewThanhToanThanhCong'])->name('thanh_toan_thanh_cong');
 
 // * Đánh giá ----------------------------------------------------------------
 Route::post('/danh-gia/loading', [UserFeedbackController::class, 'danhgia_'])->name('danhgia_');

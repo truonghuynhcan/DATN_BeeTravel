@@ -5,18 +5,19 @@
 @section('main')
     <div class="container">
         <!-- note -->
-        <div class="alert alert-danger">
+        <div class="alert alert-danger d-none">
             <h1>Task</h1>
+            <ol>
+                <li>null</li>
+            </ol>
+        </div>
+        <div class="alert alert-success d-none">
+            <h1>Done</h1>
             <ol>
                 <li>tạo page login vào cho người dùng ẩn danh</li>
                 <li>
                     Tạo phần tra cứu đơn hàng
                 </li>
-            </ol>
-        </div>
-        <div class="alert alert-success">
-            <h1>Done</h1>
-            <ol>
                 <li>
                     Đánh giá tour
                 </li>
