@@ -84,29 +84,67 @@
 
                 {{-- Nổi bật --}}
                 @if (Auth::guard('admin')->user()->role == 'admin')
-                    <section class="bg-body rounded p-2 mb-3"> <!-- ẩn khi là đối tác -->
-                        <h5>Nổi bật</h5>
-                        <div class="d-flex">
-                            <div class="me-3">
-                                <label for="area" class="form-label">Chọn vị trí</label>
-                                <select name="featured" class="form-select form-select-sm" id="area" aria-label="Small select example">
-                                    <option selected>Mã vị trí</option>
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                    <option value="">4</option>
-                                </select>
-                            </div>
-                            <!-- <div class="me-3">
-                                <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
-                                <div class="d-flex">
-                                    <input name="features_start" type="date" class="form-control form-control-sm" id="date1">
-                                    <span class="mx-2">đến</span>
-                                    <input name="features_end" type="date" class="form-control form-control-sm" id="date2">
-                                </div>
-                            </div> -->
-                        </div>
-                    </section>
+                <section class="bg-body rounded p-2 mb-3"> 
+    <h5>Nổi bật</h5>
+    <div class="d-flex">
+    
+    <div class="me-3">
+            <label for="area" class="form-label">Chọn vị trí</label>
+            <select name="reading" class="form-select form-select-sm" id="area" aria-label="Small select example" onchange="updateAvailablePositions()">
+                <option selected disabled>Chọn mã vị trí</option>
+                @for ($i = 1; $i <= 30; $i++)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                @endfor
+            </select>
+        </div>
+        
+        <!-- <div class="me-3">
+            <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
+            <div class="d-flex">
+            <input name="featured_start" type="datetime-local" class="form-control form-control-sm" id="date1" onchange="updateTourVisibility()" required>
+            <input name="featured_end" type="datetime-local" class="form-control form-control-sm" id="date2" onchange="updateTourVisibility()" required>
+                
+            </div>
+        </div> -->
+        
+    </div>
+</section>
+<script>
+    // Hàm cập nhật các vị trí có sẵn
+    function updateAvailablePositions() {
+        const selectElement = document.getElementById('area');
+        const selectedPosition = selectElement.value;
+
+        // Lặp qua tất cả các tùy chọn trong dropdown
+        for (let option of selectElement.options) {
+            // Kiểm tra nếu vị trí đã chọn là vị trí hiện tại
+            if (option.value === selectedPosition) {
+                option.style.display = 'none'; // Ẩn vị trí đã chọn
+            } else {
+                option.style.display = 'block'; // Hiện các vị trí khác
+            }
+        }
+
+        // Cập nhật danh sách tour hiển thị dựa trên vị trí đã chọn
+        updateTourVisibilityByPosition(selectedPosition);
+    }
+
+    // Hàm cập nhật hiển thị các tour theo vị trí
+    function updateTourVisibilityByPosition(selectedPosition) {
+        const tourNews = document.querySelectorAll('.tour-new');
+
+        tourNews.forEach(card => {
+            const newPosition = card.getAttribute('data-position'); // Giá trị vị trí của tour
+
+            // Kiểm tra xem tour có cùng vị trí với vị trí đã chọn không
+            if (newPosition === selectedPosition) {
+                card.style.display = 'block'; // Hiện tour có vị trí phù hợp
+            } else {
+                card.style.display = 'none'; // Ẩn tour không phù hợp
+            }
+        });
+    }
+</script>
                 @endif
                 <section class="bg-body rounded p-2 mb-3">
                     <div class="d-flex gap-3 justify-content-between">

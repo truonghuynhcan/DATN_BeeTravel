@@ -86,7 +86,7 @@
 
                 {{-- Nổi bật --}}
                 @if (Auth::guard('admin')->user()->role == 'admin')
-                    <section class="bg-body rounded p-2 mb-3"> <!-- ẩn khi là đối tác -->
+                    <!-- <section class="bg-body rounded p-2 mb-3"> 
                         <h5>Nổi bật</h5>
                         <div class="d-flex">
                             <div class="me-3">
@@ -99,16 +99,9 @@
                                     <option value="">4</option>
                                 </select>
                             </div>
-                            <!-- <div class="me-3">
-                                <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
-                                <div class="d-flex">
-                                    <input name="features_start" type="date" class="form-control form-control-sm" id="date1">
-                                    <span class="mx-2">đến</span>
-                                    <input name="features_end" type="date" class="form-control form-control-sm" id="date2">
-                                </div>
-                            </div> -->
+                            
                         </div>
-                    </section>
+                    </section> -->
                 @endif
                 <section class="bg-body rounded p-2 mb-3">
                     <div class="d-flex gap-3 justify-content-between">

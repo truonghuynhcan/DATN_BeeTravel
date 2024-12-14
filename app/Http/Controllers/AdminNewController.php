@@ -193,7 +193,7 @@ public function catenewInsert_(Request $request)
                 'slug' => ['nullable', 'string', 'max:255'],
                 'content' => ['required', 'string'],
                 'description' => ['required', 'string','max:255'],
-
+                'reading' => ['nullable', 'string', 'max:100'],
                 // * Ảnh chính và ảnh phụ
                 'image_url' => ['required', 'image', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],  // Max file size 2MB
                 'sub_image_url' => ['nullable', 'array'],
@@ -215,7 +215,7 @@ public function catenewInsert_(Request $request)
                 'description.max' => 'Tiêu đề phụ không được vượt quá :max ký tự.',
 
                 'content.required' => 'Mô tả chi tiết là bắt buộc phải điền.',
-
+                'reading.not_in' => 'Giá trị đã chọn cho trường nổi bật đã tồn tại.',
 
                 // * Ảnh
                 'image_url.required' => 'Cần thêm ảnh đại diện',
@@ -242,6 +242,7 @@ public function catenewInsert_(Request $request)
         } else {
             $news->slug = Str::slug($validated['title']);
         }
+        $news->reading = $validated['reading'] ?? null;
         $news->description = $validated['description'];
         $news->content = $validated['content'];
         //  tạo ẩn hiện dựa trên btn submit

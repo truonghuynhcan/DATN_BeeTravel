@@ -13,12 +13,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Number;
-
+use Carbon\Carbon; // Đảm bảo import Carbon
 
 class AdminTourController extends Controller
 {
+//     public function showOption()
+// {
+    
+//     $usedFeaturedValues = Tour::pluck('featured')->toArray();
+
+//     return view('admin.tour_insert', compact('usedFeaturedValues'));
+// }
     public function tourEdit($tour_id){
         $tour = Tour::with(['category', 'ngayDi', 'images', 'admin'])->withCount('wishlist')->find($tour_id);
+
         if (!$tour) {
             return redirect()->back()->withErrors('Tour not found!');
         }
@@ -29,8 +37,29 @@ class AdminTourController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string',
-            'category_id' => 'required|exists:news_categories,id',
+            'category_id' => 'required|exists:categories,id',
             'admin_id' => 'required|exists:admins,id',
+            // * Ngày đi & giá
+            'departure-date' => 'required|sometimes|array',  // ngày khởi hành
+            'adult-price' => 'required|sometimes|array',
+            'child-price' => 'required|sometimes|array',
+            'toddler-price' => 'required|sometimes|array',
+            'infant-price' => 'required|sometimes|array',
+
+            // 'departure-date.*' => 'required|date|after_or_equal:today', // Không bắt buộc, nhưng nếu có thì phải đúng định dạng ngày
+            // Các trường dưới đây sẽ chỉ bắt buộc nếu có departure-date
+            'adult-price.*' => 'required_with:departure-date.*| numeric| min:0',
+            'child-price.*' => 'required_with:departure-date.*| numeric| min:0',
+            'toddler-price.*' => 'required_with:departure-date.*| numeric| min:0',
+            'infant-price.*' => 'required_with:departure-date.*| numeric| min:0',
+
+            // * Ảnh chính và ảnh phụ
+            'image_url' => ' image| mimes:jpg,png,jpeg,gif,svg| max:2048',  // Max file size 2MB
+            'sub_image_url' => 'array',
+            'sub_image_url.*' => 'image| mimes:jpg,png,jpeg,gif,svg| max:2048',  // Max file size 2MB for each image
+            // 'featured' => 'required|string|max:100',
+            // 'features_start' => 'required|date| after_or_equal:today',
+            // 'features_end' => 'required|date| after_or_equal:start_date',
         ]);
     
         $tour = Tour::find($tour_id);
@@ -38,11 +67,114 @@ class AdminTourController extends Controller
             return redirect()->back()->withErrors('Tour không tồn tại!');
         }
     
-        $tour->title = $request->title;
-        $tour->slug = $request->slug;
+        // $tour->title = $request->title;
+        // $tour->slug = $request->slug;
         $tour->category_id = $request->category_id;
         $tour->admin_id = $request->admin_id;
+
+        // * tạo tour
+        // lấy tên ảnh - tạo tên ảnh mới - lưu vào file public - lưu vào db
+        // $filename = time() . '_' . $request['image_url']->getClientOriginalName();
+        // $request['image_url']->move('assets/image_tour', $filename); // Di chuyển file vào thư mục public/assets/images
+        // $tour->image_url = $filename;
+
+        $tour->title = $request->title;
+        
+        if (!empty($request['slug'])) {
+            $tour->slug = $request->slug;
+        } else {
+            $tour->slug = Str::slug($request->title);
+        }
+
+        $tour->sub_title = $request->sub_title;
+        $tour->description = $request->description;
+        $tour->duration = $request->duration ?? null;
+        $tour->transport = $request->transport ?? null;
+        //  tạo ẩn hiện dựa trên btn submit
+        if ($request->input('action') === 'publish') {
+            $tour->is_hidden = 0;
+        } elseif ($request->input('action') === 'draft') {
+            $tour->is_hidden = 1;
+        }
+        // nổi bật
+        // $tour->featured = $request['featured'] ?? null;
+        // $tour->featured_start = $request['featured_start'] ?? null;
+        // $tour->featured_end = $request['featured_end'] ?? null;
         $tour->save();
+
+
+        foreach ($request['departure-date'] as $key => $date) {
+            if ($date !== null) {
+                // Kiểm tra xem có ID ngày đi hay không
+                if (isset($request['ngayDi_id'][$key]) && $request['ngayDi_id'][$key] !== null) {
+                    // Sửa bản ghi đã tồn tại
+                    $ngay_di = NgayDi::find($request['ngayDi_id'][$key]);
+                    if ($ngay_di) { // Nếu tìm thấy bản ghi
+                        $ngay_di->start_date = $date; // Cập nhật ngày đi
+                        $ngay_di->price = $request['adult-price'][$key]; // Cập nhật giá người lớn
+                        $ngay_di->price_tre_em = $request['child-price'][$key]; // Cập nhật giá trẻ em
+                        $ngay_di->price_tre_nho = $request['toddler-price'][$key]; // Cập nhật giá trẻ nhỏ
+                        $ngay_di->price_em_be = $request['infant-price'][$key]; // Cập nhật giá em bé
+                        $ngay_di->save(); // Lưu thay đổi
+                    }
+                } else {
+                    // Thêm mới bản ghi nếu không có ID
+                    $ngay_di = new NgayDi();
+                    $ngay_di->tour_id = $tour->id; // Lấy ID tour
+                    $ngay_di->start_date = $date; // Ngày đi mới
+                    $ngay_di->price = $request['adult-price'][$key]; // Giá người lớn
+                    $ngay_di->price_tre_em = $request['child-price'][$key]; // Giá trẻ em
+                    $ngay_di->price_tre_nho = $request['toddler-price'][$key]; // Giá trẻ nhỏ
+                    $ngay_di->price_em_be = $request['infant-price'][$key]; // Giá em bé
+                    $ngay_di->save(); // Lưu bản ghi mới
+                }
+            } else {
+                continue; // Bỏ qua nếu ngày đi là null
+            }
+        }
+        // if (isset($request['departure-date']) && !empty($request['departure-date']) && !$request['departure-date'][0]===null) {
+        // }
+
+        // * tạo ảnh (nếu có)
+        // * Cập nhật ảnh chính (nếu có)
+// * Cập nhật ảnh (nếu có)
+if (isset($request['sub_image_url']) && !empty($request['sub_image_url']) && count($request['sub_image_url']) > 0) {
+    foreach ($request['sub_image_url'] as $key => $file) {
+        // Lấy ID của ảnh hiện tại từ mảng existing_image_id
+        $imageId = isset($request['existing_image_id'][$key]) ? $request['existing_image_id'][$key] : null;
+
+        if ($imageId) {
+            // Tìm ảnh hiện tại trong cơ sở dữ liệu
+            $image = Image::find($imageId);
+            if ($image) {
+                // Xóa file cũ nếu có
+                $oldFilePath = public_path('assets/image_tour/' . $image->url);
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath); // Xóa file cũ
+                }
+
+                // Cập nhật ảnh mới
+                if ($file) { // Kiểm tra xem file có tồn tại không
+                    // Tạo một tên file duy nhất
+                    $filename = time() . '_' . $file->getClientOriginalName();
+
+                    // Di chuyển file vào thư mục public/assets/image_tour
+                    $file->move('assets/image_tour', $filename);
+
+                    // Cập nhật thông tin ảnh
+                    $image->name = $filename; // Hoặc bất kỳ tên nào bạn muốn lưu
+                    $image->url = $filename; // Cập nhật đường dẫn của ảnh
+
+                    $image->save(); // Lưu vào cơ sở dữ liệu
+                }
+            }
+        }
+    }
+}
+        // $tour->featured = $request->features;
+        // $tour->features_start = $request->features_start;
+        // $tour->features_end = $request->features_end;
+        // $tour->save();
         return redirect()->route('admin.tourManagement')->with('success', 'Cập nhật tour thành công!');
     }
     public function category_tour()
@@ -158,7 +290,7 @@ public function catetourInsert_(Request $request)
         if ($role == 'admin') {
             // Lấy tất cả tours
             $tours = Tour::select('id', 'image_url', 'title', 'slug', 'is_hidden', 'admin_id', 'category_id')
-                ->with(['admin:id,name', 'category:id,ten_danh_muc', 'ngayDi']) // khi sử dụng with ->luôn có cuột id
+                ->with(['admin:id,name', 'category:id,ten_danh_muc', 'ngayDi']) // khi sử dụng with ->luôn có cột id
                 ->get();
         } else {
             // Lấy tour thuộc về đối tác (admin_id)
@@ -182,8 +314,21 @@ public function catetourInsert_(Request $request)
     // ! Thêm tour
     // ! Thêm tour
     // ! Thêm tour
+//     public function createOption()
+// {
+//     // Lấy danh sách các giá trị 'featured' đã có
+//     $usedFeaturedValues = Tour::pluck('featured')->toArray();
+
+//     return view('admin.tour_insert', compact('usedFeaturedValues'));
+// }
     public function tourInsert_(Request $request)
     {
+        // Kiểm tra xem yêu cầu là GET hay POST
+    // Lấy danh sách các giá trị 'featured' đã có
+    // $usedFeaturedValues = Tour::pluck('featured')->toArray();
+
+    // if ($request->isMethod('post')) {
+        // $usedFeaturedValues = Tour::pluck('featured')->toArray();
         $validated = $request->validate(
             [
                 'admin_id' => ['required', 'integer', 'exists:admins,id'],
@@ -218,8 +363,8 @@ public function catetourInsert_(Request $request)
 
                 // * Nổi bật
                 'featured' => ['nullable', 'string', 'max:100'],
-                'features_start' => ['nullable', 'date', 'after_or_equal:today'],   // Ensure the start date is today or later
-                'features_end' => ['nullable', 'date', 'after_or_equal:start_date'],// Ensure the end date is after or equal to the start date
+                'features_start' => ['nullable', 'date', 'after_or_equal:today'],   
+                'features_end' => ['nullable', 'date', 'after_or_equal:start_date'],
             ],
             [
                 'admin_id.required' => 'Bạn chưa chọn đối tác.',
@@ -238,6 +383,7 @@ public function catetourInsert_(Request $request)
                 'sub_title.max' => 'Tiêu đề phụ không được vượt quá :max ký tự.',
 
                 'description.required' => 'Mô tả là bắt buộc.',
+
                 'transport.max' => 'Tên phương tiện không được vượt quá :max ký tự.',
                 'duration.max' => 'Thời gian đi không được vượt quá :max ký tự.',
 
@@ -274,7 +420,7 @@ public function catetourInsert_(Request $request)
                 'sub_image_url.*.max' => 'Kích thước mỗi ảnh không được vượt quá 2MB.',
 
                 // * Ngày nổi bật
-
+                'featured.not_in' => 'Giá trị đã chọn cho trường nổi bật đã tồn tại.',
                 'features_start.date' => 'Ngày bắt đầu nổi bật phải là ngày hợp lệ.',
                 'features_start.after_or_equal' => 'Ngày bắt đầu nổi bật phải sau hoặc bằng hôm nay.',
 
@@ -312,8 +458,17 @@ public function catetourInsert_(Request $request)
         }
         // nổi bật
         $tour->featured = $validated['featured'] ?? null;
-        $tour->featured_start = $validated['featured_start'] ?? null;
-        $tour->featured_end = $validated['featured_end'] ?? null;
+        // Chuyển đổi sang datetime với kiểm tra tồn tại
+//     $tour->featured_start = array_key_exists('featured_start', $validated) && $validated['featured_start']
+//     ? Carbon::createFromFormat('Y-m-d', $validated['featured_start']) : null;
+
+// $tour->featured_end = array_key_exists('featured_end', $validated) && $validated['featured_end']
+//     ? Carbon::createFromFormat('Y-m-d', $validated['featured_end']) : null;
+    // Lưu giá trị vào các trường dữ liệu
+    $tour->featured_start = array_key_exists('featured_start', $validated) && $validated['featured_start'] ? Carbon::createFromFormat('Y-m-d\TH:i', $validated['featured_start']) : null;
+    $tour->featured_end = array_key_exists('featured_end', $validated) && $validated['featured_end'] ? Carbon::createFromFormat('Y-m-d\TH:i', $validated['featured_end']) : null;
+        // $tour->featured_start = $validated['featured_start'] ?? null;
+        // $tour->featured_end = $validated['featured_end'] ?? null;
         $tour->save();
 
 
@@ -356,10 +511,13 @@ public function catetourInsert_(Request $request)
                 }
             }
         }
+        
 
         return redirect()->route('admin.tourManagement')->with('success', 'Tour added successfully!');
     }
-
+    // Trả về view khi yêu cầu là GET
+    // return view('admin.tour_insert', compact('usedFeaturedValues'));
+    // }
     /**
      * Display a listing of the resource.
      */
