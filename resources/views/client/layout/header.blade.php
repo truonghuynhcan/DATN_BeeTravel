@@ -156,7 +156,7 @@
      </nav>
 
      <!-- NAV 3 (Offcanvas Navbar for small screens) -->
-     <nav id="nav3" class="navbar bg-body-tertiary fixed-top d-none">
+     <nav id="nav3" class="sticky-top navbar bg-body-tertiary fixed-top d-none">
          <div class="container-fluid">
              <div>
                  <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">

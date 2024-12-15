@@ -3,60 +3,50 @@
     Đăng nhập
 @endsection
 @section('main')
-<div class="container">
+    <div class="container">
         <div class="row">
-            <div class="col-7 p-lg-3">
-                <p class="text-center text-uppercase fs-4 fst-italic p-4"><b>Đăng Nhập</b></p>
-                <form action="" method="post">
-                    @csrf
-                <div class="row">
-                <div class="col-3"></div>
-                <div class="col-6 ">
-                <div class="mb-3">
-                    <label for="formGroupExampleInput" class="form-label">Email Đăng Nhập: </label>
-                    <input type="email" name='email' class="form-control border-secondary" id="formGroupExampleInput" placeholder="Tên đăng nhập">
-                  </div>
-                  <div class="mb-3">
-                    <label for="formGroupExampleInput2" class="form-label">Mật Khẩu: </label>
-                    <input type="password" name='password' class="form-control border-secondary" id="formGroupExampleInput2" placeholder="Mật Khẩu">
-                  </div>
-                  
-                  <div class="form-check ">
-                    <input class="form-check-input border-secondary" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                      Ghi Nhớ Mật Khẩu
-                    </label>
-                  </div>
-                  <div class="row p-lg-3">
-                    <div class="d-grid gap-2 col-6 mx-auto text-end ">
-                        <p class="text-decoration-none">Chưa Có Tài Khoản!</p>
-                    </div>
-                    <div class="d-grid gap-2 col-3 mx-auto text-start">
-                        <a href="{{ route('register') }}" class="text-decoration-none">Đăng Ký </a>
-                    </div>
-                  </div>
-                  <div class="d-grid gap-2 col-6 mx-auto pt-3">
-                    <button class="btn btn-primary rounded-pill" type="submit">Đăng Nhập</button>
-                  </div>
+            <div class="col-lg-4 bg-body text-body">
+                <div class="m-auto" style="max-width: 350px">
+                    <img src="{{ asset('assets/image/logo_ngang.png') }}" class="img-fluid" alt="">
+                    <h1 class="text-center text-uppercase fs-3 fw-normal">Welcome again!</h1>
+                    <hr class="border-2 border-primary">
+                    @if ($errors->any())
+                        <ul class="mb-3 list-group list-group-flush">
+                            @foreach ($errors->all() as $error)
+                                <li class="list-group-item list-group-item-danger">{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    <form action="" method="post">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Email đăng nhập</label>
+                            <input type="email" name='email' class="form-control border-secondary" id="formGroupExampleInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput2" class="form-label">Mật khẩu</label>
+                            <input type="password" name='password' class="form-control border-secondary" id="formGroupExampleInput2">
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input border-secondary" type="checkbox" id="gridCheck">
+                            <label class="form-check-label" for="gridCheck">
+                                Ghi Nhớ Mật Khẩu
+                            </label>
+                        </div>
+
+                        <button class=" container-fluid fw-bolder btn btn-primary mb-3 p-3" type="submit">Đăng Nhập</button>
+                        <p class="text-decoration-none">Chưa Có Tài Khoản? <a href="{{ route('register') }}" class="mb-3">Đăng Ký Ngay!</a></p>
+                    </form>
                 </div>
-                <div class="col-3"></div>
-                @if($errors->any())
-<ul>
-@foreach ($errors->all() as $error)
-<li style="color:red">{{$error}}</li>
-@endforeach
-</ul>
-@endif
-</form>
             </div>
-            </div>
-            <div class="col-5">
-                <img src="../assets/image/proxy-image.jpg" class="rounded-start-pill" alt="..." width="530px" height="570px">
+            <div class="col-lg-8">
+                <img src="{{ asset('assets/image/trangchu banner03.jpg') }}" class="w-100" alt="...">
             </div>
         </div>
     </div>
-    
-     
-    
-     <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 @endsection
