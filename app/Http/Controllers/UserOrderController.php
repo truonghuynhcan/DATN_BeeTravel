@@ -63,7 +63,7 @@ class UserOrderController extends Controller
     protected function handleXacNhan($request)
     {
         // Loại bỏ dấu '#' khỏi mã đơn hàng (nếu có)
-        $madonghang = str_replace('#', '', $request->madonghang);
+        $madonghang = str_replace('#', '', subject: $request->madonghang);
 
         $sessionCode = session('confirmation_code'); // lấy code ra để so sánh
         $inputCode = $request->confirm_email;
@@ -82,7 +82,7 @@ class UserOrderController extends Controller
             $order = Order::select('id')->find($madonghang);
             if ($order) {
                 // ? nếu có dữ liệu -> chuyển sang page trang chi tiết.
-                return redirect()->route("thanh_toan_thanh_cong", [$order->id, $inputCode]);
+                return redirect()->route("thanh_toan_thanh_cong", ['order_id' => $madonghang, 'key' => $inputCode]);
             } else {
                 // ? nếu KO có dữ liệu -> back lại trang cùng với input.
                 return back()
@@ -138,12 +138,18 @@ class UserOrderController extends Controller
     {
         // ? check id người dùng phải trùng với id trong db thì mới xem được phần của mình
         $order_raw = Order::find($order_id);
+        
+        if (!$order_raw) {
+            # tour ko toonf taij
+            return redirect()->route('home')->with('error', 'Tour không tồn tại');
+        }
+
 
         $sessionCode = session('confirmation_code'); // lấy code ra để so sánh
         $email = session('email'); // lấy code ra để so sánh
 
-        if ($key==$sessionCode && $email==$order_raw->email) {
-            $order = $order_raw->with('ngayDi', 'customer')->first();
+        if ($key == $sessionCode && $email == $order_raw->email) {
+            $order = Order::with('ngayDi', 'customer')->find($order_id);
             $tour = Tour::select('id', 'admin_id', 'title', 'slug', 'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
             return view('client.thanh_toan_thanh_cong', compact('order', 'tour'));
 
@@ -154,7 +160,7 @@ class UserOrderController extends Controller
             } else {
                 // ? NẾU ĐÚNG người dùng đã đăng nhập tìm tour
                 // LẤY INFO ORDER & TOUR
-                $order = $order_raw->with('ngayDi', 'customer')->first();
+                $order = $order_raw->with('ngayDi', 'customer')->find($order_id);
                 $tour = Tour::select('id', 'admin_id', 'title', 'slug', 'image_url', 'sub_title', 'duration')->with('admin:id,name')->find($order->ngayDi->tour_id);
                 return view('client.thanh_toan_thanh_cong', compact('order', 'tour'));
             }
@@ -323,7 +329,9 @@ class UserOrderController extends Controller
             );
         }
 
-        return redirect()->route('thanh_toan_thanh_cong', $order->id);
+        $sessionCode = session('confirmation_code'); // lấy code ra để so sánh
+
+        return redirect()->route('thanh_toan_thanh_cong', ['order_id' => $order->id, 'key' => $sessionCode]);
     }
 
 

@@ -17,12 +17,14 @@ use Carbon\Carbon; // Đảm bảo import Carbon
 
 class AdminTourController extends Controller
 {
-    public function tourEdit($tour_id){
+    public function tourEdit($tour_id)
+    {
         $tour = Tour::with(['category', 'ngayDi', 'images', 'admin'])->withCount('wishlist')->find($tour_id);
 
         if (!$tour) {
             return redirect()->back()->withErrors('Tour not found!');
         }
+
         return view('admin.tour_edit', compact('tour'));
     }
 
@@ -60,7 +62,7 @@ class AdminTourController extends Controller
         if (!$tour) {
             return redirect()->back()->withErrors('Tour không tồn tại!');
         }
-    
+
         $tour->title = $request->title;
         $tour->slug = $request->slug;
         $tour->category_id = $request->category_id;
@@ -73,7 +75,7 @@ class AdminTourController extends Controller
         // $tour->image_url = $filename;
 
         $tour->title = $request->title;
-        
+
         if (!empty($request['slug'])) {
             $tour->slug = $request->slug;
         } else {
@@ -132,39 +134,39 @@ class AdminTourController extends Controller
         // * tạo ảnh (nếu có)
         // * Cập nhật ảnh chính (nếu có)
 // * Cập nhật ảnh (nếu có)
-if (isset($request['sub_image_url']) && !empty($request['sub_image_url']) && count($request['sub_image_url']) > 0) {
-    foreach ($request['sub_image_url'] as $key => $file) {
-        // Lấy ID của ảnh hiện tại từ mảng existing_image_id
-        $imageId = isset($request['existing_image_id'][$key]) ? $request['existing_image_id'][$key] : null;
+        if (isset($request['sub_image_url']) && !empty($request['sub_image_url']) && count($request['sub_image_url']) > 0) {
+            foreach ($request['sub_image_url'] as $key => $file) {
+                // Lấy ID của ảnh hiện tại từ mảng existing_image_id
+                $imageId = isset($request['existing_image_id'][$key]) ? $request['existing_image_id'][$key] : null;
 
-        if ($imageId) {
-            // Tìm ảnh hiện tại trong cơ sở dữ liệu
-            $image = Image::find($imageId);
-            if ($image) {
-                // Xóa file cũ nếu có
-                $oldFilePath = public_path('assets/image_tour/' . $image->url);
-                if (file_exists($oldFilePath)) {
-                    unlink($oldFilePath); // Xóa file cũ
-                }
+                if ($imageId) {
+                    // Tìm ảnh hiện tại trong cơ sở dữ liệu
+                    $image = Image::find($imageId);
+                    if ($image) {
+                        // Xóa file cũ nếu có
+                        $oldFilePath = public_path('assets/image_tour/' . $image->url);
+                        if (file_exists($oldFilePath)) {
+                            unlink($oldFilePath); // Xóa file cũ
+                        }
 
-                // Cập nhật ảnh mới
-                if ($file) { // Kiểm tra xem file có tồn tại không
-                    // Tạo một tên file duy nhất
-                    $filename = time() . '_' . $file->getClientOriginalName();
+                        // Cập nhật ảnh mới
+                        if ($file) { // Kiểm tra xem file có tồn tại không
+                            // Tạo một tên file duy nhất
+                            $filename = time() . '_' . $file->getClientOriginalName();
 
-                    // Di chuyển file vào thư mục public/assets/image_tour
-                    $file->move('assets/image_tour', $filename);
+                            // Di chuyển file vào thư mục public/assets/image_tour
+                            $file->move('assets/image_tour', $filename);
 
-                    // Cập nhật thông tin ảnh
-                    $image->name = $filename; // Hoặc bất kỳ tên nào bạn muốn lưu
-                    $image->url = $filename; // Cập nhật đường dẫn của ảnh
+                            // Cập nhật thông tin ảnh
+                            $image->name = $filename; // Hoặc bất kỳ tên nào bạn muốn lưu
+                            $image->url = $filename; // Cập nhật đường dẫn của ảnh
 
-                    $image->save(); // Lưu vào cơ sở dữ liệu
+                            $image->save(); // Lưu vào cơ sở dữ liệu
+                        }
+                    }
                 }
             }
         }
-    }
-}
         // $tour->featured = $request->features;
         // $tour->features_start = $request->features_start;
         // $tour->features_end = $request->features_end;
@@ -289,7 +291,7 @@ if (isset($request['sub_image_url']) && !empty($request['sub_image_url']) && cou
                 ->get();
         } else {
             // Lấy tour thuộc về đối tác (admin_id)
-            $tours = Tour::select('id', 'image_url', 'title', 'slug',  'is_hidden', 'category_id')
+            $tours = Tour::select('id', 'image_url', 'title', 'slug', 'is_hidden', 'category_id')
                 ->with(['category', 'ngayDi'])
                 ->where('admin_id', $admin_id)->get();
         }
@@ -314,15 +316,15 @@ if (isset($request['sub_image_url']) && !empty($request['sub_image_url']) && cou
 //     // Lấy danh sách các giá trị 'featured' đã có
 //     $usedFeaturedValues = Tour::pluck('featured')->toArray();
 
-//     return view('admin.tour_insert', compact('usedFeaturedValues'));
+    //     return view('admin.tour_insert', compact('usedFeaturedValues'));
 // }
     public function tourInsert_(Request $request)
     {
         // Kiểm tra xem yêu cầu là GET hay POST
-    // Lấy danh sách các giá trị 'featured' đã có
-    // $usedFeaturedValues = Tour::pluck('featured')->toArray();
+        // Lấy danh sách các giá trị 'featured' đã có
+        // $usedFeaturedValues = Tour::pluck('featured')->toArray();
 
-    // if ($request->isMethod('post')) {
+        // if ($request->isMethod('post')) {
         // $usedFeaturedValues = Tour::pluck('featured')->toArray();
         $validated = $request->validate(
             [
@@ -457,11 +459,11 @@ if (isset($request['sub_image_url']) && !empty($request['sub_image_url']) && cou
 //     $tour->featured_start = array_key_exists('featured_start', $validated) && $validated['featured_start']
 //     ? Carbon::createFromFormat('Y-m-d', $validated['featured_start']) : null;
 
-// $tour->featured_end = array_key_exists('featured_end', $validated) && $validated['featured_end']
+        // $tour->featured_end = array_key_exists('featured_end', $validated) && $validated['featured_end']
 //     ? Carbon::createFromFormat('Y-m-d', $validated['featured_end']) : null;
-    // Lưu giá trị vào các trường dữ liệu
-    $tour->featured_start = array_key_exists('featured_start', $validated) && $validated['featured_start'] ? Carbon::createFromFormat('Y-m-d\TH:i', $validated['featured_start']) : null;
-    $tour->featured_end = array_key_exists('featured_end', $validated) && $validated['featured_end'] ? Carbon::createFromFormat('Y-m-d\TH:i', $validated['featured_end']) : null;
+        // Lưu giá trị vào các trường dữ liệu
+        $tour->featured_start = array_key_exists('featured_start', $validated) && $validated['featured_start'] ? Carbon::createFromFormat('Y-m-d\TH:i', $validated['featured_start']) : null;
+        $tour->featured_end = array_key_exists('featured_end', $validated) && $validated['featured_end'] ? Carbon::createFromFormat('Y-m-d\TH:i', $validated['featured_end']) : null;
         // $tour->featured_start = $validated['featured_start'] ?? null;
         // $tour->featured_end = $validated['featured_end'] ?? null;
         $tour->save();
@@ -505,7 +507,7 @@ if (isset($request['sub_image_url']) && !empty($request['sub_image_url']) && cou
                 }
             }
         }
-        
+
 
         return redirect()->route('admin.tourManagement')->with('success', 'Tour added successfully!');
     }
