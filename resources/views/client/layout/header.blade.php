@@ -62,20 +62,24 @@
                      <!--
                     -->
                      <li class="nav-item">
-                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
+                         <a class="nav-link active me-4" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                      </li>
                      <li class="nav-item">
                          <a class="nav-link" href="{{ route('tour') }}">Tour list</a>
                      </li>
+                     <li class="nav-item">
+                         <a class="nav-link me-4" href="{{ route('order.find') }}">Tìm đơn hàng</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('news') }}">Tin tức</a>
+                    </li>
                      <li class="nav-item">
                          <a class="nav-link" href="{{ route('about') }}">Giới thiệu</a>
                      </li>
                      <li class="nav-item">
                          <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
                      </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{{ route('news') }}">Tin tức</a>
-                     </li>
+                    
 
                      <li class="nav-item">
                          {{-- <a class="nav-link" href="{{ route('tour_chi_tiet') }}">Tour desctiption</a> --}}
@@ -152,7 +156,7 @@
      </nav>
 
      <!-- NAV 3 (Offcanvas Navbar for small screens) -->
-     <nav id="nav3" class="navbar bg-body-tertiary fixed-top d-none">
+     <nav id="nav3" class="sticky-top navbar bg-body-tertiary fixed-top d-none">
          <div class="container-fluid">
              <div>
                  <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
