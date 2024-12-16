@@ -120,15 +120,12 @@ Tour
             <div class="col-lg-9">
                 <!-- Phần lọc tour -->
                 <form action="{{ route('tour.filter') }}" method="GET" class="d-flex mb-3">
-                    <!-- Đảm bảo tham số category_id được gửi -->
-                    <input type="hidden" name="category_id" value="{{ $category->id }}">
-
                     <!-- Lọc giá -->
                     <div class="me-3">
                         <label for="price_range" class="form-label">Lọc theo giá</label>
                         <select name="price_range" class="form-select form-select-sm price-range" onchange="this.form.submit()">
                             <option value="">Tất cả giá</option>
-                            <option value="0-5000000" {{ request('price_range') == '0-5000000' ? 'selected' : '' }}>Dưới 5.000.000 &#8363;</option>
+                            <option value="0-5000000" {{ request('price_range') == '0-5000000' ? 'selected' : '' }}>Dưới 5.000.000 ₫</option>
                             <option value="5000000-10000000" {{ request('price_range') == '5000000-10000000' ? 'selected' : '' }}>5.000.000 ₫ - 10.000.000 ₫</option>
                             <option value="10000000-20000000" {{ request('price_range') == '10000000-20000000' ? 'selected' : '' }}>10.000.000 ₫ - 20.000.000 ₫</option>
                             <option value="20000000-50000000" {{ request('price_range') == '20000000-50000000' ? 'selected' : '' }}>20.000.000 ₫ - 50.000.000 ₫</option>
@@ -139,7 +136,8 @@ Tour
                     <!-- Lọc ngày -->
                     <div class="me-3">
                         <label for="start_date" class="form-label">Ngày đi</label>
-                        <input type="date" name="start_date" class="form-control form-control-sm" value="{{ request('start_date') }}" onchange="this.form.submit()">
+                        <input type="date" name="start_date" class="form-control form-control-sm"
+                            value="{{ request('start_date') }}" onchange="this.form.submit()">
                     </div>
 
                     <!-- Lọc địa điểm -->
@@ -155,6 +153,7 @@ Tour
                         </select>
                     </div>
                 </form>
+
 
                 <!-- Danh sách tour -->
                 <div class="row">
