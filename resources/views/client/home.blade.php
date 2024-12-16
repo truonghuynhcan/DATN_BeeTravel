@@ -90,7 +90,7 @@ Trang chủ
         <div class="row" id="tourCards">
             @if($tours->count() > 0)
             @foreach($tours as $tour)
-            
+
             <div class="col-12 col-md-6 col-lg-3 col-xxl-3 mb-3 tour-hidden tour-card" data-position="{{ $tour->featured }}" data-end-date="{{ $tour->featured_end }}" data-start-date="{{ $tour->featured_start }}">
                 <div class="card text-bg-dark position-relative">
                     <div class="position-absolute start-0" style="top:5px;">
@@ -112,7 +112,9 @@ Trang chủ
                         </div>
                         <div class="d-flex">
                             <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>
-                            <p>Khởi hành: <b>{{ $tour->category->departure_location ?? 'Không xác định' }}</b></p>
+                            <p class="card-text">Ngày đi:
+                                <b>{{ optional($tour->ngayDi->first())->start_date ? \Carbon\Carbon::parse($tour->ngayDi->first()->start_date)->format('d/m/Y') : 'Chưa có ngày đi' }}</b>
+                            </p>
                         </div>
                         <div class="d-flex">
                             <p class="card-text">Giá:

@@ -17,60 +17,6 @@ use Carbon\Carbon; // Đảm bảo import Carbon
 
 class AdminTourController extends Controller
 {
-<<<<<<<<< Temporary merge branch 1
-//     public function showOption()
-// {
-    
-//     $usedFeaturedValues = Tour::pluck('featured')->toArray();
-
-//     return view('admin.tour_insert', compact('usedFeaturedValues'));
-// }
-    public function tourEdit($tour_id){
-=========
-    public function filterTours(Request $request)
-    {
-        // Lấy danh mục
-        $categories = Category::all();
-
-        // Lấy các tham số lọc từ request
-        $priceRange = $request->price_range;
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
-        $location = $request->location;
-
-        // Query cơ bản
-        $tours = Tour::query();
-
-        // Lọc theo giá
-        if ($priceRange) {
-            $prices = explode('-', $priceRange);
-            if (isset($prices[1]) && $prices[1] === '') {
-                $tours->where('price', '>=', $prices[0]);
-            } else {
-                $tours->whereBetween('price', [$prices[0], $prices[1]]);
-            }
-        }
-
-        // Lọc theo ngày
-        if ($startDate && $endDate) {
-            $tours->whereBetween('featured_start', [$startDate, $endDate]);
-        } elseif ($startDate) {
-            $tours->where('featured_start', '>=', $startDate);
-        } elseif ($endDate) {
-            $tours->where('featured_start', '<=', $endDate);
-        }
-
-        // Lọc theo danh mục
-        if ($location) {
-            $tours->where('category_id', $location);
-        }
-
-        // Phân trang
-        $tours = $tours->paginate(10);
-        
-        // Trả về view với dữ liệu
-        return view('admin.tour', compact('tours', 'categories'));
-    }
 
     public function tourEdit($tour_id)
     {
