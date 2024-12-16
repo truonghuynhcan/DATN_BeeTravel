@@ -74,7 +74,6 @@ class AdminTourController extends Controller
 
     public function tourEdit($tour_id)
     {
->>>>>>>>> Temporary merge branch 2
         $tour = Tour::with(['category', 'ngayDi', 'images', 'admin'])->withCount('wishlist')->find($tour_id);
 
         if (!$tour) {

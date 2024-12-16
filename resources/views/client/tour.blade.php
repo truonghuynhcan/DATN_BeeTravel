@@ -176,7 +176,7 @@ Tour
                                 </h5>
                                 <div class="d-flex">
                                     <i class="bi bi-geo-alt"></i>
-                                    <p class="card-text">Khởi hành: <b>{{ $tour->featured }}</b></p>
+                                    <p class="card-text">Khởi hành: <b>{{ $tour->category_id }}</b></p>
                                 </div>
                                 <div class="d-flex">
                                     <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>

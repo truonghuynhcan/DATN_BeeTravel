@@ -17,12 +17,17 @@ class UserTourController extends Controller
         $categories = Category::all();
 
         // Lấy danh sách tour với ngày đi và giá nhỏ nhất từ bảng ngay_di
-        $tours = Tour::with(['ngayDi' => function ($query) {
-            $query->select('tour_id', 'price', 'start_date')->orderBy('start_date', 'asc');
-        }])
-            ->select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')
-            ->orderBy('created_at', 'desc') // Sắp xếp từ mới đến cũ
-            ->paginate(12); // Phân trang với 12 tour mỗi trang
+        $tours = Tour::with([
+            'ngayDi' => function ($query) {
+                $query->select('tour_id', 'price', 'start_date')->orderBy('start_date', 'asc');
+            },
+            'category' => function ($query) {
+                $query->select('id', 'ten_danh_muc'); // Lấy điểm khởi hành từ bảng category
+            }
+        ])
+            ->select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured_start')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
 
         // Lấy danh sách tin tức
         $news = News::select('id', 'title', 'image_url', 'created_at') // Thêm các cột bạn muốn lấy
@@ -33,9 +38,6 @@ class UserTourController extends Controller
         // Trả dữ liệu về view
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
-
-
-
 
     public function fullsearch()
     {
