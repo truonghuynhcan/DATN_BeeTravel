@@ -155,6 +155,7 @@ class UserTourController extends Controller
 
     public function filterTours(Request $request)
     {
+        // Khởi tạo truy vấn
         $query = Tour::with(['ngayDi' => function ($q) {
             $q->select('tour_id', 'price', 'start_date');
         }]);
@@ -175,11 +176,12 @@ class UserTourController extends Controller
             });
         }
 
-
         // Lọc theo ngày đi
         if ($request->filled('start_date')) {
-            $query->whereHas('ngayDi', function ($q) use ($request) {
-                $q->whereDate('start_date', '>=', $request->start_date);
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d', $request->start_date)->toDateString();
+
+            $query->whereHas('ngayDi', function ($q) use ($startDate) {
+                $q->whereDate('start_date', '>=', $startDate);
             });
         }
 
@@ -188,21 +190,16 @@ class UserTourController extends Controller
             $query->where('category_id', $request->location);
         }
 
-        // Phân trang
+        // Lấy danh sách các tour theo điều kiện lọc
         $tours = $query->paginate(10);
 
-        // Lấy danh sách danh mục
+        // Lấy danh sách danh mục và tin tức
         $categories = Category::all();
-
-        $news = News::select('id', 'title', 'image_url', 'created_at') // Thêm các cột bạn muốn lấy
+        $news = News::select('id', 'title', 'image_url', 'created_at')
             ->latest()
             ->take(4)
             ->get();
 
-        // dd($query->toSql(), $query->getBindings());
-
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
-
-
 }
