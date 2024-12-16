@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Image;
 use App\Models\Tour;
 use App\Models\NgayDi;
 use App\Models\News;
@@ -122,59 +123,16 @@ class UserTourController extends Controller
             abort(404);
         }
 
-        $images = array_merge([$tour->image_url], [
-            'assets/image_tour/tour02.webp',
-            'assets/image_tour/tour03.webp',
-            // Thêm các ảnh khác nếu có
-        ]);
+        // tôi có một table image có thực thể là id, tour_id, name, url
+        // hãy lấy dựa trên idtour và thêm nó vào trong mảng phía dưới
+
+        $additionalImages = Image::where('tour_id', $tour->id)->pluck('url')->toArray();
+        $images = array_merge([$tour->image_url], $additionalImages);
+        // dd($images);
 
         return view('client.tour_chi_tiet', compact('images', 'categories', 'tour'));
     }
 
-
-    // public function show($id)
-    // {
-    //     $tour = Tour::with('ngayDi')->find($id);
-    //     return view('client.tour_chi_tiet', compact('images','categories','tour'));
-    // }
-    // public function getPrice(Request $request)
-    // {
-    //     $date = $request->input('date');
-    //     $tourId = $request->input('tour_id');
-
-    //     $priceInfo = NgayDi::where('tour_id', $tourId)
-    //         ->where('start_date', $date)
-    //         ->first();
-
-    //     if ($priceInfo) {
-    //         return response()->json([
-    //             'price' => number_format($priceInfo->price, 0, ',', '.')
-    //         ]);
-    //     }
-
-    //     return response()->json(['price' => 'Không có sẵn']);
-    // }
-    // public function bookTour(Request $request)
-    // {
-    //     // Lấy dữ liệu từ request
-    //     $tourId = $request->input('tour_id');
-    //     $selectedDate = $request->input('selected_date');
-
-    //     // Tìm tour và ngày đi
-    //     $tour = Tour::find($tourId);
-    //     $ngayDi = NgayDi::where('tour_id', $tourId)->where('start_date', $selectedDate)->first();
-
-    //     // Kiểm tra nếu tour và ngày đi tồn tại
-    //     if ($tour && $ngayDi) {
-    //         // Chuyển hướng đến trang thanh toán với dữ liệu cần thiết
-    //         return view('client.thanh_toan', [
-    //             'tour' => $tour,
-    //             'ngayDi' => $ngayDi
-    //         ]);
-    //     }
-
-    //     return redirect()->back()->withErrors('Tour hoặc ngày không hợp lệ.');
-    // }
 
     public function homesearchfull(Request $request)
     {
@@ -201,25 +159,22 @@ class UserTourController extends Controller
             $q->select('tour_id', 'price', 'start_date');
         }]);
 
-        // Lọc theo danh mục
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-
         // Lọc theo giá
         if ($request->filled('price_range')) {
-            [$minPrice, $maxPrice] = explode('-', $request->price_range . '-');
+            $range = explode('-', $request->price_range);
+            $minPrice = isset($range[0]) ? (int)$range[0] : null;
+            $maxPrice = isset($range[1]) && $range[1] !== '' ? (int)$range[1] : null;
+
             $query->whereHas('ngayDi', function ($q) use ($minPrice, $maxPrice) {
-                if (!empty($minPrice)) {
-                    $q->where('price', '>=', (int)$minPrice);
+                if (!is_null($minPrice)) {
+                    $q->where('price', '>=', $minPrice);
                 }
-                if (!empty($maxPrice)) {
-                    $q->where('price', '<=', (int)$maxPrice);
+                if (!is_null($maxPrice)) {
+                    $q->where('price', '<=', $maxPrice);
                 }
             });
-            
         }
-        
+
 
         // Lọc theo ngày đi
         if ($request->filled('start_date')) {
@@ -248,4 +203,6 @@ class UserTourController extends Controller
 
         return view('client.tour', compact('tours', 'categories', 'news'));
     }
+
+
 }

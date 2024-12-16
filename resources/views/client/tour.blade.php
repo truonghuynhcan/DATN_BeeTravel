@@ -156,7 +156,6 @@ Tour
                     </div>
                 </form>
 
-
                 <!-- Danh sách tour -->
                 <div class="row">
                     @if ($tours->count() > 0)

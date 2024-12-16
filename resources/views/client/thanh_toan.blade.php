@@ -4,7 +4,7 @@
 @endsection
 @section('main')
     <div class="container">
-        <div class="alert alert-danger">
+        <div class="alert alert-danger d-none">
             <h1>Task</h1>
             <ol>
                 <li>Xử lý lấy ngày đi tương lai gần nhất</li>

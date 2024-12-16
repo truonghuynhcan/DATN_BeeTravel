@@ -14,22 +14,22 @@ Trang chủ
         <div class="carousel-item active">
             <img src="{{ asset('') }}assets/image/banner-home-1.png" class="d-block w-100" style="min-height: 200px" alt="...">
             <div class="carousel-caption d-none d-md-block">
-                <h5>Bee Travel</h5>
-                <p>Tha hồ du lịch</p>
+                <h5></h5>
+                <p></p>
             </div>
         </div>
         <div class="carousel-item">
             <img src="{{ asset('') }}assets/image/banner-home-2.png" class="d-block w-100" style="min-height: 200px" alt="...">
             <div class="carousel-caption d-none d-md-block">
-                <h5>Đi cùng BeeChoice</h5>
-                <p>Thoải mái đi chơi</p>
+                <h5></h5>
+                <p></p>
             </div>
         </div>
         <div class="carousel-item">
             <img src="{{ asset('') }}assets/image/banner-home-3.png" class="d-block w-100" style="min-height: 200px" alt="...">
             <div class="carousel-caption d-none d-md-block">
-                <h5>Bee Travel</h5>
-                <p>Tha hồ du lịch</p>
+                <h5></h5>
+                <p></p>
             </div>
         </div>
     </div>

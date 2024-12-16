@@ -7,7 +7,7 @@ Quản lý tour
     <h2 class="">Quản lý tour</h2>
     <a href="{{route('admin.tourInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm tour mới</a>
 </header>
-<div class="alert alert-danger">
+<div class="alert alert-danger d-none">
     <h4>Todo</h4>
     <ul>
         <li>Làm thêm lọc tour</li>
@@ -85,7 +85,7 @@ Quản lý tour
                 <td class="text-center" ng-bind="tour.is_hidden !== 0 ? 'Ẩn' : 'Hiện'"></td>
 
                 <td class="text-center">
-                    <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info">Sửa</a>
+                    <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info mb-1">Sửa</a>
                     <button class="btn btn-outline-danger">Xóa</button>
                 </td>
             </tr>
