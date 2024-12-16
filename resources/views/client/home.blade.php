@@ -91,7 +91,7 @@ Trang chủ
             @if($tours->count() > 0)
             @foreach($tours as $tour)
             
-            <div class="col-12 col-md-6 col-lg-3 col-xxl-3 mb-3 tour-hidden tour-card" data-position="{{ $tour->featured }}" data-end-date="{{ $tour->featured_end }}" data-start-date="{{ $tour->featured_start }}">
+            <div class="col-12 col-md-6 col-xxl-3 mb-3 tour-hidden tour-card" data-position="{{ $tour->featured }}" data-end-date="{{ $tour->featured_end }}" data-start-date="{{ $tour->featured_start }}">
                 <div class="card text-bg-dark position-relative">
                     <div class="position-absolute start-0" style="top:5px;">
                         <svg width="80" height="40" viewBox="0 0 146 62" fill="none" xmlns="http://www.w3.org/2000/svg">

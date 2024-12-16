@@ -152,7 +152,7 @@
                     </div>
                     <div class="px-2 pt-2 d-flex flex-column gap-2">
                         <div class="d-flex align-items-center">
-                            <label for="adult-count" class="me-2 fw-bold">Người lớn (> 12 tuổi):</label>
+                            <label for="adult-count" class="me-2 fw-bold">Vé người lớn (> 12 tuổi):</label>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-outline-secondary" onclick="updatePassengerCount('adult', -1)">-</button>
                                 <span class="btn btn-outline-secondary" id="adult-count">0</span>
@@ -162,7 +162,7 @@
                         <div id="passenger-forms"></div>
 
                         <div class="d-flex align-items-center">
-                            <label for="child-count" class="me-2 fw-bold">Trẻ em (5-12 tuổi):</label>
+                            <label for="child-count" class="me-2 fw-bold">Vé trẻ em (5-12 tuổi):</label>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-outline-secondary" onclick="updatePassengerCount('child', -1)">-</button>
                                 <span class="btn btn-outline-secondary" id="child-count">0</span>
@@ -172,7 +172,7 @@
                         <div id="passenger-forms1"></div>
 
                         <div class="d-flex align-items-center">
-                            <label for="toddler-count" class="me-2 fw-bold">Trẻ nhỏ (2-5 tuổi):</label>
+                            <label for="toddler-count" class="me-2 fw-bold">Vé trẻ nhỏ (2-5 tuổi):</label>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-outline-secondary" onclick="updatePassengerCount('toddler', -1)">-</button>
                                 <span class="btn btn-outline-secondary" id="toddler-count">0</span>
@@ -182,7 +182,7 @@
                         <div id="passenger-forms2"></div>
 
                         <div class="d-flex align-items-center">
-                            <label for="infant-count" class="me-2 fw-bold">Em bé (< 2 tuổi):</label>
+                            <label for="infant-count" class="me-2 fw-bold">Vé em bé (< 2 tuổi):</label>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-outline-secondary" onclick="updatePassengerCount('infant', -1)">-</button>
                                         <span class="btn btn-outline-secondary" id="infant-count">0</span>
@@ -372,22 +372,22 @@
                         <strong class="text-body-secondary">Giá cơ bản</strong>
 
                         <div class="d-flex justify-content-between">
-                            <div>Người lớn</div>
+                            <div>Vé người lớn</div>
                             <div><span id="adult-total">0</span> x <span id="adult-cost">0</span> VND</div>
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <div>Trẻ em</div>
+                            <div>Vé trẻ em</div>
                             <div><span id="child-total">0</span> x <span id="child-cost">0</span> VND</div>
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <div>Trẻ nhỏ</div>
+                            <div>Vé trẻ nhỏ</div>
                             <div><span id="toddler-total">0</span> x <span id="toddler-cost">0</span> VND</div>
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <div>Em bé</div>
+                            <div>Vé em bé</div>
                             <div><span id="infant-total">0</span> x <span id="infant-cost">0</span> VND</div>
                         </div>
                         <!-- js xử lý cập nhật ngày khởi hành và giá tiền -->
