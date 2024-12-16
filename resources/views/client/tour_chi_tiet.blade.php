@@ -99,17 +99,6 @@
 
                         <!-- STORY ROW-1-->
                         <div class="row story-row">
-
-                            <div class="story-image col-sm-12 col-md-5 text-center">
-                                <!--PHOTO-ITEM-->
-                                <div class="photo-item animation delay1 fadeInLeft detail-tour-image-2" id="detail-tour-image-2-137">
-                                    <!--PHOTO-->
-                                    <img src="https://www.startravel.vn/upload/images/phuquoc3.jpg" alt="Ngày 01: TP.HCM – PHÚ QUỐC (ăn chiều)" class="hover-animation image-zoom-in">
-                                    <!--PHOTO OVERLAY-->
-                                </div>
-                                <!--END of PHOTO-ITEM-->
-                            </div>
-
                             <!-- Date -->
                             <div class="col-sm-12 col-md-2 text-center story-date-wrapper animation fadeIn">
                                 <div class="arrow-left"></div>

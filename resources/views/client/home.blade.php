@@ -90,7 +90,7 @@ Trang chủ
         <div class="row" id="tourCards">
             @if($tours->count() > 0)
             @foreach($tours as $tour)
-            
+
             <div class="col-12 col-md-6 col-lg-3 col-xxl-3 mb-3 tour-hidden tour-card" data-position="{{ $tour->featured }}" data-end-date="{{ $tour->featured_end }}" data-start-date="{{ $tour->featured_start }}">
                 <div class="card text-bg-dark position-relative">
                     <div class="position-absolute start-0" style="top:5px;">
@@ -108,14 +108,18 @@ Trang chủ
                         </h5>
                         <div class="d-flex">
                             <i class="bi bi-geo-alt"></i>
-                            <p class="card-text">Khởi hành: <b></b></p>
+                            <p class="card-text">Khởi hành: <b>{{ $tour->category_id }}</b></p>
                         </div>
                         <div class="d-flex">
                             <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>
-                            <p class="card-text">Ngày đi: <b>{{$tour->featured_start}}</b></p>
+                            <p>Khởi hành: <b>{{ $tour->category->departure_location ?? 'Không xác định' }}</b></p>
                         </div>
-                        <div class="d-flex ">
-                            <p class="card-text">Giá: <b class=" text-danger">10.890.000 ₫</b></p>
+                        <div class="d-flex">
+                            <p class="card-text">Giá:
+                                <b class="text-danger">
+                                    {{ $tour->ngayDi->min('price') ? number_format($tour->ngayDi->min('price')) . ' ₫' : 'Liên hệ' }}
+                                </b>
+                            </p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="{{route('thanh_toan',$tour->id)}}" class="btn btn-primary container-fluid">Đặt ngay</a>
@@ -135,7 +139,7 @@ Trang chủ
             @endif
             <a href="{{ route('tour') }}" class=" them btn ">Xem tất cả</a>
         </div>
-        </div>
+    </div>
 </section>
 
 <!-- product feature end -->
@@ -151,9 +155,9 @@ Trang chủ
                 <h3>TIN TỨC NỔI BẬT</h3>
                 <hr class="short-line">
                 <div class="button-container">
-                <!-- <button class="muiten"><i class="bi bi-arrow-left"></i></button>
+                    <!-- <button class="muiten"><i class="bi bi-arrow-left"></i></button>
                 <button class="muiten"><i class="bi bi-arrow-right"></i></button> -->
-            </div>
+                </div>
             </div>
 
             <div class="row" id="tourNews">
