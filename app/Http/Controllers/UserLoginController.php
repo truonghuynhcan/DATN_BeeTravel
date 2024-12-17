@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\GuiEmail;
 class UserLoginController extends Controller
 {
     //
@@ -56,4 +61,57 @@ class UserLoginController extends Controller
         request()->session()->regenerateToken(); // Tạo token mới cho bảo mật
         return redirect()->route('login');
     }
+    //quên Mật Khẩu
+public function viewforgotpassword(){
+      
+                 
+    return view('client.forgotpassword');
+}
+public function forgotpassword(Request $request){
+    $user = User::where('email', $request->email)->first();
+    $userId = $user->id;//lấy id
+   
+    $currentTime = time(); // Lấy thời gian hiện tại theo giây
+   
+    $currentSecond = $currentTime % 60; // Tính giây hiện tại
+    $resetCode = $userId . $currentSecond .Str::random(6);
+
+$request->session()->put('password_reset_code', $resetCode);
+
+
+
+
+if ($user) {
+$user->maxn = $request->session()->get('password_reset_code');
+$user->save();
+Mail::to($request->email)->send(new GuiEmail());
+
+
+
+return redirect()->route('insertcode');
+} else {
+return back()->withErrors(['email' => 'Email không tồn tại']);
+}
+
+}
+public function viewinsertcode(){
+
+    return view('client.insertcode');
+}
+public function insertcode(Request $request){
+    $user = User::where('maxn', $request->ma)->first();
+if ($user) {
+$user->password = Hash::make($request->password);
+$user->save();
+User::where('id',$user->id)->update([
+    'password' => $user->password
+]);
+
+
+return redirect()->route('login_loading');
+} else {
+return back()->withErrors(['ma' => 'ma sai']);
+}
+
+}
 }
