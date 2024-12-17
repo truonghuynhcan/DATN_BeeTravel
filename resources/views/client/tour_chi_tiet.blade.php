@@ -56,7 +56,7 @@
 
 
                 <!-- Lịch khởi hành -->
-                <div class="row mb-4">
+                <div class="row mb-4 d-none">
                     <h3 class="fs-4 text-center mb-3">Lịch khởi hành</h3>
                     <div class="col-3">
                         <div class="shadow-sm bg-body rounded p-3 d-flex flex-column justify-content-between">
@@ -78,24 +78,15 @@
                 <!-- Điểm nhấn của chương trình -->
                 <div class="mb-4 bg-primary-subtle p-3 rounded text-body">
                     <h3>Điểm nhấn của chương trình</h3>
-                    <ul>
-                        <li>Phá đảo bãi biển Trà Cổ, chiêm ngưỡng vẻ đẹp của vùng đất “Địa Đầu Tổ Quốc” – Mũi Sa Vĩ, nơi có câu thơ nổi tiếng “Từ Trà Cổ rừng dương đến Cà Mau rừng đước” khẳng định chiều dài đất nước của nhà thơ Tố Hữu.</li>
-                        <li>Khám phá thành phố Đông Hưng ven biên giới Việt - Trung, cùng ngắm nhìn vẻ đẹp khác lạ của thành phố này, thưởng thức các món ăn đặc sản của người dân nơi đây.</li>
-                        <li>Giải nhiệt và tận hưởng mùa hè tại huyện đảo Vân Đồn xinh đẹp với những cảnh đẹp thú vị</li>
-                        <li>Cảnh đẹp cổ kính của Chùa Cái Bầu địa điểm tâm linh hàng đầu đáng để trải nghiệm nhất tại vùng đất mỏ Quảng Ninh</li>
-                        <li>Cao nguyên Bình Liêu có khí hậu quanh năm ôn hòa, cấu trúc địa hình đa dạng cùng cảnh sắc thiên nhiên tươi đẹp, chinh phục những nấc thang "sống lưng khủng long", phóng tầm mắt ngắm nhìn cảnh sắc thiên nhiên tuyệt diệu và cảm nhận mình thật nhỏ bé giữa đất trời bao la</li>
-                        <li>Chiêm ngưỡng vẻ đẹp huyền bí của hệ thống 5 hang động tại khu du lịch Vũng Đục, các hang động được phân bổ từ thấp lên cao, có hang ta phải leo đến hàng trăm bậc đá mới đến cửa hang. Quý khách có thể hành hương chiêm bái tại các ngôi đền tự lưng bên núi nhìn ra vịnh Bái Tử
-                            Long xinh đẹp</li>
-                        <li>Wyndham Garden Sonasea Vân Đồn là khu nghỉ dưỡng cao cấp chuẩn 5 sao quốc tế. Đây là một trong những dự án có quy mô “khủng” nhất tại huyện đảo Vân Đồn, trải dài trên 2.2km đường bờ biển Bãi Dài, ngay bên cạnh Vịnh Bái Tử Long với diện tích lên tới 358.3ha</li>
-                    </ul>
+                    <p>{{$tour->sub_title}}</p>
                 </div>
 
 
                 <!-- THÔNG TIN CHI TIẾT TOUR -->
                 <div class="mb-3 bg-body p-3 rounded text-body">
                     <h3>Thông tin chi tiết về tour</h3>
-                    <pre>{{$tour->description}}</pre>
-                    <div id="the-timeline">
+                    <pre class="text-wrap">{!! $tour->description !!}</pre>
+                    <div class="d-none" id="the-timeline">
 
                         <!-- STORY ROW-1-->
                         <div class="row story-row">
@@ -247,8 +238,10 @@
                         <!-- END of STORY ROW-1 -->
                     </div>
                 </div>
+
+
                 <!-- Thông tin thêm về chuyến đi -->
-                <div class="row mb-3">
+                <div class="row mb-3 d-none">
                     <h3 class="fs-4 text-center mb-3">Thông tin thêm về chuyến đi</h3>
                     <div class="col-4 d-flex flex-column mb-3">
                         <i style="text-shadow: 0px 0px 3px #000;;" class="fa-regular fa-map text-light"></i>
@@ -284,7 +277,7 @@
 
 
                 <!-- Những thông tin cần lưu ý -->
-                <div class="row mb-3">
+                <div class="row mb-3 d-none">
                     <h3 class="fs-4 text-center mb-3">Những thông tin cần lưu ý</h3>
                     <div class="col-6">
                         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -362,7 +355,7 @@
             <div class="col-4">
 
                 <div class="bg-body shadow-sm border rounded p-3">
-                    <div class="h6">Giá từ:</div>
+                    <div class="h6">Giá:</div>
                     <div><span class="text-primary fs-5 fw-bolder"></span>0 VNĐ</span></div>
 
                     <!-- <div><span class="text-primary fs-5 fw-bolder">12.790.000 VNĐ</span></div> -->
@@ -395,7 +388,7 @@
                     </table>
                     <div class="d-grid gap-2">
                         <button class="btn btn-outline-primary">Ngày khác</button>
-                        <button class="btn btn-primary">Đặt tour</button>
+                        <a href="{{route('thanh_toan',$tour->id)}}" class="btn btn-primary">Đặt tour</a>
                     </div>
                 </div>
             </div>
@@ -403,7 +396,7 @@
     </div>
 
     <!-- Các tour khác -->
-    <div class="container">
+    <div class="container d-none">
         <div class="row">
             <div class="col-4">1</div>
             <div class="col-4">2</div>

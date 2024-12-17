@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('sub_title')->comment('mo ta ngan tour');
             $table->text('description')->comment('mo ta chi tiet tour');
+            $table->string('noi_khoi_hanh', 30)->comment('Nơi khởi hành, nơi xuất phát');
             $table->string('duration')->nullable()->comment('vd 2n3d');
             $table->string('transport')->nullable()->comment('phuong tien di chuyen'); // cần kiểm tra lại thống nhất cách nhập
             $table->integer('rating')->default('0')->comment('luot danh gia');

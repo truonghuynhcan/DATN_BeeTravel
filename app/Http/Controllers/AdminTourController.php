@@ -63,11 +63,6 @@ class AdminTourController extends Controller
         if (!$tour) {
             return redirect()->back()->withErrors('Tour không tồn tại!');
         }
-<<<<<<<<< Temporary merge branch 1
-    
-        // $tour->title = $request->title;
-        // $tour->slug = $request->slug;
-=========
 
         $tour->title = $request->title;
         $tour->slug = $request->slug;
