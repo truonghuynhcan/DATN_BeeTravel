@@ -39,6 +39,12 @@ Route::post('/dang-ky', [UserLoginController::class, 'register'])->name('registe
 Route::post('/dang-xuat', [UserLoginController::class, 'logout'])->name('dangxuat');
 Route::get('/dang-xuat', [UserLoginController::class, 'logout'])->name('dangxuat');
 
+//quên mật Khẩu
+
+Route::get('/forgotpassword',[UserLoginController::class,'viewforgotpassword'])->name('viewforgotpassword');
+Route::post('/forgotpassword',[UserLoginController::class,'forgotpassword'])->name('forgotpassword');
+Route::get('/insertcode',[UserLoginController::class,'viewinsertcode'])->name('viewinsertcode');
+Route::post('/insertcode',[UserLoginController::class,'insertcode'])->name('insertcode');
 
 // * Tour ----------------------------------------------------------------
 Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');

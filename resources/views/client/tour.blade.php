@@ -142,7 +142,7 @@ Tour
 
                     <!-- Lọc địa điểm -->
                     <div class="me-3">
-                        <label for="location" class="form-label">Lọc theo địa điểm</label>
+                        <label for="location" class="form-label">Điểm khởi hành</label>
                         <select name="location" class="form-select form-select-sm" id="location" onchange="this.form.submit()">
                             <option value="">Tất cả địa điểm</option>
                             @foreach($categories as $cat)

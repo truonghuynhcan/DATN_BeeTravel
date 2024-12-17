@@ -37,6 +37,7 @@
 
                         <button class=" container-fluid fw-bolder btn btn-primary mb-3 p-3" type="submit">Đăng Nhập</button>
                         <p class="text-decoration-none">Chưa Có Tài Khoản? <a href="{{ route('register') }}" class="mb-3">Đăng Ký Ngay!</a></p>
+                        <p class="text-decoration-none"> <a href="{{ route('forgotpassword') }}" class="mb-3">Quên mật khẩu</a></p>
                     </form>
                 </div>
             </div>
