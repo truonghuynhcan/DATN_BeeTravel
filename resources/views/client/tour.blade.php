@@ -170,13 +170,13 @@ Tour
                             <img src="{{asset('')}}assets/image_tour/{{ $tour->image_url }}" height="400px" class="card-img oject-fit-fill" alt="...">
                             <div class="card-img-overlay m-3 p-2 bg-body text-body" style="top:inherit">
                                 <h5 class="card-title">
-                                    <a href="/tour/{{ $tour->id }}" class="text-decoration-none text-body fs-6">
+                                    <a href="{{route('tour_chi_tiet',  $tour->id)}} " class="text-decoration-none text-body fs-6">
                                         {{ $tour->title }}
                                     </a>
                                 </h5>
                                 <div class="d-flex">
                                     <i class="bi bi-geo-alt"></i>
-                                    <p class="card-text">Khởi hành: <b>{{ $tour->category_id }}</b></p>
+                                    <p class="card-text">Khởi hành: <b>{{ $tour->noi_khoi_hanh }}</b></p>
                                 </div>
                                 <div class="d-flex">
                                     <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>

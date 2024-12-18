@@ -22,15 +22,27 @@ class UserPageController extends Controller
             ->orderBy('featured', 'asc') // Sắp xếp theo featured tăng dần
             ->get();
 
-        $tours_moinhat = Tour::select('id', 'category_id', 'admin_id', 'image_url', 'title', 'slug', 'duration', 'noi_khoi_hanh', 'transport', 'featured', 'is_hidden')
-            ->orderBy('created_at', 'desc') // Sắp xếp theo featured tăng dần
+            
+        $tours_moinhat = Tour::select('tours.id', 'tours.category_id', 'tours.admin_id', 'tours.image_url', 'tours.title', 'tours.slug', 'tours.duration', 'tours.noi_khoi_hanh', 'tours.transport', 'tours.featured', 'tours.is_hidden')
+            ->join('admins', 'tours.admin_id', '=', 'admins.id')
+            ->leftJoin('ngay_di', 'tours.id', '=', 'ngay_di.tour_id') // Kết nối với bảng ngày đi
+            ->where('tours.is_hidden', 0) // Tour không bị ẩn
+            ->where('admins.is_block', 0) // Admin không bị khóa
+            ->where(function ($query) {
+                // Kiểm tra nếu có ngày đi trong tương lai hoặc không có ngày đi
+                $query->where('ngay_di.start_date', '>=', now())
+                    ->orWhereNull('ngay_di.start_date'); // Nếu không có ngày đi
+            })
+            ->orderBy('tours.created_at', 'desc') // Sắp xếp theo ngày tạo
+            ->limit(4)
             ->get();
+
 
         $data = session('data', []);
         $latestNews = News::select('id', 'category_id', 'image_url', 'title', 'slug', 'description', 'content', 'reading')
             ->orderBy('reading', 'asc') // Sắp xếp theo featured tăng dần
             ->limit(4)->get();
-        return view('client.home', compact('data', 'categories', 'tours', 'latestNews'));
+        return view('client.home', compact('data', 'categories', 'tours', 'tours_moinhat', 'latestNews'));
     }
 
     public function about()

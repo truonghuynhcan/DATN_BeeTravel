@@ -7,6 +7,7 @@ use App\Models\Image;
 use App\Models\Tour;
 use App\Models\NgayDi;
 use App\Models\News;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UserTourController extends Controller
@@ -115,10 +116,18 @@ class UserTourController extends Controller
 
     public function chitiet($id)
     {
+        $now = Carbon::now();
+
         $categories = Category::all();
 
-        $tour = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start')
+        $tour = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'noi_khoi_hanh', 'duration', 'transport', 'featured', 'featured_start')
             ->where('id', '=', $id)
+            ->with([
+                'ngayDi' => function ($query) use ($now) {
+                    $query->where('start_date', '>', $now) // Filter for future dates
+                        ->orderBy('start_date'); // Order by date ascending
+                }
+            ])
             ->first();
 
         if (!$tour) {
