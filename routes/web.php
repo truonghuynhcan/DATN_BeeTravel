@@ -17,6 +17,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserFeedbackController;
 use App\Http\Controllers\UserNgayDiController;
 use App\Http\Controllers\UserOrderController;
+use App\Http\Controllers\LoginGoogleController;
+use App\Http\Controllers\LoginFacebookController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +47,19 @@ Route::get('/forgotpassword',[UserLoginController::class,'viewforgotpassword'])-
 Route::post('/forgotpassword',[UserLoginController::class,'forgotpassword'])->name('forgotpassword');
 Route::get('/insertcode',[UserLoginController::class,'viewinsertcode'])->name('viewinsertcode');
 Route::post('/insertcode',[UserLoginController::class,'insertcode'])->name('insertcode');
+
+//đăng nhập bằng gg
+Route::controller(LoginGoogleController::class)->group(function(){
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
+
+// đăng nhập bằng facebook
+  
+// Route::controller(LoginFacebookController::class)->group(function(){
+//     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+//     Route::get('auth/facebook/callback', 'handleFacebookCallback');
+// });
 
 // * Tour ----------------------------------------------------------------
 Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');

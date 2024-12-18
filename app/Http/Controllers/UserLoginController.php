@@ -69,12 +69,12 @@ public function viewforgotpassword(){
 }
 public function forgotpassword(Request $request){
     $user = User::where('email', $request->email)->first();
-    $userId = $user->id;//lấy id
    
-    $currentTime = time(); // Lấy thời gian hiện tại theo giây
-   
-    $currentSecond = $currentTime % 60; // Tính giây hiện tại
-    $resetCode = $userId . $currentSecond .Str::random(6);
+     // Tạo hai số ngẫu nhiên từ 0 đến 99
+     $randomNumber1 = rand(10, 99);
+     $randomNumber2 = rand(10, 99);
+
+    $resetCode =  $randomNumber1 .Str::random(4). $randomNumber2;
 
 $request->session()->put('password_reset_code', $resetCode);
 
@@ -82,7 +82,7 @@ $request->session()->put('password_reset_code', $resetCode);
 
 
 if ($user) {
-$user->maxn = $request->session()->get('password_reset_code');
+$user->token = $request->session()->get('password_reset_code');
 $user->save();
 Mail::to($request->email)->send(new GuiEmail());
 
@@ -99,7 +99,7 @@ public function viewinsertcode(){
     return view('client.insertcode');
 }
 public function insertcode(Request $request){
-    $user = User::where('maxn', $request->ma)->first();
+    $user = User::where('token', $request->ma)->first();
 if ($user) {
 $user->password = Hash::make($request->password);
 $user->save();

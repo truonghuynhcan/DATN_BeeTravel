@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bee - Mã xác nhận mật khẩu mới</title>
+    <title>Beetravel - Mã xác nhận mật khẩu mới</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,7 +42,7 @@
 <body>
     <div class="email-container">
         <div class="logo">
-            <img src="https://via.placeholder.com/150x50?text=LTAShop" alt="LTAShop Logo">
+            <img src="assets/logo_slogan.png" alt="Beetravel">
         </div>
         <div class="greeting">
             Xin chào, đây là Gmail gửi mã xác nhận mật khẩu mới của bạn.

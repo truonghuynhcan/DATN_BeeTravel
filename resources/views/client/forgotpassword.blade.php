@@ -4,28 +4,24 @@
 @endsection
 @section('main')
     <div class="container">
-    <div class="container-fluid bgdkn">
-    <div class="row">
-        <div class="col-6"></div>
-        <div class="col-6 " style="margin-top: 90px;">
-            <div class="container ">
-                <div class="login-container">
-                    <h2>Quên mật khẩu</h2>
-                    <form action="" method="POST" >
-                    @csrf
-                      <div class="form-group">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"  >
-                      </div>
-                      <button type="submit" class="btn btn-primary w-100">Gửi</button>
-                      <div class="form-group mb-5 mt-2">
-                      </div>
-                    </form>
-                  </div>
-            
-              </div>
-        </div>
-    </div>
     
-</div>
+    <div class=" container d-flex flex-column bg-body w-auto" style="max-width:400px">
+    <p class="text-center text-uppercase fs-4 p-4"><b>QUÊN MẬT KHẨU</b></p>
+    <form action="" method="post">
+            @csrf
+            <div class="mb-3 ">
+                <label  class="form-label">Nhập email</label>
+                <input type="email"  id="email" name="email" placeholder="Email" class="form-control border-black">
+                <div id="emailHelp" class="form-text">Điền email bạn đã đăng ký.</div>
+            </div>
+           
+            <button type="submit" class="mb-3 container-fluid btn btn-primary">Gửi</button>
+          
+        </form>
+
+
+    </div>
+
+    
     </div>
 @endsection
