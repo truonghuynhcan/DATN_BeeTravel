@@ -15,7 +15,7 @@
          color: var(--bs-primary);
      }
  </style>
- <!-- nav 1 -->
+ <!-- nav 1 - TOP -->
  <nav class="navbar navbar-expand-lg p-0 ">
      <div class="container-fluid  bg-secondary bg-opacity-50">
          <div class="container collapse navbar-collapse" id="navbarNavDropdown">
@@ -50,34 +50,35 @@
          </div>
      </div>
  </nav>
+
+
  <!-- NAV 2 (Main Navbar) -->
  <header class="sticky-top">
      <nav id="nav2" class="navbar navbar-expand-lg">
          <div class="container bg-body rounded-4 mt-3 ">
              <a class="navbar-brand" href="{{ route('home') }}">
-                 <img src="../assets/image/logo_ngang.png" alt="logo" height="40px">
+                 <img src="{{asset('')}}assets/image/logo_ngang.png" alt="logo" height="40px">
              </a>
              <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                  <ul class="navbar-nav mb-2 mb-lg-0 h5">
-                     <!--
-                    -->
+                     <!-- -->
                      <li class="nav-item">
-                         <a class="nav-link active me-4" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
+                         <a class="nav-link {{ Request::is('/') ? 'active' : '' }} me-4" aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                      </li>
                      <li class="nav-item">
-                         <a class="nav-link" href="{{ route('tour') }}">Tour list</a>
+                         <a class="nav-link {{ Request::is('tour') || Request::is('tour/*') ? 'active' : '' }}" href="{{ route('tour') }}">Tour list</a>
                      </li>
                      <li class="nav-item">
-                         <a class="nav-link me-4" href="{{ route('order.find') }}">Tìm đơn hàng</a>
+                         <a class="nav-link {{ Request::is('tim-tour-da-dat') ? 'active' : '' }} me-4" href="{{ route('order.find') }}">Tìm đơn hàng</a>
                      </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="{{ route('news') }}">Tin tức</a>
+                        <a class="nav-link {{ Request::is('news') ? 'active' : '' }}" href="{{ route('news') }}">Tin tức</a>
                     </li>
                      <li class="nav-item">
-                         <a class="nav-link" href="{{ route('about') }}">Giới thiệu</a>
+                         <a class="nav-link {{ Request::is('gioi-thieu') ? 'active' : '' }}" href="{{ route('about') }}">Giới thiệu</a>
                      </li>
                      <li class="nav-item">
-                         <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
+                         <a class="nav-link  {{ Request::is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Liên hệ</a>
                      </li>
                     
 
@@ -163,7 +164,7 @@
                      <span class="navbar-toggler-icon"></span>
                  </button>
                  <a class="navbar-brand" href="#">
-                     <img src="../assets/image/logo_ngang.png" alt="logo" height="60px">
+                     <img src="{{asset('')}}assets/image/logo_ngang.png" alt="logo" height="60px">
                  </a>
              </div>
              <ul class="navbar-nav justify-content-end pe-3" id="account-sm">
