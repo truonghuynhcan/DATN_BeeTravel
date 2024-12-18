@@ -32,8 +32,25 @@
                     </div>
                 </div>
                 <div class="col-md-4 mb-3" id="banner-left">
-                    <img class="shadow rounded" src="{{ asset('') }}assets/image/trangchu-banner-04.jpg" alt="" style="height: 195px; width: 100%;">
-                    <img class="shadow rounded" src="{{ asset('') }}assets/image/trangchu-banner-05.jpg" alt="" style="height: 195px; width: 100%; margin-top: 10px;">
+
+                    <form action="{{route('tour.search')}}" method="post">
+                        @csrf
+                        <!-- Input để người dùng nhập từ khóa -->
+                        <input type="text" value="đảo" name="keyword" hidden  required />
+
+                        <!-- Loại post (ẩn) -->
+                        <input type="hidden" name="type" value="tour" />
+
+                        <!-- Nút gửi form -->
+                        <button type="submit" class="btn p-0 m-0 ">
+                            <img class="shadow rounded" src="{{ asset('') }}assets/image/trangchu-banner-04.jpg" alt="" style="height: 195px; width: 100%;">
+                        </button>
+                    </form>
+
+                    {{-- banner 5 đi vịnh hạn logn --}}
+                    <a href="{{ route('tour.category', 21) }}">
+                        <img class="shadow rounded" src="{{ asset('') }}assets/image/trangchu-banner-05.jpg" alt="" style="height: 195px; width: 100%; margin-top: 10px;">
+                    </a>
                 </div>
             </div>
         </div>
@@ -245,7 +262,7 @@
                         <hr class="short-line">
                         <div class="button-container">
                             <!-- <button class="muiten"><i class="bi bi-arrow-left"></i></button>
-                                            <button class="muiten"><i class="bi bi-arrow-right"></i></button> -->
+                                                    <button class="muiten"><i class="bi bi-arrow-right"></i></button> -->
                         </div>
                     </div>
 
@@ -278,6 +295,7 @@
         </div>
     </section>
 
+    <!-- DANH MỤC - ĐIỂM ĐẾN YÊU THÍCH -->
     <div class="yeuthich">
         <h3>ĐIỂM ĐẾN YÊU THÍCH</h3>
         <hr class="short-line">
