@@ -141,7 +141,22 @@ class UserTourController extends Controller
         $images = array_merge([$tour->image_url], $additionalImages);
         // dd($images);
 
-        return view('client.tour_chi_tiet', compact('images', 'categories', 'tour'));
+        // tour phụ phần chân trang
+        $tours_moinhat = Tour::select('tours.id', 'tours.category_id', 'tours.admin_id', 'tours.image_url', 'tours.title', 'tours.slug', 'tours.duration', 'tours.noi_khoi_hanh', 'tours.transport', 'tours.featured', 'tours.is_hidden')
+            ->join('admins', 'tours.admin_id', '=', 'admins.id')
+            ->leftJoin('ngay_di', 'tours.id', '=', 'ngay_di.tour_id') // Kết nối với bảng ngày đi
+            ->where('tours.is_hidden', 0) // Tour không bị ẩn
+            ->where('admins.is_block', 0) // Admin không bị khóa
+            ->where(function ($query) {
+                // Kiểm tra nếu có ngày đi trong tương lai hoặc không có ngày đi
+                $query->where('ngay_di.start_date', '>=', now())
+                    ->orWhereNull('ngay_di.start_date'); // Nếu không có ngày đi
+            })
+            ->orderBy('tours.created_at', 'desc') // Sắp xếp theo ngày tạo
+            ->limit(4)
+            ->get();
+
+        return view('client.tour_chi_tiet', compact('images', 'categories', 'tour', 'tours_moinhat'));
     }
 
 
