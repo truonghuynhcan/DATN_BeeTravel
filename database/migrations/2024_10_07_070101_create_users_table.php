@@ -28,7 +28,8 @@ return new class extends Migration
             $table->boolean('is_block')->default(false)->comment('tai khoan co bị khoa hay khong');
             $table->dateTime('last_login_at')->nullable();
             $table->dateTime('deletion_requested_at')->nullable()->comment('tạo code khi nguoi dung yeu cau; gửi mail khi còn 7 ngày và 1 ngày');
-
+            $table->string('token');
+            
             $table->timestamps();
         });
     }
@@ -40,4 +41,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('users');
     }
+    
 };

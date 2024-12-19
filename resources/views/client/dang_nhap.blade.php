@@ -36,7 +36,13 @@
                         </div>
 
                         <button class=" container-fluid fw-bolder btn btn-primary mb-3 p-3" type="submit">Đăng Nhập</button>
+                        <p class="text-decoration-none text-center"> 
+                            <a href="{{ route('auth.google') }}" class="mb-3"><img src="{{ asset('assets/image/google.png') }}" class="w-100" alt="..."></a>
+                            <!-- <a href="#" class="mb-3"><i class="bi bi-facebook" style="font-size: 50px;"></i></a> -->
+                    </p>
                         <p class="text-decoration-none">Chưa Có Tài Khoản? <a href="{{ route('register') }}" class="mb-3">Đăng Ký Ngay!</a></p>
+                        <p class="text-decoration-none"> <a href="{{ route('forgotpassword') }}" class="mb-3">Quên mật khẩu</a></p>
+                        
                     </form>
                 </div>
             </div>

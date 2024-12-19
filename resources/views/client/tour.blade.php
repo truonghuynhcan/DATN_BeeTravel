@@ -142,18 +142,19 @@ Tour
 
                     <!-- Lọc địa điểm -->
                     <div class="me-3">
-                        <label for="location" class="form-label">Lọc theo địa điểm</label>
-                        <select name="location" class="form-select form-select-sm" id="location" onchange="this.form.submit()">
-                            <option value="">Tất cả địa điểm</option>
-                            @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ request('location') == $cat->id ? 'selected' : '' }}>
-                                {{ $cat->ten_danh_muc }}
-                            </option>
-                            @endforeach
-                        </select>
+                        <label for="noi_khoi_hanh" class="form-label">Nơi khởi hành</label>
+                        <form method="GET" action="{{ route('tour.filter') }}">
+                            <select name="noi_khoi_hanh" class="form-select form-select-sm" id="noi_khoi_hanh" onchange="this.form.submit()">
+                                <option value="">Tất cả địa điểm</option>
+                                @foreach($provinces as $province)
+                                <option value="{{ $province['name'] }}" {{ request('noi_khoi_hanh') == $province['name'] ? 'selected' : '' }}>
+                                    {{ $province['name'] }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </form>
                     </div>
                 </form>
-
 
                 <!-- Danh sách tour -->
                 <div class="row">
@@ -171,13 +172,16 @@ Tour
                             <img src="{{asset('')}}assets/image_tour/{{ $tour->image_url }}" height="400px" class="card-img oject-fit-fill" alt="...">
                             <div class="card-img-overlay m-3 p-2 bg-body text-body" style="top:inherit">
                                 <h5 class="card-title">
-                                    <a href="/tour/{{ $tour->id }}" class="text-decoration-none text-body fs-6">
+                                    <a href="{{route('tour_chi_tiet',  $tour->id)}} " class="text-decoration-none text-body fs-6">
                                         {{ $tour->title }}
                                     </a>
                                 </h5>
                                 <div class="d-flex">
                                     <i class="bi bi-geo-alt"></i>
-                                    <p class="card-text">Khởi hành: <b>{{ $tour->category->ten_danh_muc }}</b></p>
+
+                                    
+                                    <p class="card-text">Khởi hành: <b>{{ $tour->noi_khoi_hanh }}</b></p>
+
                                 </div>
                                 <div class="d-flex">
                                     <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>
@@ -185,6 +189,17 @@ Tour
                                         <b>{{ optional($tour->ngayDi->first())->start_date ? \Carbon\Carbon::parse($tour->ngayDi->first()->start_date)->format('d/m/Y') : 'Chưa có ngày đi' }}</b>
                                     </p>
                                 </div>
+                                <div class="d-flex">
+                                    <i class="fa-regular fa-clock" style="margin-right: 5px; margin-top: 3px;"></i>
+                                    <p class="card-text">
+                                        @if(!empty($tour->duration))
+                                        <b>{{ $tour->duration }}</b>
+                                        @else
+                                        <span>Chưa có thông tin</span>
+                                        @endif
+                                    </p>
+                                </div>
+
                                 <div class="d-flex">
                                     <p class="card-text">Giá:
                                         <b class="text-danger">

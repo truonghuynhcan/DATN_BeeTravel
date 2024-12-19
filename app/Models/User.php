@@ -31,6 +31,9 @@ class User extends Authenticatable
         'is_block',
         'last_login_at',
         'deletion_requested_at',
+        'token',
+        'google_id',
+        'facebook_id',
     ];
 
     /**

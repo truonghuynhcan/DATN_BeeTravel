@@ -17,6 +17,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserFeedbackController;
 use App\Http\Controllers\UserNgayDiController;
 use App\Http\Controllers\UserOrderController;
+use App\Http\Controllers\LoginGoogleController;
+use App\Http\Controllers\LoginFacebookController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -39,12 +41,30 @@ Route::post('/dang-ky', [UserLoginController::class, 'register'])->name('registe
 Route::post('/dang-xuat', [UserLoginController::class, 'logout'])->name('dangxuat');
 Route::get('/dang-xuat', [UserLoginController::class, 'logout'])->name('dangxuat');
 
+//quên mật Khẩu
+
+Route::get('/forgotpassword',[UserLoginController::class,'viewforgotpassword'])->name('viewforgotpassword');
+Route::post('/forgotpassword',[UserLoginController::class,'forgotpassword'])->name('forgotpassword');
+Route::get('/insertcode',[UserLoginController::class,'viewinsertcode'])->name('viewinsertcode');
+Route::post('/insertcode',[UserLoginController::class,'insertcode'])->name('insertcode');
+
+//đăng nhập bằng gg
+Route::controller(LoginGoogleController::class)->group(function(){
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
+
+// đăng nhập bằng facebook
+  
+// Route::controller(LoginFacebookController::class)->group(function(){
+//     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+//     Route::get('auth/facebook/callback', 'handleFacebookCallback');
+// });
 
 // * Tour ----------------------------------------------------------------
 Route::get('/tour', [UserTourController::class, 'tour'])->name('tour');
-Route::get('/tour/{slug}', [UserTourController::class, 'chitiet'])->name('chitiet');
+// Route::get('/tour/{slug}', [UserTourController::class, 'chitiet'])->name('chitiet');
 Route::get('/tour-chi-tiet/{slug}', [UserTourController::class, 'chitiet'])->name('tour_chi_tiet');
-Route::get('/tour/{id}', [UserTourController::class, 'chitietid'])->name('tour_chi_tiet');
 Route::get('/tour/price', [UserTourController::class, 'getPrice']);
 Route::post('/tour/search', [UserTourController::class, 'searchTours'])->name('tour.search');
 Route::get('/filter-tours', [UserTourController::class, 'filterTours'])->name('tour.filter');

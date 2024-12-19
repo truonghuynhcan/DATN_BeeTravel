@@ -18,11 +18,6 @@ use Carbon\Carbon; // Đảm bảo import Carbon
 
 class AdminTourController extends Controller
 {
-    // public function showOption()
-    // {
-    //     $usedFeaturedValues = Tour::pluck('featured')->toArray();
-    //     return view('admin.tour_insert', compact('usedFeaturedValues'));
-    // }
 
     public function tourEdit($tour_id)
     {

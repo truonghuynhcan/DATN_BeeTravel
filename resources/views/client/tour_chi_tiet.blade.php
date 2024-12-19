@@ -8,13 +8,100 @@
     <!-- Detail -->
     <div class="container">
         <div class="row">
+            <!-- Bảng giá -->
+            <div class="col-lg-4  order-lg-2">
+                <form action="" method="post">
+                    @csrf
+                    <div class="bg-body shadow-sm border rounded p-3">
+                        <div class="fw-medium m-0">Giá:</div>
+                        <div>
+                            <span class="text-primary fs-3 fw-bolder mb-3" id="giatour" style="text-shadow: 2px 2px 1px rgba(229, 191, 21, 0.641);">0</span>
+                            <span class="text-primary fs-5 fw-bolder mb-3" >₫/người</span> 
+                            {{-- <span class="text-primary fs-3 fw-bolder mb-3">{{ $tour->ngayDi->min('price') ? number_format($tour->ngayDi->min('price')) . ' ₫/người' : 'Liên hệ' }}</span> --}}
+                        </div>
+
+                        <!-- <div><span class="text-primary fs-5 fw-bolder">12.790.000 VNĐ</span></div> -->
+                        <table class="mb-3">
+                            <tr>
+                                <td scope="col"><i class="fa-solid fa-qrcode"></i></td>
+                                <td scope="col">Mã tour</td>
+                                <td>:</td>
+                                <td scope="col" class="text-body ps-2 fw-bold">{{ $tour->id }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-map-location-dot"></i></td>
+                                <td>Khởi hành</td>
+                                <td>:</td>
+                                <td class="text-body ps-2 fw-bold">{{ $tour->noi_khoi_hanh }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-regular fa-calendar-days"></i></td>
+                                <td>Ngày đi</td>
+                                <td>:</td>
+                                <td class="text-body fw-bold">
+                                    <select name="ngaydi" id="ngaydi_id" class="form-select text-body fw-bold">
+                                        @foreach ($tour->ngayDi as $item)
+                                            <option value="{{ $item->id }}">{{ $item->start_date }}</option>
+                                        @endforeach
+                                    </select>
+                                    <script>
+                                        // hàm cập nhật giá tiền theo ngày đi
+                                        function fetchPrice() {
+                                            const ngaykhoihanh_id = document.querySelector('#ngaydi_id').value;
+
+                                            fetch(`/api/get-price/${ngaykhoihanh_id}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    console.log(data);
+
+                                                    // Cập nhật giá dựa trên dữ liệu trả về
+                                                    document.getElementById('giatour').textContent = formatCurrency(data.adultCost);
+                                                })
+                                                .catch(error => {
+                                                    console.error('Error fetching price:', error);
+                                                });
+                                        }
+
+                                        // gpt hỗ trợ làm phân tách number
+                                        function formatCurrency(number) {
+                                            const parts = number.toString().split("."); // Tách phần nguyên và phần thập phân (nếu có)
+                                            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Thêm dấu chấm vào phần nguyên
+                                            return parts.join(","); // Ghép lại với dấu phẩy cho phần thập phân
+                                        }
+
+                                        // Gọi hàm khi trang load lần đầu
+                                        document.addEventListener('DOMContentLoaded', fetchPrice);
+                                    </script>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-hourglass-half"></i></td>
+                                <td>Thời gian</td>
+                                <td>:</td>
+                                <td class="text-body ps-2 fw-bold">{{ $tour->duration }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-check-to-slot"></i></td>
+                                <td> Số chỗ còn</td>
+                                <td>:</td>
+                                <td class="text-body ps-2 fw-bold">4 chỗ</td>
+                            </tr>
+                        </table>
+                        <div class="d-grid gap-2">
+                            <a href="{{ route('thanh_toan', $tour->id) }}" class="btn btn-primary fw-medium fs-5 py-2">Đặt tour</a>
+                            <button class="btn btn-outline-primary">Ngày khác</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <!-- img, detail -->
-            <div class="col-8">
+            <div class="col-lg-8 order-lg-1">
                 <!-- images -->
-                <div class="row mb-4 " >
+                <div class="row mb-4 ">
                     <div class="col-2 d-flex flex-column">
                         @foreach ($images as $key => $image)
-                            <img src="{{ asset('assets/image_tour/' . $image) }}" alt="Tour Image" class="mb-3 rounded-1" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $key }}" class="{{ $key === 0 ? 'active' : '' }}" aria-current="{{ $key === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $key + 1 }}">
+                            <img src="{{ asset('assets/image_tour/' . $image) }}" alt="Tour Image" class="mb-3 rounded-1" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $key }}" class="{{ $key === 0 ? 'active' : '' }}" aria-current="{{ $key === 0 ? 'true' : 'false' }}"
+                                aria-label="Slide {{ $key + 1 }}">
                         @endforeach
                     </div>
                     <div class="col-10">
@@ -56,7 +143,7 @@
 
 
                 <!-- Lịch khởi hành -->
-                <div class="row mb-4">
+                <div class="row mb-4 d-none">
                     <h3 class="fs-4 text-center mb-3">Lịch khởi hành</h3>
                     <div class="col-3">
                         <div class="shadow-sm bg-body rounded p-3 d-flex flex-column justify-content-between">
@@ -78,38 +165,18 @@
                 <!-- Điểm nhấn của chương trình -->
                 <div class="mb-4 bg-primary-subtle p-3 rounded text-body">
                     <h3>Điểm nhấn của chương trình</h3>
-                    <ul>
-                        <li>Phá đảo bãi biển Trà Cổ, chiêm ngưỡng vẻ đẹp của vùng đất “Địa Đầu Tổ Quốc” – Mũi Sa Vĩ, nơi có câu thơ nổi tiếng “Từ Trà Cổ rừng dương đến Cà Mau rừng đước” khẳng định chiều dài đất nước của nhà thơ Tố Hữu.</li>
-                        <li>Khám phá thành phố Đông Hưng ven biên giới Việt - Trung, cùng ngắm nhìn vẻ đẹp khác lạ của thành phố này, thưởng thức các món ăn đặc sản của người dân nơi đây.</li>
-                        <li>Giải nhiệt và tận hưởng mùa hè tại huyện đảo Vân Đồn xinh đẹp với những cảnh đẹp thú vị</li>
-                        <li>Cảnh đẹp cổ kính của Chùa Cái Bầu địa điểm tâm linh hàng đầu đáng để trải nghiệm nhất tại vùng đất mỏ Quảng Ninh</li>
-                        <li>Cao nguyên Bình Liêu có khí hậu quanh năm ôn hòa, cấu trúc địa hình đa dạng cùng cảnh sắc thiên nhiên tươi đẹp, chinh phục những nấc thang "sống lưng khủng long", phóng tầm mắt ngắm nhìn cảnh sắc thiên nhiên tuyệt diệu và cảm nhận mình thật nhỏ bé giữa đất trời bao la</li>
-                        <li>Chiêm ngưỡng vẻ đẹp huyền bí của hệ thống 5 hang động tại khu du lịch Vũng Đục, các hang động được phân bổ từ thấp lên cao, có hang ta phải leo đến hàng trăm bậc đá mới đến cửa hang. Quý khách có thể hành hương chiêm bái tại các ngôi đền tự lưng bên núi nhìn ra vịnh Bái Tử
-                            Long xinh đẹp</li>
-                        <li>Wyndham Garden Sonasea Vân Đồn là khu nghỉ dưỡng cao cấp chuẩn 5 sao quốc tế. Đây là một trong những dự án có quy mô “khủng” nhất tại huyện đảo Vân Đồn, trải dài trên 2.2km đường bờ biển Bãi Dài, ngay bên cạnh Vịnh Bái Tử Long với diện tích lên tới 358.3ha</li>
-                    </ul>
+                    <p>{{ $tour->sub_title }}</p>
                 </div>
 
 
                 <!-- THÔNG TIN CHI TIẾT TOUR -->
                 <div class="mb-3 bg-body p-3 rounded text-body">
                     <h3>Thông tin chi tiết về tour</h3>
-                    <pre>{{$tour->description}}</pre>
-                    <div id="the-timeline">
+                    <pre class="text-wrap">{!! $tour->description !!}</pre>
+                    <div class="d-none" id="the-timeline">
 
                         <!-- STORY ROW-1-->
                         <div class="row story-row">
-
-                            <div class="story-image col-sm-12 col-md-5 text-center">
-                                <!--PHOTO-ITEM-->
-                                <div class="photo-item animation delay1 fadeInLeft detail-tour-image-2" id="detail-tour-image-2-137">
-                                    <!--PHOTO-->
-                                    <img src="https://www.startravel.vn/upload/images/phuquoc3.jpg" alt="Ngày 01: TP.HCM – PHÚ QUỐC (ăn chiều)" class="hover-animation image-zoom-in">
-                                    <!--PHOTO OVERLAY-->
-                                </div>
-                                <!--END of PHOTO-ITEM-->
-                            </div>
-
                             <!-- Date -->
                             <div class="col-sm-12 col-md-2 text-center story-date-wrapper animation fadeIn">
                                 <div class="arrow-left"></div>
@@ -258,8 +325,10 @@
                         <!-- END of STORY ROW-1 -->
                     </div>
                 </div>
+
+
                 <!-- Thông tin thêm về chuyến đi -->
-                <div class="row mb-3">
+                <div class="row mb-3 d-none">
                     <h3 class="fs-4 text-center mb-3">Thông tin thêm về chuyến đi</h3>
                     <div class="col-4 d-flex flex-column mb-3">
                         <i style="text-shadow: 0px 0px 3px #000;;" class="fa-regular fa-map text-light"></i>
@@ -295,7 +364,7 @@
 
 
                 <!-- Những thông tin cần lưu ý -->
-                <div class="row mb-3">
+                <div class="row mb-3 d-none">
                     <h3 class="fs-4 text-center mb-3">Những thông tin cần lưu ý</h3>
                     <div class="col-6">
                         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -369,52 +438,68 @@
                     </div>
                 </div>
             </div>
-            <!-- Bảng giá -->
-            <div class="col-4">
-
-                <div class="bg-body shadow-sm border rounded p-3">
-                    <div class="h6">Giá từ:</div>
-                    <div><span class="text-primary fs-5 fw-bolder"></span>0 VNĐ</span></div>
-
-                    <!-- <div><span class="text-primary fs-5 fw-bolder">12.790.000 VNĐ</span></div> -->
-                    <table>
-                        <tr>
-                            <td scope="col"><i class="fa-solid fa-qrcode"></i></td>
-                            <td scope="col">Mã tour:</td>
-                            <td scope="col" class="text-info fw-bold">PS36499</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fa-solid fa-map-location-dot"></i></td>
-                            <td>Khởi hành: </td>
-                            <td class="text-info fw-bold">{{ $tour->featured }}</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fa-regular fa-calendar-days"></i></td>
-                            <td>Ngày đi: </td>
-                            <td class="text-info fw-bold">{{ $tour->featured_start }}</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fa-solid fa-hourglass-half"></i></td>
-                            <td>Thời gian:</td>
-                            <td class="text-info fw-bold">{{ $tour->duration }}</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fa-solid fa-check-to-slot"></i></td>
-                            <td> Số chỗ còn: </td>
-                            <td class="text-info fw-bold">4 chỗ</td>
-                        </tr>
-                    </table>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-outline-primary">Ngày khác</button>
-                        <button class="btn btn-primary">Đặt tour</button>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 
     <!-- Các tour khác -->
-    <div class="container">
+    <!-- TOUR MỚI NHẤT -->
+    <section class="mb-3 py-4 bg-body-secondary bg-opacity-25">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-end">
+                <div class="d-flex flex-column text-body">
+                    <h2 class="">TOUR MỚI NHẤT</h2>
+                    <hr class="m-0 mb-1 p-0 border-2" width="300px">
+                    <p class="text-body">Cập nhật những thông tin mới để không bỏ lỡ những chuyến đi mới!</p>
+                </div>
+            </div>
+            <div class="row">
+                @foreach ($tours_moinhat as $tour)
+                    <div class="col-12 col-md-6 col-lg-3 col-xxl-3 mb-3">
+                        <div class="card text-bg-dark position-relative">
+                            <div class="position-absolute start-0" style="top:5px;">
+                                <svg width="80" height="40" viewBox="0 0 146 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M144 1H1V61H144L120.405 31L144 1Z" style="fill: var(--bs-primary);" />
+                                </svg>
+                                <span class="text-body position-absolute start-50 top-50 translate-middle">Mới</span>
+                            </div>
+                            <img src="{{ asset('') }}assets/image_tour/{{ $tour->image_url }}" height="450px" class="card-img oject-fit-fill" alt="...">
+                            <div class="card-img-overlay m-3 p-2 bg-body text-body" style="top:inherit">
+                                <h5 class="card-title">
+                                    <a href="{{ route('tour_chi_tiet', $tour->id) }}" class="text-decoration-none text-body fs-6">
+                                        {{ $tour->title }}
+                                    </a>
+                                </h5>
+                                <div class="d-flex">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <p class="card-text">Khởi hành tại: <b>{{ $tour->noi_khoi_hanh }}</b></p>
+                                </div>
+                                <div class="d-flex">
+                                    <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>
+                                    <b>{{ optional($tour->ngayDi->first())->start_date ? \Carbon\Carbon::parse($tour->ngayDi->first()->start_date)->format('d/m/Y') : 'Chưa có ngày đi' }}</b>
+                                </div>
+                                <div class="d-flex">
+                                    <p class="card-text">Giá:
+                                        <b class="text-danger">
+                                            {{ $tour->ngayDi->min('price') ? number_format($tour->ngayDi->min('price')) . ' ₫' : 'Liên hệ' }}
+                                        </b>
+                                    </p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ route('thanh_toan', $tour->id) }}" class="btn btn-primary container-fluid">Đặt ngay</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+                <a href="{{ route('tour') }}" class=" them btn d-none">Xem tất cả</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container d-none">
         <div class="row">
             <div class="col-4">1</div>
             <div class="col-4">2</div>
