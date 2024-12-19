@@ -31,42 +31,7 @@
                 <button type="submit" name="draft" id="draft-btn" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
             </div>
         </header>
-        <div class="accordion mb-3" id="accordionExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  Todo list
-                </button>
-              </h2>
-              <div id="collapseOne" class="accordion-collapse collapse show bg-body-secondary border border-1 border-black" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                  <div class="alert alert-danger">
-                    <h4>Todo</h4>
-                    <ul>
-                        <li>Đếm tour theo danh mục</li>
-                        <!-- <li>Xử lý bài toán ngày khởi hành tour</li>
-                        <li>Xử lý phương tiện di chuyển</li>
-                        <li>Xử lý nhập nổi bật</li> -->
-                    </ul>
-                </div>
-                <div class="alert alert-success">
-                    <h4>Done</h4>
-                    <ul>
-                        <!-- <li>Bắt lỗi form</li>
-                        <li>Auto slug - tiện lợi người dùng</li>
-                        <li>Xử dụng trình soạn thảo cho phần chi tiết tour - dễ trình bày</li>
-                        <li>Chọn ngày giờ khởi hành thủ công - có btn thêm ngày giờ khởi hành</li>
-                        <li>Chọn đối tác (đối với admin khi nhập tour)</li>
-                        <li>Chọn danh mục - có lọc trong nước và ngoài nước theo select</li>
-                        <li>Auto load ảnh mẫu trước khi choose file</li>
-                        <li>Thời gian diễn ra tour - thân thiện, thống nhất cho người dùng</li>
-                        <li>...</li> -->
-                    </ul>
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

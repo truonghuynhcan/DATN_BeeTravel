@@ -7,12 +7,12 @@
         <h2 class="">Quản lý tin tức</h2>
         <a href="{{route('admin.newInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm tin tức mới</a>
     </header>
-    <div class="alert alert-warning">
+    <!-- <div class="alert alert-warning">
         <h4>Todo</h4>
         <ul>
             <li>Đang thực hiện</li>
         </ul>
-    </div>
+    </div> -->
     <section class="bg-body rounded p-2">
         {{-- Bộ lọc --}}
         <div class="d-flex mb-3">

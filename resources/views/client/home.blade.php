@@ -282,6 +282,145 @@ Trang chủ
 
 
 <!-- Catagory-address -->
+<div class="container mb-3">
+    <!-- tin tức mới -->
+    <div class="row">
+        <div>
+            <div class="yeuthich">
+                <h3>TIN TỨC NỔI BẬT</h3>
+                <hr class="short-line">
+                <div class="button-container">
+                <!-- <button class="muiten"><i class="bi bi-arrow-left"></i></button>
+                <button class="muiten"><i class="bi bi-arrow-right"></i></button> -->
+            </div>
+            </div>
+
+            <div class="row" id="tourNews">
+                @if($latestNews->count() > 0)
+                @foreach($latestNews as $item)
+                <div class="col-md-3 mb-3 tour-new" data-position="{{ $item->reading }}"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
+                    <div class="card h-100"> <!-- H-100 để các card có chiều cao bằng nhau -->
+                        <img src="assets/image_new/{{$item->image_url}}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
+                        <div class="card-body d-flex flex-column"> <!-- Sử dụng flex để căn chỉnh nội dung -->
+                            <h6 class="card-title">{{$item->title}}</h6>
+                            <p class="card-text">{{$item->description}}</p>
+                            <a href="{{ route('client.tin_tuc_chi_tiet', $item->id) }}" class="btn btn-sm btn-outline-primary mt-auto">Đọc thêm</a> <!-- Nút ở dưới cùng -->
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+                @else
+                <div class="container p-3">
+                    <div class="row">
+                        <div class="alert alert-warning text-center">
+                            <p class="fw-bold fst-italic">Không tìm thấy tin tức nào như bạn đã tìm kiếm hiện tại. </p>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="yeuthich">
+        <h3>ĐIỂM ĐẾN YÊU THÍCH</h3>
+        <hr class="short-line">
+        <p>Hãy chọn một điểm đến du lịch nổi tiếng dưới đây để khám phá các chuyến đi độc quyền của chúng tôi với
+            mức giá vô cùng hợp lý.</p>
+        <div class="address">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-bac-tab" data-bs-toggle="pill" data-bs-target="#pills-bac" type="button" role="tab" aria-controls="pills-bac" aria-selected="true">Miền Bắc</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-trung-tab" data-bs-toggle="pill" data-bs-target="#pills-trung" type="button" role="tab" aria-controls="pills-trung" aria-selected="false">Miền Trung</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-nam-tab" data-bs-toggle="pill" data-bs-target="#pills-nam" type="button" role="tab" aria-controls="pills-nam" aria-selected="false">Miền Nam</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-nuocngoai-tab" data-bs-toggle="pill" data-bs-target="#pills-nuocngoai" type="button" role="tab" aria-controls="pills-nuocngoai" aria-selected="false">Nước Ngoài</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-bac" role="tabpanel" aria-labelledby="pills-bac-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    @if ($category->tour_nuoc_ngoai == 0)
+                    {{-- is_nuocngoai = false: Tour trong nước --}}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-trung" role="tabpanel" aria-labelledby="pills-trung-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    @if ($category->tour_nuoc_ngoai == 1)
+                    {{-- is_nuocngoai = false: Tour trong nước --}}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-nam" role="tabpanel" aria-labelledby="pills-nam-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    @if ($category->tour_nuoc_ngoai == 0)
+                    {{-- is_nuocngoai = false: Tour trong nước --}}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-nuocngoai" role="tabpanel" aria-labelledby="pills-nuocngoai-tab">
+                <div class="row">
+                    @foreach($categories as $category)
+                    @if ($category->tour_nuoc_ngoai == 1)
+                    {{-- is_nuocngoai = false: Tour trong nước --}}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card text-bg-dark">
+                            <img src="{{ asset('') }}assets/image/64114914e5a8ec33c25f2e2407db47a5.jpg" height="200px" class="card-img object-fit-fill" alt="...">
+                            <div class="card-img-overlay bg-black bg-opacity-50 d-flex justify-content-center align-items-center">
+                                <li><a href="{{ route('tour.category', $category->id) }}">{{ $category->ten_danh_muc }}</a></li>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        {{-- mobile,taplet (6kv), laptop(8kv) --}}
+
+    </div>
+
+    <!-- dichvukhac -->
+    <div class="dichvu">
 <section class="py-4 bg-body">
     <div class="container mb-3">
         <!-- tin tức mới -->

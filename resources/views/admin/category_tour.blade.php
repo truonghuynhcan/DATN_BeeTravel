@@ -7,12 +7,7 @@
         <h2 class="">Quản lý danh mục tour</h2>
         <a href="{{route('admin.catetourInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm danh mục tour</a>
     </header>
-    <div class="alert alert-warning">
-        <h4>Todo</h4>
-        <ul>
-            <!-- <li>Đếm tour theo danh mục</li> -->
-        </ul>
-    </div>
+    
     <section class="bg-body rounded p-2">
 
         {{-- danh sách danh mục tin tức --}}
@@ -35,7 +30,7 @@
                     <td class="text-center">@{{ tourcate.ten_danh_muc }}</td>
                     <!-- Người đăng ký -->
                     <td class="text-center">@{{ tourcate.slug }}</td>
-                    <td class="text-center">@{{ tourcate.tour_nuoc_ngoai }}</td>
+                    <td class="text-center">@{{ tourcate.tour_nuoc_ngoai == 0 ? 'Tour trong nước' : 'Tour nước ngoài' }}</td>
                     <td class="text-center">@{{ tourcate.tours_count }}</td> <!-- Hiển thị số lượng tour -->
                     <!-- Người đăng ký -->
                     <!-- <td class="text-center">@{{ tourcate.content }}</td> -->

@@ -30,7 +30,7 @@
                 <button type="submit" name="draft" href="" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
             </div>
         </header>
-        <div class="alert alert-danger">
+        <!-- <div class="alert alert-danger">
             <h4>Todo</h4>
             <ul>
                 <li>cập nhật sản phẩm</li>
@@ -38,7 +38,7 @@
                 <li>thiếu dữ liệu số lượng Bình luận</li>
                 <li>làm xem thống kê khi đăng ký vip cho tour</li>
             </ul>
-        </div>
+        </div> -->
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -248,10 +248,17 @@
                     <label for="categories" class="form-label">
                         <h5>Chọn danh mục <span class="text-danger">*</span></h5>
                     </label>
-                    <select name="category_id" class="form-select form-select-sm" id="categories" aria-label="Small select example">
+                    <select name="category_id" class="form-select form-select-sm mb-3" id="categories" aria-label="Small select example">
                         <option value="{{ $tour->category->id }}" selected>{{ $tour->category->ten_danh_muc }}</option>
                         <option ng-repeat="cate in categories" value="@{{ cate.id }}">@{{ cate.ten_danh_muc }}</option>
                     </select>
+                    <label for="noi_khoi_hanh" class="form-label">
+    <h5>Chọn nơi khởi hành <span class="text-danger">*</span></h5>
+</label>
+<select name="noi_khoi_hanh" class="form-select form-select-sm mb-3" id="noi_khoi_hanh">
+    <option value="{{$tour->noi_khoi_hanh}}" selected>{{$tour->noi_khoi_hanh}}</option>
+    <option ng-repeat="khoihanh in khoihanhs" value="@{{ khoihanh.name }}">@{{ khoihanh.name }}</option>
+</select>
                 </section>
                 <section class="bg-body rounded mb-3 p-2">
     <section class="bg-body rounded mb-3 p-2">
@@ -344,50 +351,66 @@
 
 
 <section class="bg-body rounded mb-3 p-2">
-                <div class=" mb-3">
-                    <h6>Phương tiện di chuyển</h6>
-                    <!-- <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small> -->
-                    <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="{{ old('transport') ?? $tour->transport}}">
-                </div>
-                <div class="mb-3">
-                    <h6>Thời gian diễn ra tour</h6>
-                    <div class="d-flex gap-2">
-                        <input type="number" name="ngay" id="days" class="form-control form-control-sm" min="0" placeholder="Số ngày">
-                        <span>Ngày</span>
-                        <input type="number" name="dem" id="nights" class="form-control form-control-sm" min="0" placeholder="Số đêm">
-                        <span>Đêm</span>
-                    </div>
-                    <input name="duration" type="text" id="duration" value="{{ old('duration') ?? $tour->duration}}">
-                    <p id="error-message" style="color: red; display: none;">Ngày và đêm chỉ được chênh lệch tối đa 1.</p>
-                </div>
-                {{-- Function to update the duration value --}}
-                <script>
-                    function updateDuration() {
-                        const days = parseInt(document.getElementById('days').value) || 0;
-                        const nights = parseInt(document.getElementById('nights').value) || 0;
-                        const errorMessage = document.getElementById('error-message');
-                        const postBtn = document.getElementById('post-btn');
-                        const draftBtn = document.getElementById('draft-btn');
+    <div class="mb-3">
+        <h6>Phương tiện di chuyển</h6>
+        <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small>
+        <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="{{ old('transport') ?? $tour->transport}}">
+    </div>
+    <div class="mb-3">
+        <h6>Thời gian diễn ra tour</h6>
+        <div class="d-flex gap-2">
+    <input type="number" name="ngay" id="days" class="form-control form-control-sm" min="0" placeholder="Số ngày" 
+           value="{{ old('ngay') ?? ($tour->duration ? explode('N', $tour->duration)[0] : 0) }}">
+    <span>Ngày</span>
+    <input type="number" name="dem" id="nights" class="form-control form-control-sm" min="0" placeholder="Số đêm" 
+           value="{{ old('dem') ?? ($tour->duration ? explode('Đ', explode('N', $tour->duration)[1])[0] : 0) }}">
+    <span>Đêm</span>
+</div>
+        <input name="duration" type="text" id="duration" value="{{ old('duration') ?? $tour->duration}}" hidden>
+        <p id="error-message" style="color: red; display: none;">Ngày và đêm chỉ được chênh lệch tối đa 1.</p>
+        <p id="error-message-0" style="color: red; display: none;">Số ngày và số đêm không được bằng 0.</p>
+    </div>
+    {{-- Function to update the duration value --}}
+    <script>
+        function updateDuration() {
+            const days = parseInt(document.getElementById('days').value) || 0;
+            const nights = parseInt(document.getElementById('nights').value) || 0;
+            const errorMessage = document.getElementById('error-message');
+            const errorMessage0 = document.getElementById('error-message-0');
+            const postBtn = document.getElementById('post-btn');
+            const draftBtn = document.getElementById('draft-btn');
 
-                        // Check the difference between days and nights
-                        if (Math.abs(days - nights) > 1) {
-                            errorMessage.style.display = 'block';
-                            document.getElementById('duration').value = ''; // Clear duration if validation fails
-                            postBtn.disabled = true; // Disable buttons
-                            draftBtn.disabled = true;
-                        } else {
-                            errorMessage.style.display = 'none';
-                            document.getElementById('duration').value = `${days}N${nights}Đ`; // Update duration if validation passes
-                            postBtn.disabled = false; // Enable buttons
-                            draftBtn.disabled = false;
-                        }
-                    }
+            // Check for 0 days and 0 nights
+            if (days === 0 && nights === 0) {
+                errorMessage0.style.display = 'block';
+                errorMessage.style.display = 'none';
+                document.getElementById('duration').value = ''; // Clear duration if validation fails
+                postBtn.disabled = true; // Disable buttons
+                draftBtn.disabled = true;
+                return; // Exit the function if both are zero
+            } else {
+                errorMessage0.style.display = 'none'; // Hide the 0 error message
+            }
 
-                    // Attach event listeners to both inputs
-                    document.getElementById('days').addEventListener('input', updateDuration);
-                    document.getElementById('nights').addEventListener('input', updateDuration);
-                </script>
-            </section>
+            // Check the difference between days and nights
+            if (Math.abs(days - nights) > 1) {
+                errorMessage.style.display = 'block';
+                document.getElementById('duration').value = ''; // Clear duration if validation fails
+                postBtn.disabled = true; // Disable buttons
+                draftBtn.disabled = true;
+            } else {
+                errorMessage.style.display = 'none';
+                document.getElementById('duration').value = `${days}N${nights}Đ`; // Update duration if validation passes
+                postBtn.disabled = false; // Enable buttons
+                draftBtn.disabled = false;
+            }
+        }
+
+        // Attach event listeners to both inputs
+        document.getElementById('days').addEventListener('input', updateDuration);
+        document.getElementById('nights').addEventListener('input', updateDuration);
+    </script>
+</section>
 
                 <section class="bg-body rounded mb-3 p-2">
                     <label for="">Số lượng đặt tour</label>
@@ -457,6 +480,16 @@
                     console.error('Lỗi khi lấy danh mục tours:', error); // Ghi lỗi
                 }
             )
+            $scope.khoihanhs = [];
+        // $scope.selectedKhoiHanh = null;
+        // Lấy dữ liệu từ API
+    $http.get('https://provinces.open-api.vn/api/')
+        .then(function(response) {
+            $scope.khoihanhs = response.data; // Lưu dữ liệu vào mảng khoihanhs
+        })
+        .catch(function(error) {
+            console.error('Lỗi khi lấy dữ liệu tỉnh:', error);
+        });
         };
     </script>
 @endsection

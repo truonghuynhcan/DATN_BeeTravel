@@ -18,21 +18,21 @@
         <table class="table table-hover table-striped table-bordered">
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">Ảnh</th>
+                    <!-- <th scope="col" class="text-center">Ảnh</th> -->
                     <th scope="col" class="text-center">Tên người dùng</th>
                     <th scope="col" class="text-center">Email</th>
-                    @if (Auth::guard('admin')->user()->role == 'admin' || Auth::guard('admin')->user()->role == 'provider' || Auth::guard('admin')->user()->role == 'pending')
-    <th scope="col" class="text-center">Phân quyền</th>
-@endif
-                    <th scope="col" class="text-end">Số điện thoại</th>
+                    @if (Auth::guard('admin')->user()->role == 'admin')
+                    <th scope="col" class="text-center">Phân quyền</th>
+                    @endif
+                    <th scope="col" class="text-center">Số điện thoại</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
-                    <th scope="col">Hành động</th>
+                    <th scope="col" class="text-center">Hành động</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
                 <tr ng-repeat="useradmin in admins">
-                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_new/@{{ useradmin.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
+                    <!-- <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_new/@{{ useradmin.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th> -->
                     <td class="text-center">@{{ useradmin.name }}</td>
                     <td class="text-center">@{{ useradmin.email }}</td>
                     <td class="text-center">@{{ useradmin.role }}</td>
@@ -42,9 +42,9 @@
                     <!-- trạng thái -->
                     <!-- <td class="text-center" ng-bind=" useradmin.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
-                    <td>
-                        <a href="" class="btn btn-info">Sửa</a>
-                        <button class="btn btn-outline-danger">Xóa</button>
+                    <td class="text-center">
+                    <a href="/admin/quan-ly-users/@{{ useradmin.id }}" class="btn btn-info">Xác nhận tài khoản</a>
+                        <!-- <button class="btn btn-outline-danger">Xóa</button> -->
                     </td>
                 </tr>
             </tbody>
@@ -56,19 +56,19 @@
         <table class="table table-hover table-striped table-bordered">
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">Ảnh</th>
+                    <!-- <th scope="col" class="text-center">Ảnh</th> -->
                     <th scope="col" class="text-center">Tên người dùng</th>
                     <th scope="col" class="text-center">Email</th>
                     <th scope="col" class="text-center">Địa chỉ</th>
-                    <th scope="col" class="text-end">Số điện thoại</th>
+                    <th scope="col" class="text-center">Số điện thoại</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
-                    <th scope="col">Hành động</th>
+                    <!-- <th scope="col">Hành động</th> -->
                 </tr>
             </thead>
             <tbody class="table-group-divider">
                 <tr ng-repeat="usertong in users">
-                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_new/@{{ usertong.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
+                    <!-- <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_new/@{{ usertong.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th> -->
                     <td class="text-center">@{{ usertong.name }}</td>
                     <td class="text-center">@{{ usertong.email }}</td>
                     <td class="text-center">@{{ usertong.address }}</td>
@@ -78,10 +78,10 @@
                     <!-- trạng thái -->
                     <!-- <td class="text-center" ng-bind=" useradmin.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
-                    <td>
+                    <!-- <td>
                         <a href="" class="btn btn-info">Sửa</a>
                         <button class="btn btn-outline-danger">Xóa</button>
-                    </td>
+                    </td> -->
                 </tr>
             </tbody>
         </table>
@@ -92,7 +92,7 @@
     <script>
         viewFunction = function($scope, $http) {
             // Gửi yêu cầu lấy danh sách người dùng cho cả 'admin' và 'provider'
-        const roles = ['admin', 'provider','pending']; // Mảng chứa cả hai vai trò
+        const roles = ['pending']; // Mảng chứa cả hai vai trò
         $http.get(`/admin/api/danh-sach-useradmin?roles=${roles.join(',')}`).then(
                 function(res) { // success
                     $scope.admins = res.data.data;

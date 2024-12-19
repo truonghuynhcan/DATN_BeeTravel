@@ -12,6 +12,7 @@ use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 use Number;
 use Carbon\Carbon; // Đảm bảo import Carbon
 
@@ -34,6 +35,7 @@ class AdminTourController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string',
+            'noi_khoi_hanh'=> 'required|string',
             'category_id' => 'required|exists:categories,id',
             'admin_id' => 'required|exists:admins,id',
             // * Ngày đi & giá
@@ -68,12 +70,33 @@ class AdminTourController extends Controller
         $tour->slug = $request->slug;
         $tour->category_id = $request->category_id;
         $tour->admin_id = $request->admin_id;
+        $tour->noi_khoi_hanh = $request->noi_khoi_hanh;
 
         // * tạo tour
         // lấy tên ảnh - tạo tên ảnh mới - lưu vào file public - lưu vào db
         // $filename = time() . '_' . $request['image_url']->getClientOriginalName();
         // $request['image_url']->move('assets/image_tour', $filename); // Di chuyển file vào thư mục public/assets/images
         // $tour->image_url = $filename;
+        // Kiểm tra nếu có hình ảnh mới
+    if ($request->hasFile('image_url')) {
+        // Xóa hình ảnh cũ nếu có
+        if ($tour->image_url) {
+            $oldImagePath = public_path('assets/image_tour/' . $tour->image_url);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath); // Xóa tệp hình ảnh cũ
+            }
+        }
+
+        // Tạo tên file mới và di chuyển
+        $filename = time() . '_' . $request['image_url']->getClientOriginalName();
+        $request['image_url']->move('assets/image_tour', $filename);
+        
+        // Cập nhật đường dẫn hình ảnh vào cơ sở dữ liệu
+        $tour->image_url = $filename;
+    } else {
+        // Nếu không có hình ảnh mới, giữ nguyên hình ảnh cũ
+        $tour->image_url = $tour->image_url; // Không cần thay đổi gì
+    }
 
         $tour->title = $request->title;
 
@@ -210,7 +233,9 @@ class AdminTourController extends Controller
         $request->validate([
             'ten_danh_muc' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255'],
-            'tour_nuoc_ngoai' => ['required', 'string', 'max:255'],
+            'tour_nuoc_ngoai' => ['required', 'integer'],
+            // * Ảnh chính và ảnh phụ
+            'image_url' => ' image| mimes:jpg,png,jpeg,gif,svg| max:2048',  // Max file size 2MB
         ]);
 
         $catetour_id = Category::find($catetour_id);
@@ -218,6 +243,26 @@ class AdminTourController extends Controller
             return redirect()->back()->withErrors('Category tour không tồn tại!');
         }
 
+        // Kiểm tra nếu có hình ảnh mới
+    if ($request->hasFile('image_url')) {
+        // Xóa hình ảnh cũ nếu có
+        if ($catetour_id->image_url) {
+            $oldImagePath = public_path('assets/image_tour/' . $catetour_id->image_url);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath); // Xóa tệp hình ảnh cũ
+            }
+        }
+
+        // Tạo tên file mới và di chuyển
+        $filename = time() . '_' . $request['image_url']->getClientOriginalName();
+        $request['image_url']->move('assets/image_tour', $filename);
+        
+        // Cập nhật đường dẫn hình ảnh vào cơ sở dữ liệu
+        $catetour_id->image_url = $filename;
+    } else {
+        // Nếu không có hình ảnh mới, giữ nguyên hình ảnh cũ
+        $catetour_id->image_url = $catetour_id->image_url; // Không cần thay đổi gì
+    }
         $catetour_id->ten_danh_muc = $request->ten_danh_muc;
         $catetour_id->slug = $request->slug;
         $catetour_id->tour_nuoc_ngoai = $request->tour_nuoc_ngoai;
@@ -232,6 +277,9 @@ class AdminTourController extends Controller
                 'ten_danh_muc' => ['required', 'string', 'max:255'],
                 'slug' => ['nullable', 'string', 'max:255'],
                 'tour_nuoc_ngoai' => ['required', 'string', 'max:255'],
+                // * Ảnh chính và ảnh phụ
+                'image_url' => ['required', 'image', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],  // Max file size 2MB
+                'sub_image_url' => ['nullable', 'array'],
             ],
             [
                 // 'admin_id.required' => 'Bạn chưa chọn đối tác.',
@@ -250,16 +298,21 @@ class AdminTourController extends Controller
 
 
                 // * Ảnh
-                // 'image_url.required' => 'Cần thêm ảnh đại diện',
-                // 'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
-                // 'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
-                // 'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
+                'image_url.required' => 'Cần thêm ảnh đại diện',
+                'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
+                'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
+                'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
 
             ]
         );
 
         $catetour = new Category();
         $catetour->ten_danh_muc = $validated['ten_danh_muc'];
+        // lấy tên ảnh - tạo tên ảnh mới - lưu vào file public - lưu vào db
+        $filename = time() . '_' . $validated['image_url']->getClientOriginalName();
+        $validated['image_url']->move('assets/image_tour', $filename); // Di chuyển file vào thư mục public/assets/images
+        $catetour->image_url = $filename;
+        // * tạo new
 
         if (!empty($validated['slug'])) {
             $catetour->slug = $validated['slug'];
@@ -269,6 +322,7 @@ class AdminTourController extends Controller
         $catetour->tour_nuoc_ngoai = $validated['tour_nuoc_ngoai'];
         $catetour->save();
 
+        
 
 
         // if (isset($validated['departure-date']) && !empty($validated['departure-date']) && !$validated['departure-date'][0]===null) {
@@ -287,13 +341,15 @@ class AdminTourController extends Controller
         // Kiểm tra role để trả về tours tương ứng
         if ($role == 'admin') {
             // Lấy tất cả tours
-            $tours = Tour::select('id', 'image_url', 'title', 'slug', 'is_hidden', 'admin_id', 'category_id')
+            $tours = Tour::select('id', 'image_url', 'title', 'slug', 'is_hidden', 'admin_id', 'category_id','noi_khoi_hanh')
                 ->with(['admin:id,name', 'category:id,ten_danh_muc', 'ngayDi']) // khi sử dụng with ->luôn có cột id
+                ->orderBy('created_at', 'desc') // Sắp xếp theo ngày đăng mới nhất
                 ->get();
         } else {
             // Lấy tour thuộc về đối tác (admin_id)
-            $tours = Tour::select('id', 'image_url', 'title', 'slug', 'is_hidden', 'category_id')
-                ->with(['category', 'ngayDi'])
+            $tours = Tour::select('id', 'image_url', 'title', 'slug', 'is_hidden', 'category_id','noi_khoi_hanh')
+                ->with(['category:id,ten_danh_muc', 'ngayDi'])
+                ->orderBy('created_at', 'desc') // Sắp xếp theo ngày đăng mới nhất
                 ->where('admin_id', $admin_id)->get();
         }
         // trả kết quả
@@ -321,6 +377,7 @@ class AdminTourController extends Controller
 // }
     public function tourInsert_(Request $request)
     {
+        // dd( $request->input('noi_khoi_hanh'));
         // Kiểm tra xem yêu cầu là GET hay POST
         // Lấy danh sách các giá trị 'featured' đã có
         // $usedFeaturedValues = Tour::pluck('featured')->toArray();
@@ -334,6 +391,7 @@ class AdminTourController extends Controller
                 //  * Tour information
                 'title' => ['required', 'string', 'max:255'],
                 'slug' => ['nullable', 'string', 'max:255'],
+                'noi_khoi_hanh' => ['required', 'string','max:30'],
                 'sub_title' => ['required', 'string', 'max:255'],
                 'description' => ['required', 'string'],
                 'transport' => ['nullable', 'string', 'max:100'],
@@ -430,6 +488,8 @@ class AdminTourController extends Controller
         $tour = new Tour();
         $tour->category_id = $validated['category_id'];
         $tour->admin_id = $validated['admin_id'];
+        $tour->noi_khoi_hanh = $validated['noi_khoi_hanh'];
+        // dd($validated['noi_khoi_hanh']);
         // * tạo tour
         // lấy tên ảnh - tạo tên ảnh mới - lưu vào file public - lưu vào db
         $filename = time() . '_' . $validated['image_url']->getClientOriginalName();
@@ -593,4 +653,62 @@ class AdminTourController extends Controller
 
         // return redirect()->route('admin.tourManagement')->with('success', 'Xóa tour thành công!');
     }
+//     public function hideTour($id)
+// {
+//     $tour = Tour::with('ngayDi')->find($id);
+
+//     if ($tour) {
+//         // Kiểm tra nếu có ít nhất một ngày đi
+//         if ($tour->ngayDi->isNotEmpty()) {
+//             // Lấy ngày bắt đầu đầu tiên
+//             $firstStartDate = $tour->ngayDi->first()->start_date;
+
+//             // Trích xuất số ngày và số đêm từ trường duration
+//             preg_match('/(\d+) ngày (\d+) đêm/', $tour->duration, $matches);
+//             $numDays = isset($matches[1]) ? (int)$matches[1] : 0; // số ngày
+//             $numNights = isset($matches[2]) ? (int)$matches[2] : 0; // số đêm
+            
+//             // Tính tổng số ngày (1 ngày + số đêm)
+//             $totalDays = $numDays + $numNights;
+
+//             // Tính toán ngày kết thúc
+//             $calculatedEndDate = \Carbon\Carbon::parse($firstStartDate)->addDays($totalDays);
+
+//             // Kiểm tra nếu tour đã kết thúc
+//             if ($calculatedEndDate < now()) {
+//                 $tour->is_hidden = true;
+//                 $tour->save();
+
+//                 return redirect()->back()->with('success', 'Tour đã được ẩn thành công.');
+//             } else {
+//                 return redirect()->back()->with('error', 'Bạn không thể ẩn tour đang diễn ra.');
+//             }
+//         } else {
+//             return redirect()->back()->with('error', 'Tour chưa có ngày đi.');
+//         }
+//     }
+
+//     return redirect()->back()->with('error', 'Tour không tồn tại.');
+// }
+// public function deleteTour($id)
+// {
+//     $tour = Tour::with('ngayDi')->find($id);
+
+//     if ($tour) {
+//         // Kiểm tra nếu tour chưa có đơn hàng
+//         if ($tour->orders()->count() == 0) {
+//             // Xóa tất cả các ngày đi liên quan trước khi xóa tour
+//             $tour->ngayDi()->delete(); // Xóa các bản ghi trong bảng ngay_di
+
+//             // Xóa tour
+//             $tour->delete();
+
+//             return redirect()->back()->with('success', 'Tour đã được xóa thành công.');
+//         } else {
+//             return redirect()->back()->with('error', 'Bạn không thể xóa tour đã có đơn hàng.');
+//         }
+//     }
+
+//     return redirect()->back()->with('error', 'Tour không tồn tại.');
+// }
 }

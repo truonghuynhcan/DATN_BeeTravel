@@ -39,11 +39,11 @@
                     Quản lý Người dùng
                 </a>
                 <a href="{{route('admin.providesManagement')}}" class="list-group-item list-group-item-action">Tất cả đối tác</a>
-                <a href="{{route('admin.providerInsert')}}" class="list-group-item list-group-item-action">Thêm đối tác</a>
+                <!-- <a href="{{route('admin.providerInsert')}}" class="list-group-item list-group-item-action">Thêm đối tác</a> -->
                 <a href="{{route('admin.personsManagement')}}" class="list-group-item list-group-item-action">Tất cả Khách hàng</a>
-                <a href="{{route('admin.personInsert')}}" class="list-group-item list-group-item-action">Thêm khách hàng</a>
+                <!-- <a href="{{route('admin.personInsert')}}" class="list-group-item list-group-item-action">Thêm khách hàng</a> -->
                 <a href="{{route('admin.adminusersManagement')}}" class="list-group-item list-group-item-action">Tất cả Admin</a>
-                <a href="{{route('admin.adminInsert')}}" class="list-group-item list-group-item-action">Thêm admin</a>
+                <!-- <a href="{{route('admin.adminInsert')}}" class="list-group-item list-group-item-action">Thêm admin</a> -->
             </div>
         @endif
     @endauth
@@ -52,8 +52,8 @@
             Thông tin cá nhân
         </a>
         <a href="" class="list-group-item list-group-item-action">Tài khoản</a>
-        <a href="" class="list-group-item list-group-item-action">Ngân hàng</a>
+        <!-- <a href="" class="list-group-item list-group-item-action">Ngân hàng</a>
         <a href="" class="list-group-item list-group-item-action">Bảo mật</a>
-        <a href="" class="list-group-item list-group-item-action">Cài đặt thông báo</a>
+        <a href="" class="list-group-item list-group-item-action">Cài đặt thông báo</a> -->
     </div>
 </nav>

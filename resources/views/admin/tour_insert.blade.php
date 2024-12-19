@@ -30,7 +30,7 @@ Thêm tour
             <button type="submit" name="draft" id="draft-btn" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
         </div>
     </header>
-    <div class="accordion mb-3" id="accordionExample">
+    <!-- <div class="accordion mb-3" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -64,7 +64,7 @@ Thêm tour
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -109,7 +109,7 @@ Thêm tour
     </div>
 </div>
             </section> -->
-            <section class="bg-body rounded p-2 mb-3"> 
+            <!-- <section class="bg-body rounded p-2 mb-3"> 
     <h5>Nổi bật</h5>
     <div class="d-flex">
     
@@ -126,17 +126,14 @@ Thêm tour
         <div class="me-3">
             <label for="date" class="form-label">Chọn ngày bắt đầu, kết thúc</label>
             <div class="d-flex">
-            <input name="featured_start" type="datetime-local" class="form-control form-control-sm" id="date1" onchange="updateTourVisibility()" required>
-            <input name="featured_end" type="datetime-local" class="form-control form-control-sm" id="date2" onchange="updateTourVisibility()" required>
-                <!-- <input name="featured_start" type="datetime-local" class="form-control form-control-sm" id="date1" onchange="updateTourVisibility()">
-                <span class="mx-2">đến</span>
-                <input name="featured_end" type="datetime-local" class="form-control form-control-sm" id="date2" onchange="updateTourVisibility()"> -->
+            <input name="featured_start" type="datetime-local" class="form-control form-control-sm" id="date1" onchange="updateTourVisibility()" >
+            <input name="featured_end" type="datetime-local" class="form-control form-control-sm" id="date2" onchange="updateTourVisibility()" >
             </div>
         </div>
         
     </div>
-</section>
-<script>
+</section> -->
+<!-- <script>
     // Hàm cập nhật các vị trí có sẵn
     function updateAvailablePositions() {
         const selectElement = document.getElementById('area');
@@ -182,7 +179,7 @@ Thêm tour
             }
         });
     }
-</script>
+</script> -->
 <!-- <script>
     // Hàm cập nhật các vị trí có sẵn
     function updateAvailablePositions() {
@@ -473,7 +470,7 @@ Thêm tour
                         Tour nước ngoài
                     </label>
                 </div>
-                <select name="category_id" class="form-select form-select-sm" aria-label="Small select example" ng-model="selectedCategory">
+                <select name="category_id" class="form-select form-select-sm mb-3" aria-label="Small select example" ng-model="selectedCategory">
                     <option value="" selected>Chọn danh mục tour</option>
                     <optgroup label="Tour trong nước" ng-if="!tour_nuoc_ngoai">
                         <option ng-repeat="cate in categories | filter:{ tour_nuoc_ngoai: 0 }" value="@{{ cate.id }}">
@@ -486,6 +483,32 @@ Thêm tour
                         </option>
                     </optgroup>
                 </select>
+                <!-- <label for="tours" class="form-label">
+                    <h5>Chọn nơi khởi hành <span class="text-danger">*</span></h5>
+                </label> -->
+                <label for="noi_khoi_hanh" class="form-label">
+    <h5>Chọn nơi khởi hành <span class="text-danger">*</span></h5>
+</label>
+<select name="noi_khoi_hanh" class="form-select form-select-sm mb-3" id="noi_khoi_hanh" ng-model="selectedKhoiHanh">
+    <option value="" selected>Nơi khởi hành</option>
+    <option ng-repeat="khoihanh in khoihanhs" value="@{{ khoihanh.name }}">@{{ khoihanh.name }}</option>
+</select>
+
+<!-- <script>
+app.controller('AdminTourController', function($scope, $http) {
+    $scope.khoihanhs = [];
+
+    // Lấy dữ liệu từ API
+    $http.get('https://provinces.open-api.vn/api/')
+        .then(function(response) {
+            $scope.khoihanhs = response.data; // Lưu dữ liệu vào mảng khoihanhs
+        })
+        .catch(function(error) {
+            console.error('Lỗi khi lấy dữ liệu tỉnh:', error);
+        });
+});
+</script> -->
+         </script>       
             </section>
             <section class="bg-body rounded mb-3 p-2">
                 <p class="mb-2">
@@ -573,9 +596,67 @@ Thêm tour
                 });
             </script>
 
+<section class="bg-body rounded mb-3 p-2">
+    <div class="mb-3">
+        <h6>Phương tiện di chuyển</h6>
+        <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small>
+        <input name="transport" type="text" class="form-control" id="transport" placeholder="Xe hơi" value="{{ old('transport') }}">
+    </div>
+    <div class="mb-3">
+        <h6>Thời gian diễn ra tour</h6>
+        <div class="d-flex gap-2">
+            <input type="number" name="ngay" id="days" class="form-control form-control-sm" min="0" placeholder="Số ngày">
+            <span>Ngày</span>
+            <input type="number" name="dem" id="nights" class="form-control form-control-sm" min="0" placeholder="Số đêm">
+            <span>Đêm</span>
+        </div>
+        <input name="duration" type="text" id="duration" value="" hidden>
+        <p id="error-message" style="color: red; display: none;">Ngày và đêm chỉ được chênh lệch tối đa 1.</p>
+        <p id="error-message-0" style="color: red; display: none;">Số ngày và số đêm không được bằng 0.</p>
+    </div>
+    {{-- Function to update the duration value --}}
+    <script>
+        function updateDuration() {
+            const days = parseInt(document.getElementById('days').value) || 0;
+            const nights = parseInt(document.getElementById('nights').value) || 0;
+            const errorMessage = document.getElementById('error-message');
+            const errorMessage0 = document.getElementById('error-message-0');
+            const postBtn = document.getElementById('post-btn');
+            const draftBtn = document.getElementById('draft-btn');
 
+            // Check for 0 days and 0 nights
+            if (days === 0 && nights === 0) {
+                errorMessage0.style.display = 'block';
+                errorMessage.style.display = 'none';
+                document.getElementById('duration').value = ''; // Clear duration if validation fails
+                postBtn.disabled = true; // Disable buttons
+                draftBtn.disabled = true;
+                return; // Exit the function if both are zero
+            } else {
+                errorMessage0.style.display = 'none'; // Hide the 0 error message
+            }
 
-            <section class="bg-body rounded mb-3 p-2">
+            // Check the difference between days and nights
+            if (Math.abs(days - nights) > 1) {
+                errorMessage.style.display = 'block';
+                document.getElementById('duration').value = ''; // Clear duration if validation fails
+                postBtn.disabled = true; // Disable buttons
+                draftBtn.disabled = true;
+            } else {
+                errorMessage.style.display = 'none';
+                document.getElementById('duration').value = `${days}N${nights}Đ`; // Update duration if validation passes
+                postBtn.disabled = false; // Enable buttons
+                draftBtn.disabled = false;
+            }
+        }
+
+        // Attach event listeners to both inputs
+        document.getElementById('days').addEventListener('input', updateDuration);
+        document.getElementById('nights').addEventListener('input', updateDuration);
+    </script>
+</section>
+
+            <!-- <section class="bg-body rounded mb-3 p-2">
                 <div class=" mb-3">
                     <h6>Phương tiện di chuyển</h6>
                     <small class="fs-6 text-body-secondary">Dùng dấu "," giữa các phương tiện</small>
@@ -619,7 +700,7 @@ Thêm tour
                     document.getElementById('days').addEventListener('input', updateDuration);
                     document.getElementById('nights').addEventListener('input', updateDuration);
                 </script>
-            </section>
+            </section> -->
         </div>
     </div>
 </form>
@@ -648,6 +729,16 @@ Thêm tour
                 console.error('Lỗi khi lấy danh mục tours:', error); // Ghi lỗi
             }
         )
+        $scope.khoihanhs = [];
+        // $scope.selectedKhoiHanh = null;
+        // Lấy dữ liệu từ API
+    $http.get('https://provinces.open-api.vn/api/')
+        .then(function(response) {
+            $scope.khoihanhs = response.data; // Lưu dữ liệu vào mảng khoihanhs
+        })
+        .catch(function(error) {
+            console.error('Lỗi khi lấy dữ liệu tỉnh:', error);
+        });
     };
 </script>
 @endsection

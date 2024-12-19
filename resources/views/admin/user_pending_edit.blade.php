@@ -1,37 +1,52 @@
 @extends('admin.layout.index')
 @section('title')
-    Thay đổi thông tin admin
+    Xác nhận tài khoản
 @endsection
 @section('main')
-    <!-- TRÌNH SOẠN THẢO -->
-    <script>
-        tinymce.init({
-            selector: 'textarea#2',
-            height: 400,
-            menubar: true,
-            plugins: [
-                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                'anchor', 'searchreplace', 'visualblocks', 'advcode', 'fullscreen',
-                'insertdatetime', 'media', 'table', 'powerpaste', 'code'
-            ],
-            toolbar: 'undo redo | insert | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code',
-            powerpaste_allow_local_images: true,
-            powerpaste_word_import: 'prompt',
-            powerpaste_html_import: 'prompt',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-        });
-    </script>
-    <form action="{{ route('admin.adminEdit_update', $adminusers->id) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.getAdminEdit_update',$getAdmin->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         <header class="bg-body p-2 d-flex justify-content-between mb-2 sticky-top z-1">
-            <h2 class="">Thay đổi thông tin admin: {{$adminusers->id}}
-            </h2>
+            <h2 class="">Xác nhận tài khoản: {{$getAdmin->id}}</h2>
             <div>
                 <button type="submit" name="post" id="post-btn" class="btn btn-primary" style="height: fit-content;">Đăng / Cập nhật</button>
                 <button type="submit" name="draft" id="draft-btn" class="btn btn-outline-primary" style="height: fit-content;">Lưu nháp / Ẩn</button> <!-- lưu với trạng thái ẩn -->
             </div>
         </header>
-        
+        <div class="accordion mb-3" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Todo list
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show bg-body-secondary border border-1 border-black" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <div class="alert alert-danger">
+                    <h4>Todo</h4>
+                    <ul>
+                        <!-- <li>Xử lý bài toán ngày khởi hành tour</li>
+                        <li>Xử lý phương tiện di chuyển</li>
+                        <li>Xử lý nhập nổi bật</li> -->
+                    </ul>
+                </div>
+                <div class="alert alert-success">
+                    <h4>Done</h4>
+                    <ul>
+                        <!-- <li>Bắt lỗi form</li>
+                        <li>Auto slug - tiện lợi người dùng</li>
+                        <li>Xử dụng trình soạn thảo cho phần chi tiết tour - dễ trình bày</li>
+                        <li>Chọn ngày giờ khởi hành thủ công - có btn thêm ngày giờ khởi hành</li>
+                        <li>Chọn đối tác (đối với admin khi nhập tour)</li>
+                        <li>Chọn danh mục - có lọc trong nước và ngoài nước theo select</li>
+                        <li>Auto load ảnh mẫu trước khi choose file</li>
+                        <li>Thời gian diễn ra tour - thân thiện, thống nhất cho người dùng</li>
+                        <li>...</li> -->
+                    </ul>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -46,7 +61,7 @@
             <!-- NỘI DUNG CHI TIẾT TIN TỨC-->
             <div class="col-9">
                 <section class="bg-body rounded mb-3">
-                    <input name="name" value="{{ old('name') ?? $adminusers->name}}" id="name" class="form-control form-control-lg" type="text" placeholder="Tên admin (không vượt quá 255 ký tự) " aria-label=".form-control-lg example">
+                    <input name="name" value="{{ old('name') ?? $getAdmin->name}}" id="name" class="form-control form-control-lg" type="text" placeholder="Tên đối tác (không vượt quá 255 ký tự) " aria-label=".form-control-lg example" readonly>
                 </section>
 
                 {{-- Nổi bật --}}
@@ -72,29 +87,45 @@
                     <div class="d-flex gap-3 justify-content-between">
                         <label for="email" class="h5">Email</label>
                     </div>
-                    <input type="email" name="email" value="{{ old('email') ?? $adminusers->email }}" id="email" class="form-control mb-3">
-                    <div class="d-flex gap-3 justify-content-between">
+                    <input type="email" name="email" value="{{ old('email') ?? $getAdmin->email}}" id="email" class="form-control mb-3" readonly>
+                    <!-- <div class="d-flex gap-3 justify-content-between">
                         <label for="password" class="h5">Mật khẩu</label>
                     </div>
-                    <input type="password" name="password" value="{{ old('password') ?? $adminusers->password}}" id="password" class="form-control mb-3">
+                    <input type="password" name="password" value="{{ old('password') ?? $getAdmin->password}}" id="password" class="form-control mb-3"> -->
                     <div class="d-flex gap-3 justify-content-between">
                         <label for="phone" class="h5">Số điện thoại</label>
                     </div>
-                    <input type="phone" name="phone" value="{{ old('phone') ?? $adminusers->phone}}" id="phone" class="form-control mb-3">
+                    <input type="phone" name="phone" value="{{ old('phone') ?? $getAdmin->phone}}" id="phone" class="form-control mb-3" readonly>
                     <!-- <div class="d-flex gap-3 justify-content-between">
                         <label for="role" class="h5">Quyền hạng người dùng</label>
                     </div>
                     <input type="role" name="role" value="{{ old('role') }}" id="role" class="form-control mb-3"> -->
-                    <div class="d-flex gap-3 justify-content-between">
+                    <!-- <div class="d-flex gap-3 justify-content-between">
                     <label for="role" class="h5">Phân Quyền</label>
                     </div>
 
-                    <!-- Hiển thị giá trị -->
-                    <span class="form-control mb-3" id="role-display">{{ old('role', 'admin') ?? $adminusers->role}}
-                    </span>
+                    
+                    <span class="form-control mb-3" id="role-display">{{ old('role', 'provider') }}
+                    </span> -->
+
+                    
+                    <div class="d-flex gap-3 justify-content-between">
+                    <label for="role" class="h5">Phân Quyền</label>
+                    </div>
+    <div>
+        <input type="radio" id="pending" name="role" value="pending" {{ old('role', $getAdmin->role) == 'pending' ? 'checked' : '' }} readonly>
+        <label for="pending">Pending</label>
+    </div>
+    <div>
+        <input type="radio" id="provider" name="role" value="provider" {{ old('role', $getAdmin->role) == 'provider' ? 'checked' : '' }} readonly>
+        <label for="provider">Provider</label>
+    </div>
+                    <!-- Hiển thị giá trị
+                    <span class="form-control mb-3" id="role-display">{{ old('role', 'pending') ?? $getAdmin->role}}
+                    </span> -->
 
                     <!-- Lưu giá trị trong trường ẩn -->
-                    <input type="hidden" name="role" value="{{ old('role', 'admin') ?? $adminusers->role}}" id="role">
+                    <!-- <input type="text" name="role" value="{{ old('role', 'pending') ?? $getAdmin->role}}" id="role" class="form-control mb-3"> -->
                 </section>
 
                 {{-- JS auto slug --}}
@@ -191,16 +222,17 @@
 
 
 @section('viewFunction')
-<script>
+    <script>
+        
         viewFunction = function($scope, $http) {
             // Gửi vai trò là 'admin' hoặc 'provider'
-        const role = 'admin'; // hoặc 'provider', tùy vào logic của bạn
-        $http.get(`/admin/api/danh-sach-adminusers?role=${role}`).then(
+        const role = 'pending'; // hoặc 'provider', tùy vào logic của bạn
+        $http.get(`/admin/api/danh-sach-user-provide?role=${role}`).then(
                 function(res) { // success
-                    $scope.adminusers = res.data.data;
+                    $scope.getAdmin = res.data.data;
                 },
                 function(res) { // error
-                    console.error('Lỗi khi lấy danh sách provides:', res); // Ghi lỗi
+                    console.error('Lỗi xác nhận danh sách pending:', res); // Ghi lỗi
                 }
             )
         };

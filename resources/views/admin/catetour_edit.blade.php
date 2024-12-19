@@ -144,11 +144,11 @@
     </div>
     <div class="d-flex gap-3">
         <div>
-            <input type="radio" id="domestic" name="tour_nuoc_ngoai" value="0" {{ old('tour_nuoc_ngoai') == '0' ? 'checked' : '' }} >
+            <input type="radio" id="domestic" name="tour_nuoc_ngoai" value="0" {{ old('tour_nuoc_ngoai') == 0 ? 'checked' : '' }} >
             <label for="domestic">Tour trong nước</label>
         </div>
         <div>
-            <input type="radio" id="international" name="tour_nuoc_ngoai" value="1" {{ old('tour_nuoc_ngoai') == '1' ? 'checked' : '' }}>
+            <input type="radio" id="international" name="tour_nuoc_ngoai" value="1" {{ old('tour_nuoc_ngoai') == 1 ? 'checked' : '' }}>
             <label for="international">Tour nước ngoài</label>
         </div>
     </div>
@@ -168,44 +168,66 @@
 
             <!-- NỘI DUNG NAV RIGHT THÊM, Cate, IMG, 2n1d, phương tiện -->
             <div class="col-3">
-                <!-- <section class="bg-body rounded mb-3 p-2">
-                    @if (Auth::guard('admin')->user()->role == 'admin')
-                        <label for="provider" class="form-label">
-                            <h5>Chọn đối tác <span class="text-danger">*</span></h5>
-                        </label>
-                        <select name="admin_id" class="form-select form-select-sm mb-3" id="provider">
-                            <option value="" selected>Chọn đối tác</option>
-                            <option ng-repeat="provider in providers" value="@{{ provider.id }}">@{{ provider.name }}</option>
-                        </select>
-                    @else
-                        <input name="admin_id" value="{{ Auth::guard('admin')->user()->id }}" hidden></input>
-                    @endif
-                    <label for="news_categories" class="form-label">
-                        <h5>Chọn danh mục <span class="text-danger">*</span></h5>
-                    </label>
-                    <select name="category_id" class="form-select form-select-sm" aria-label="Small select example" ng-model="selectedCategory">
-                        <option value="" selected>Chọn danh mục tin tức</option>
-                        <optgroup label="Tin tức tổng hợp">
-                            <option ng-repeat="catenew in news_categories" value="@{{ catenew.id }}">
-                                @{{ catenew.title }}
-                            </option>
-                        </optgroup>
-                    </select>
-                </section> -->
-                <!-- <section class="bg-body rounded mb-3 p-2">
+                <section class="bg-body rounded mb-3 p-2">
                     <p class="mb-2">
                     <h5>Ảnh đại diện <span class="text-danger">*</span></h5>
                     </p>
                     <label for="fileUpload" class="form-label">
-                        <img id="mainImage" src="{{ asset('') }}assets/image/img_phaceholder.jpg" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
+                        <img id="mainImage" src="{{ asset('assets/image_tour/' . $category_tour->image_url ?? 'img_phaceholder.jpg') }}" alt="ảnh nè" width="100%" class="img-thumbnail object-fit-contain mb-3">
                     </label>
                     <input name="image_url" type="file" class="form-control mb-3" accept="image/*" id="fileUpload">
-                </section> -->
+                </section>
 
                 <!-- js kiểm tra định dạng file và show ảnh demo khi người dùng upfile -->
-                <!-- <script> -->
-                    
-                <!-- </script> -->
+                <script>
+                    // Hàm để kiểm tra định dạng file hợp lệ
+                    function validateFileType(file, allowedTypes) {
+                        const fileType = file.type;
+                        return allowedTypes.includes(fileType);
+                    }
+
+                    // Hàm cập nhật ảnh và kiểm tra định dạng
+                    function updateImage(inputElement, imgElementId, allowedTypes) {
+                        const file = inputElement.files[0];
+
+                        if (file) {
+                            if (validateFileType(file, allowedTypes)) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    document.getElementById(imgElementId).src = e.target.result;
+                                };
+                                reader.readAsDataURL(file);
+                            } else {
+                                alert("File không hợp lệ! Vui lòng chọn file có định dạng ảnh như PNG, JPG, GIF, WEBP hoặc SVG.");
+                                inputElement.value = ""; // Reset input file
+                            }
+                        }
+                    }
+
+                    // Các loại file ảnh hợp lệ
+                    const allowedImageTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp", "image/svg+xml"];
+
+                    // Lắng nghe sự kiện thay đổi file và kiểm tra định dạng
+                    document.getElementById('fileUpload').addEventListener('change', function() {
+                        updateImage(this, 'mainImage', allowedImageTypes);
+                    });
+
+                    // document.getElementById('fileUpload1').addEventListener('change', function() {
+                    //     updateImage(this, 'image1', allowedImageTypes);
+                    // });
+
+                    // document.getElementById('fileUpload2').addEventListener('change', function() {
+                    //     updateImage(this, 'image2', allowedImageTypes);
+                    // });
+
+                    // document.getElementById('fileUpload3').addEventListener('change', function() {
+                    //     updateImage(this, 'image3', allowedImageTypes);
+                    // });
+
+                    // document.getElementById('fileUpload4').addEventListener('change', function() {
+                    //     updateImage(this, 'image4', allowedImageTypes);
+                    // });
+                </script>
             </div>
         </div>
     </form>
