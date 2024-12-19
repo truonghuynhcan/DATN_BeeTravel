@@ -142,15 +142,17 @@ Tour
 
                     <!-- Lọc địa điểm -->
                     <div class="me-3">
-                        <label for="location" class="form-label">Nơi khởi hành</label>
-                        <select name="location" class="form-select form-select-sm" id="location" onchange="this.form.submit()">
-                            <option value="">Tất cả địa điểm</option>
-                            @foreach($noikhoihanhs as $noiKhoiHanh)
-                            <option value="{{ $noiKhoiHanh }}" {{ request('location') == $noiKhoiHanh ? 'selected' : '' }}>
-                                {{ $noiKhoiHanh }}
-                            </option>
-                            @endforeach
-                        </select>
+                        <label for="noi_khoi_hanh" class="form-label">Nơi khởi hành</label>
+                        <form method="GET" action="{{ route('tour.filter') }}">
+                            <select name="noi_khoi_hanh" class="form-select form-select-sm" id="noi_khoi_hanh" onchange="this.form.submit()">
+                                <option value="">Tất cả địa điểm</option>
+                                @foreach($provinces as $province)
+                                <option value="{{ $province['name'] }}" {{ request('noi_khoi_hanh') == $province['name'] ? 'selected' : '' }}>
+                                    {{ $province['name'] }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </form>
                     </div>
                 </form>
 

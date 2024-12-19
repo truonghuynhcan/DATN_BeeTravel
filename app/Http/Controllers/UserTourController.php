@@ -9,6 +9,7 @@ use App\Models\NgayDi;
 use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class UserTourController extends Controller
 {
@@ -17,24 +18,35 @@ class UserTourController extends Controller
         // Lấy danh mục
         $categories = Category::all();
 
+        // Lấy giá trị lọc "Nơi khởi hành"
+        $locationFilter = $request->input('location');
+
+        // Gọi API để lấy danh sách tỉnh thành
+        $response = Http::get('https://provinces.open-api.vn/api/?depth=1');
+        $provinces = $response->successful() ? $response->json() : [];
+
+        // Loại bỏ tiền tố "Tỉnh" hoặc "Thành phố" ngay từ đầu
+        $provinces = array_map(function ($province) {
+            $province['name'] = preg_replace('/^(Tỉnh|Thành phố)\s/', '', $province['name']);
+            return $province;
+        }, $provinces);
+
         // Lấy danh sách tour với ngày đi và giá nhỏ nhất từ bảng ngay_di
         $tours = Tour::with([
             'ngayDi' => function ($query) {
                 $query->select('tour_id', 'price', 'start_date')->orderBy('start_date', 'asc');
             },
             'category' => function ($query) {
-                $query->select('id', 'ten_danh_muc'); // Lấy điểm khởi hành từ bảng category
+                $query->select('id', 'ten_danh_muc');
             }
         ])
             ->select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'noi_khoi_hanh', 'duration', 'transport', 'featured_start')
+            ->when($locationFilter, function ($query) use ($locationFilter) {
+                // Áp dụng bộ lọc nơi khởi hành
+                $query->where('noi_khoi_hanh', $locationFilter);
+            })
             ->orderBy('created_at', 'desc')
             ->paginate(12);
-
-        // nơi khởi hành
-        $noikhoihanhs = Tour::whereNotNull('noi_khoi_hanh')
-            ->where('noi_khoi_hanh', '!=', '')
-            ->distinct()
-            ->pluck('noi_khoi_hanh');
 
         // Lấy danh sách tin tức
         $news = News::select('id', 'title', 'image_url', 'created_at') // Thêm các cột bạn muốn lấy
@@ -43,7 +55,7 @@ class UserTourController extends Controller
             ->get();
 
         // Trả dữ liệu về view
-        return view('client.tour', compact('tours', 'categories', 'news', 'noikhoihanhs'));
+        return view('client.tour', compact('tours', 'categories', 'news', 'provinces', 'locationFilter'));
     }
 
     public function fullsearch()
@@ -187,6 +199,16 @@ class UserTourController extends Controller
 
     public function filterTours(Request $request)
     {
+        // Gọi API lấy danh sách tỉnh thành
+        $response = Http::get('https://provinces.open-api.vn/api/?depth=1');
+        $provinces = $response->successful() ? $response->json() : [];
+
+        // Loại bỏ tiền tố "Tỉnh" hoặc "Thành phố" ngay từ đầu
+        $provinces = array_map(function ($province) {
+            $province['name'] = preg_replace('/^(Tỉnh|Thành phố)\s/', '', $province['name']);
+            return $province;
+        }, $provinces);
+
         // Khởi tạo query cơ bản
         $query = Tour::with(['ngayDi' => function ($q) {
             $q->select('tour_id', 'price', 'start_date');
@@ -200,20 +222,16 @@ class UserTourController extends Controller
         // Lấy danh sách các tour
         $tours = $query->paginate(12);
 
+        // Lấy danh mục
         $categories = Category::all();
 
-        $news = News::select('id', 'title', 'image_url', 'created_at') // Thêm các cột bạn muốn lấy
+        // Lấy danh sách tin tức
+        $news = News::select('id', 'title', 'image_url', 'created_at')
             ->latest()
             ->take(4)
             ->get();
 
-        // Lấy danh sách nơi khởi hành
-        $noikhoihanhs = Tour::whereNotNull('noi_khoi_hanh')
-            ->where('noi_khoi_hanh', '!=', '')
-            ->distinct()
-            ->pluck('noi_khoi_hanh');
-
-        return view('client.tour', compact('tours', 'noikhoihanhs', 'categories', 'news'));
+        return view('client.tour', compact('tours', 'categories', 'news', 'provinces'));
     }
 
     private function filterLocation($query, $request)
