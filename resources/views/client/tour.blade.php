@@ -142,18 +142,17 @@ Tour
 
                     <!-- Lọc địa điểm -->
                     <div class="me-3">
-                        <label for="location" class="form-label">Điểm khởi hành</label>
+                        <label for="location" class="form-label">Nơi khởi hành</label>
                         <select name="location" class="form-select form-select-sm" id="location" onchange="this.form.submit()">
                             <option value="">Tất cả địa điểm</option>
-                            @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ request('location') == $cat->id ? 'selected' : '' }}>
-                                {{ $cat->ten_danh_muc }}
+                            @foreach($noikhoihanhs as $noiKhoiHanh)
+                            <option value="{{ $noiKhoiHanh }}" {{ request('location') == $noiKhoiHanh ? 'selected' : '' }}>
+                                {{ $noiKhoiHanh }}
                             </option>
                             @endforeach
                         </select>
                     </div>
                 </form>
-
 
                 <!-- Danh sách tour -->
                 <div class="row">
@@ -184,6 +183,17 @@ Tour
                                         <b>{{ optional($tour->ngayDi->first())->start_date ? \Carbon\Carbon::parse($tour->ngayDi->first()->start_date)->format('d/m/Y') : 'Chưa có ngày đi' }}</b>
                                     </p>
                                 </div>
+                                <div class="d-flex">
+                                    <i class="fa-regular fa-clock" style="margin-right: 5px; margin-top: 3px;"></i>
+                                    <p class="card-text">
+                                        @if(!empty($tour->duration))
+                                        <b>{{ $tour->duration }}</b>
+                                        @else
+                                        <span>Chưa có thông tin</span>
+                                        @endif
+                                    </p>
+                                </div>
+
                                 <div class="d-flex">
                                     <p class="card-text">Giá:
                                         <b class="text-danger">
