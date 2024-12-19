@@ -181,11 +181,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::post('/them-provider/loading', [AdminUsersController::class, 'providerInsert_'])->name('providerInsert_');
     Route::get('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit'])->name('providerEdit');
     Route::post('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit_update'])->name('providerEdit_update');
-<<<<<<< HEAD
-    // Route::post('/provider/block/{id}', [AdminUsersController::class, 'providerBlock'])->name('provider.block');
-=======
 
->>>>>>> 217c263e75ee9e624fae6a67e9722a5bae1b8c2f
     // Person đối tác
     Route::view('/quan-ly-person', 'admin.users_person')->name('personsManagement');
     Route::view('/them-person', 'admin.person_insert')->name('personInsert');
@@ -203,12 +199,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
 
     Route::get('/sua-tour/{id}', [AdminTourController::class, 'tourEdit'])->name('tourEdit');
     Route::post('/sua-tour/{id}', [AdminTourController::class, 'tourEdit_update'])->name('tourEdit_update');
-<<<<<<< HEAD
     Route::get('/xoa-tour/{id}', [AdminTourController::class, 'tourDelete'])->name('tourDelete');
     Route::delete('/xoa-tour/{id}', [AdminTourController::class, 'tour_Delete'])->name('tour_Delete');
-=======
 
->>>>>>> 217c263e75ee9e624fae6a67e9722a5bae1b8c2f
     // Route::delete('/tours/{id}', [AdminTourController::class, 'destroy'])->name('tour_destroy');
     
     Route::get('/sua-tintuc/{id}', [AdminNewController::class, 'newEdit'])->name('newEdit');
