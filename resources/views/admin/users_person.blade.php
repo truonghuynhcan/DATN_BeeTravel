@@ -7,12 +7,7 @@
         <h2 class="">Quản lý tất cả người dùng</h2>
         <a href="{{route('admin.personInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm khách hàng mới</a>
     </header> -->
-    <div class="alert alert-warning">
-        <h4>Todo</h4>
-        <ul>
-            <li>Đang thực hiện</li>
-        </ul>
-    </div>
+    
     <section class="bg-body rounded p-2">
     <h3 class="">Quản lý User</h3>
         {{-- danh sách người dùng theo phân biệt admin/user/provide --}}
@@ -26,6 +21,7 @@
                     <th scope="col" class="text-center">Số điện thoại</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
+                    <th scope="col" class="text-center">Trạng thái</th>
                     <th scope="col" class="text-center">Hành động</th>
                 </tr>
             </thead>
@@ -36,6 +32,9 @@
                     <td class="text-center">@{{ userperson.email }}</td>
                     <td class="text-center">@{{ userperson.address }}</td>
                     <td class="text-center">@{{ userperson.phone }}</td>
+                    <td class="text-center">
+    @{{ userperson.is_block === 1 ? 'Còn hoạt động' : 'Đã bị khóa' }}
+</td>
                     <!-- Người đăng ký -->
                     <!-- <td class="text-center">@{{ newItem.content }}</td> -->
                     <!-- trạng thái -->

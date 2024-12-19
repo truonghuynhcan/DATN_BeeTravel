@@ -157,12 +157,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::post('/them-catenew/loading', [AdminNewController::class, 'catenewInsert_'])->name('catenewInsert_');
     Route::get('/sua-category-new/{id}', [AdminNewController::class, 'catenewEdit'])->name('catenewEdit');
     Route::post('/sua-category-new/{id}', [AdminNewController::class, 'catenewEdit_update'])->name('catenewEdit_update');
+    Route::get('/xoa-category-new/{id}', [AdminNewController::class, 'catenewDelete'])->name('catenewDelete');
+    Route::delete('/xoa-category-new/{id}', [AdminNewController::class, 'catenew_Delete'])->name('catenew_Delete');
 
     Route::view('/quan-ly-dmtour', 'admin.category_tour')->name('CateToursManagement');
     Route::view('/them-catetour', 'admin.catetour_insert')->name('catetourInsert');
     Route::post('/them-catetour/loading', [AdminTourController::class, 'catetourInsert_'])->name('catetourInsert_');
     Route::get('/sua-category-tour/{id}', [AdminTourController::class, 'catetourEdit'])->name('catetourEdit');
     Route::post('/sua-category-tour/{id}', [AdminTourController::class, 'catetourEdit_update'])->name('catetourEdit_update');
+    Route::get('/xoa-category-tour/{id}', [AdminTourController::class, 'catetourDelete'])->name('catetourDelete');
+    Route::delete('/xoa-category-tour/{id}', [AdminTourController::class, 'catetour_Delete'])->name('catetour_Delete');
 
     Route::view('/quan-ly-users', 'admin.users')->name('usersManagement');
     Route::get('/quan-ly-users/{id}', [AdminUsersController::class, 'getAdminEdit'])->name('getAdminEdit');
@@ -173,6 +177,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::post('/them-provider/loading', [AdminUsersController::class, 'providerInsert_'])->name('providerInsert_');
     Route::get('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit'])->name('providerEdit');
     Route::post('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit_update'])->name('providerEdit_update');
+    // Route::post('/provider/block/{id}', [AdminUsersController::class, 'providerBlock'])->name('provider.block');
     // Person đối tác
     Route::view('/quan-ly-person', 'admin.users_person')->name('personsManagement');
     Route::view('/them-person', 'admin.person_insert')->name('personInsert');
@@ -189,10 +194,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
 
     Route::get('/sua-tour/{id}', [AdminTourController::class, 'tourEdit'])->name('tourEdit');
     Route::post('/sua-tour/{id}', [AdminTourController::class, 'tourEdit_update'])->name('tourEdit_update');
+    Route::get('/xoa-tour/{id}', [AdminTourController::class, 'tourDelete'])->name('tourDelete');
+    Route::delete('/xoa-tour/{id}', [AdminTourController::class, 'tour_Delete'])->name('tour_Delete');
     // Route::delete('/tours/{id}', [AdminTourController::class, 'destroy'])->name('tour_destroy');
     
     Route::get('/sua-tintuc/{id}', [AdminNewController::class, 'newEdit'])->name('newEdit');
     Route::put('/sua-tintuc/{id}', [AdminNewController::class, 'newEdit_update'])->name('newEdit_update');
+    Route::get('/xoa-tintuc/{id}', [AdminNewController::class, 'newDelete'])->name('newDelete');
+    Route::delete('/xoa-tintuc/{id}', [AdminNewController::class, 'new_Delete'])->name('new_Delete');
+
+    Route::view('/quan-ly-ca-nhan', 'admin.profile')->name('adminProfile');
+    Route::get('/quan-ly-ca-nhan/{id}', [AdminUsersController::class, 'Profile'])->name('Profile');
+    Route::put('/quan-ly-ca-nhan/{id}', [AdminUsersController::class, 'Profile_update'])->name('Profile_update');
+
     // Route::post('/sua-tintuc/loading', [AdminNewController::class, 'newEdit_'])->name('newEdit_');
 
     // Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');

@@ -23,6 +23,13 @@ class AdminNewController extends Controller
         }
         return view('admin.new_edit', compact('news'));
     }
+    public function newDelete($new_id){
+        $news = News::with(['Admin', 'NewsCategory'])->find($new_id);
+        if (!$news) {
+            return redirect()->back()->withErrors('New not found!');
+        }
+        return view('admin.new_delete', compact('news'));
+    }
     
     public function newEdit_update(Request $request,$new_id){
         // return redirect()->back();
@@ -135,7 +142,13 @@ public function catenewEdit($catenew_id){
     }
     return view('admin.catenew_edit', compact('category_new'));
 }
-
+public function catenewDelete($catenew_id){
+    $category_new = NewsCategory::with(['news'])->find($catenew_id);
+    if (!$category_new) {
+        return redirect()->back()->withErrors('Category new not found!');
+    }
+    return view('admin.catenew_delete', compact('category_new'));
+}
 public function catenewEdit_update(Request $request,$catenew_id){
     $request->validate([
         'title' => ['required', 'string', 'max:255'],
@@ -175,6 +188,33 @@ public function catenewEdit_update(Request $request,$catenew_id){
     return redirect()->route('admin.CateNewsManagement')->with('success', 'Cập nhật category new thành công!');
 }
 
+public function catenew_Delete($catenew_id)
+{
+    // Tìm danh mục tin tức theo ID
+    $category_new = NewsCategory::with(['news'])->find($catenew_id);
+
+    if (!$category_new) {
+        return redirect()->back()->withErrors('Danh mục tin tức không tồn tại!');
+    }
+
+    // Kiểm tra xem danh mục có tin tức nào không
+    if ($category_new->news()->count() > 0) {
+        return redirect()->back()->withErrors('Không thể xóa danh mục tin tức vì nó có các tin tức liên quan!');
+    }
+
+    // Xóa hình ảnh nếu có
+    if ($category_new->image_url) {
+        $oldImagePath = public_path('assets/image_new/' . $category_new->image_url);
+        if (file_exists($oldImagePath)) {
+            unlink($oldImagePath); // Xóa tệp hình ảnh
+        }
+    }
+
+    // Xóa danh mục tin tức
+    $category_new->delete();
+
+    return redirect()->route('admin.CateNewsManagement')->with('success', 'Xóa danh mục tin tức thành công!');
+}
 public function catenewInsert_(Request $request)
     {
         $validated = $request->validate(
@@ -339,6 +379,28 @@ public function catenewInsert_(Request $request)
     /**
      * Display a listing of the resource.
      */
+    public function new_Delete($new_id)
+{
+    // Tìm tin tức theo ID
+    $news = News::find($new_id);
+
+    if (!$news) {
+        return redirect()->back()->withErrors('Tin tức không tồn tại!');
+    }
+
+    // Xóa hình ảnh nếu có
+    if ($news->image_url) {
+        $oldImagePath = public_path('assets/image_new/' . $news->image_url);
+        if (file_exists($oldImagePath)) {
+            unlink($oldImagePath); // Xóa tệp hình ảnh
+        }
+    }
+
+    // Xóa tin tức
+    $news->delete();
+
+    return redirect()->route('admin.newsManagement')->with('success', 'Xóa tin tức thành công!');
+}
     public function index()
 {
     //

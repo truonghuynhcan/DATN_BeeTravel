@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('role',['admin','provider','pending'])->default('pending')->comment('pending la provider dang ky cho xac nhan');
             $table->string('name')->comment('ho va ten');
             $table->char('phone',10)->comment('bat buoc co sdt de lien he');
-
+            
             $table->string('image_url',)->nullable()->comment('anh dai dien');
             $table->string('banner_url')->nullable()->comment('top banner');
             $table->string('bank_number')->nullable()->comment('stk ngan hang');

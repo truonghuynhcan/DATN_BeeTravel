@@ -47,13 +47,13 @@
             </div>
         @endif
     @endauth
-    <div class="list-group mb-3">
-        <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+    <!-- <div class="list-group mb-3">
+        <a href="{{route('admin.adminProfile')}}" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
             Thông tin cá nhân
         </a>
         <a href="" class="list-group-item list-group-item-action">Tài khoản</a>
-        <!-- <a href="" class="list-group-item list-group-item-action">Ngân hàng</a>
+        <a href="" class="list-group-item list-group-item-action">Ngân hàng</a>
         <a href="" class="list-group-item list-group-item-action">Bảo mật</a>
-        <a href="" class="list-group-item list-group-item-action">Cài đặt thông báo</a> -->
-    </div>
+        <a href="" class="list-group-item list-group-item-action">Cài đặt thông báo</a>
+    </div> -->
 </nav>

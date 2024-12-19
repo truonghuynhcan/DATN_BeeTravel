@@ -194,7 +194,11 @@ class UserTourController extends Controller
             ->orwhere('featured', 'like', "%$keyword%")
             ->orderby('id', 'desc')
             ->paginate(6);
-        return view('client.home', compact('tours', 'categories', 'latestNews'));
+        $tours_moinhat= Tour::where('title', 'like', "%$keyword%")
+        ->orwhere('featured', 'like', "%$keyword%")
+        ->orderby('id', 'desc')
+        ->paginate(6);
+        return view('client.home', compact('tours', 'categories', 'latestNews','tours_moinhat'));
     }
 
     public function filterTours(Request $request)

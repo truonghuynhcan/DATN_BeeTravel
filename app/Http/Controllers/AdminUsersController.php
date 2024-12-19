@@ -395,10 +395,47 @@ public function providerEdit_update(Request $request,$provider_id){
         $adminusers->save();
         return redirect()->route('admin.adminusersManagement')->with('success', 'Cập nhật admin thành công!');
     }
+    // public function getProfile(Request $request) {
+    //     // Lấy thông tin người dùng đang đăng nhập
+    //     $adminUser = Auth::guard('admin')->user();
+    
+    //     // Kiểm tra nếu người dùng không đăng nhập
+    //     if (!$adminUser) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Bạn chưa đăng nhập!',
+    //         ], 401); // 401 Unauthorized
+    //     }
+    
+    //     // Lấy vai trò từ thông tin người dùng đang đăng nhập
+    //     $role = $adminUser->role;
+    
+    //     // Kiểm tra vai trò và trả về thông tin tương ứng
+    //     if ($role === 'admin') {
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => 'Lấy thông tin admin thành công!',
+    //             'data' => $adminUser,
+    //         ], 200);
+    //     } elseif ($role === 'provider') {
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => 'Lấy thông tin provider thành công!',
+    //             'data' => $adminUser,
+    //         ], 200);
+    //     }
+    
+    //     // Nếu không hợp lệ
+    //     return response()->json([
+    //         'status' => false,
+    //         'message' => 'Vai trò không hợp lệ hoặc bạn không có quyền truy cập!',
+    //     ], 403); // 403 Forbidden
+    // }
     
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
         //
