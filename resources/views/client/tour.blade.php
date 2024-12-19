@@ -159,6 +159,7 @@ Tour
                 <div class="row">
                     @if ($tours->count() > 0)
                     @foreach ($tours as $tour)
+                    <!-- @if (!$tour->is_hidden) Kiểm tra xem tour có được ẩn hay không -->
                     <div class="col-12 col-md-6 col-lg-4 mb-3 tour-hidden">
                         <div class="card text-bg-dark position-relative">
                             <div class="position-absolute start-0 d-none" style="top:5px;">
@@ -176,7 +177,7 @@ Tour
                                 </h5>
                                 <div class="d-flex">
                                     <i class="bi bi-geo-alt"></i>
-                                    <p class="card-text">Khởi hành: <b>{{ $tour->featured }}</b></p>
+                                    <p class="card-text">Khởi hành: <b>{{ $tour->category->ten_danh_muc }}</b></p>
                                 </div>
                                 <div class="d-flex">
                                     <i class="bi bi-calendar3" style="margin-right: 5px; height: 20px;"></i>
@@ -198,12 +199,13 @@ Tour
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endforeach
                     @else
                     <div class="col-12">
                         <p>Không tìm thấy kết quả nào.</p>
                     </div>
-                    @endif
+                    <!-- @endif -->
                 </div>
 
                 <!-- Pagination -->

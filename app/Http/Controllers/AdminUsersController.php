@@ -31,6 +31,46 @@ class AdminUsersController extends Controller
             'data' => $admins,
         ], 200);
     }
+    public function getAdminEdit($getAdmin_id){
+        $getAdmin = Admin::with(['news','tours','voucher'])->find($getAdmin_id);
+        if (!$getAdmin) {
+            return redirect()->back()->withErrors('Pending new not found!');
+        }
+        return view('admin.user_pending_edit', compact('getAdmin'));
+    }
+    
+    public function getAdminEdit_update(Request $request,$getAdmin_id){
+        $request->validate([
+            // 'name' => ['required', 'string', 'max:255'],
+            //         'email' => ['required', 'string', 'max:255'],
+            //         'password' => ['required', 'string', 'max:255'],
+            //         'phone' => ['required', 'string', 'max:255'],
+                    'role' => ['required', 'string','max:255'],
+        ]);
+    
+        $getAdmin = Admin::find($getAdmin_id);
+        if (!$getAdmin) {
+            return redirect()->back()->withErrors('Pending không tồn tại!');
+        }
+        $getAdmin->name = $request->name;
+            $getAdmin->phone = $request->phone;
+            $getAdmin->password = Hash::make($request->password);
+            $getAdmin->email = $request->email;
+            $getAdmin->role = $request->role;
+        $getAdmin->save();
+        return redirect()->route('admin.usersManagement')->with('success', 'Cập nhật trạng thái thành công!');
+    }
+    // public function getAdmins(Request $request) {
+    //     // Chỉ lấy danh sách người dùng có vai trò 'pending'
+    //     $admins = Admin::where('role', 'pending')->get();
+    
+    //     // Trả về kết quả
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Lấy danh sách người dùng thành công!',
+    //         'data' => $admins,
+    //     ], 200);
+    // }
     public function getAllUsers() {
         // Lấy tất cả người dùng từ bảng users
         $users = User::all(); // Hoặc bạn có thể thêm điều kiện nếu cần

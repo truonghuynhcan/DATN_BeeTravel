@@ -3,10 +3,10 @@
     Quản lý người dùng 
 @endsection
 @section('main')
-    <header class="bg-body rounded p-2 d-flex justify-content-between mb-2">
+    <!-- <header class="bg-body rounded p-2 d-flex justify-content-between mb-2">
         <h2 class="">Quản lý tất cả người dùng</h2>
         <a href="{{route('admin.personInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm khách hàng mới</a>
-    </header>
+    </header> -->
     <div class="alert alert-warning">
         <h4>Todo</h4>
         <ul>
@@ -19,19 +19,19 @@
         <table class="table table-hover table-striped table-bordered">
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">Ảnh</th>
+                    <!-- <th scope="col" class="text-center">Ảnh</th> -->
                     <th scope="col" class="text-center">Tên người dùng</th>
                     <th scope="col" class="text-center">Email</th>
                     <th scope="col" class="text-center">Địa chỉ</th>
-                    <th scope="col" class="text-end">Số điện thoại</th>
+                    <th scope="col" class="text-center">Số điện thoại</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
-                    <th scope="col">Hành động</th>
+                    <th scope="col" class="text-center">Hành động</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
                 <tr ng-repeat="userperson in persons">
-                    <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_new/@{{ userperson.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
+                    <!-- <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_new/@{{ userperson.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th> -->
                     <td class="text-center">@{{ userperson.name }}</td>
                     <td class="text-center">@{{ userperson.email }}</td>
                     <td class="text-center">@{{ userperson.address }}</td>
@@ -41,9 +41,9 @@
                     <!-- trạng thái -->
                     <!-- <td class="text-center" ng-bind=" useradmin.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
-                    <td>
-                        <a href="/admin/sua-person/@{{ userperson.id }}" class="btn btn-info">Sửa</a>
-                        <button class="btn btn-outline-danger">Xóa</button>
+                    <td class="text-center">
+                        <!-- <a href="/admin/sua-person/@{{ userperson.id }}" class="btn btn-info">Sửa</a> -->
+                        <button class="btn btn-outline-danger">Khóa tài khoản</button>
                     </td>
                 </tr>
             </tbody>

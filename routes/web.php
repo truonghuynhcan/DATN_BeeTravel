@@ -145,6 +145,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::post('/sua-category-tour/{id}', [AdminTourController::class, 'catetourEdit_update'])->name('catetourEdit_update');
 
     Route::view('/quan-ly-users', 'admin.users')->name('usersManagement');
+    Route::get('/quan-ly-users/{id}', [AdminUsersController::class, 'getAdminEdit'])->name('getAdminEdit');
+    Route::post('/quan-ly-users/{id}', [AdminUsersController::class, 'getAdminEdit_update'])->name('getAdminEdit_update');
     // Provide đối tác
     Route::view('/quan-ly-provide', 'admin.users_provide')->name('providesManagement');
     Route::view('/them-provider', 'admin.provider_insert')->name('providerInsert');
@@ -176,6 +178,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     // Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
 
     // Route::get('/quan-ly-tour', [TourController::class, 'quanLyTour'])->name('quanLyTour');
+
+//     Route::post('/admin/hide-tour/{id}', [AdminTourController::class, 'hideTour']);
+// Route::post('/admin/delete-tour/{id}', [AdminTourController::class, 'deleteTour']);
     Route::prefix('/api')->group(function () {
         Route::get('/danh-sach-don-hang/{admin_id}', [AdminOrderController::class, 'order']);
 

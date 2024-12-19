@@ -20,6 +20,7 @@ class Tour extends Model
         'title',
         'slug',
         'sub_title',
+        'noi_khoi_hanh',
         'description',
         'duration',
         'transport',

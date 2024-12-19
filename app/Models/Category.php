@@ -25,5 +25,6 @@ class Category extends Model
         'ten_danh_muc',
         'slug',
         'tour_nuoc_ngoai',
+        'image_url'
     ];
 }

@@ -56,20 +56,20 @@ Quản lý tour
             <tr>
                 <th scope="col" class="text-center">Ảnh</th>
                 <th scope="col">Tên tour</th>
-                <th scope="col" class="text-center">Danh mục</th>
+                <th scope="col" class="text-center">Khởi hành </th>
                 @if (Auth::guard('admin')->user()->role == 'admin')
                 <th scope="col" class="text-center">Đối tác</th>
                 @else
                 <th scope="col" class="text-center">Ngày Khởi Hành</th>
                 @endif
                 <th scope="col" class="text-end">Giá</th>
-                <th scope="col" class="text-center">Người đăng ký</th>
+                <!-- <th scope="col" class="text-center">Người đăng ký</th> -->
                 <th scope="col" class="text-center">Trạng thái</th>
                 <th scope="col">Hành động</th>
             </tr>
         </thead>
         <tbody class="table-group-divider">
-            <tr ng-repeat="tour in tours">
+            <tr ng-repeat="tour in tours" >
                 <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_tour/@{{ tour.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
                 <td>@{{ tour.title }}</td>
                 <td class="text-center">@{{ tour.category.ten_danh_muc }}</td>
@@ -80,18 +80,40 @@ Quản lý tour
                 @endif
                 <td class="text-end">@{{ tour.ngay_di[0].price || 0  | number}}</td>
                 <!-- Người đăng ký -->
-                <td class="text-center">0</td>
+                <!-- <td class="text-center">0</td> -->
                 <!-- trạng thái -->
                 <td class="text-center" ng-bind="tour.is_hidden !== 0 ? 'Ẩn' : 'Hiện'"></td>
 
                 <td class="text-center">
-                    <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info mb-1">Sửa</a>
-                    <button class="btn btn-outline-danger">Xóa</button>
+                    <!-- <button class="btn btn-outline-danger">Ẩn Tour</button> -->
+                    @if (Auth::guard('admin')->user()->role != 'admin')
+                        <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info mb-1">Sửa</a>
+                    @endif
+                    <button class="btn btn-outline-danger">Ẩn Tour</button>
+                    <!-- <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info mb-1">Sửa</a>
+                    <button class="btn btn-outline-danger">Xóa</button> -->
                 </td>
             </tr>
         </tbody>
     </table>
 </section>
+<!-- <script>
+function hideTour(tourId) {
+    // Hiển thị hộp thoại xác nhận
+    if (confirm('Bạn có chắc chắn muốn ẩn tour này không?')) {
+        // Chuyển hướng đến URL ẩn tour
+        window.location.href = `/admin/hide-tour/${tourId}`;
+    }
+}
+
+function deleteTour(tourId) {
+    // Hiển thị hộp thoại xác nhận
+    if (confirm('Bạn có chắc chắn muốn xóa tour này không?')) {
+        // Chuyển hướng đến URL xóa tour
+        window.location.href = `/admin/delete-tour/${tourId}`;
+    }
+}
+</script> -->
 @endsection
 
 @section('viewFunction')

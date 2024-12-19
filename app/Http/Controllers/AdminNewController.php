@@ -31,12 +31,36 @@ class AdminNewController extends Controller
             'content' => 'required|string',
             'category_id' => 'required|exists:news_categories,id',
             'admin_id' => 'required|exists:admins,id',
+            // * Ảnh chính và ảnh phụ
+            'image_url' => ' image| mimes:jpg,png,jpeg,gif,svg| max:2048',  // Max file size 2MB
+            'sub_image_url' => 'array',
+            'sub_image_url.*' => 'image| mimes:jpg,png,jpeg,gif,svg| max:2048',  // Max file size 2MB for each image
         ]);
     
         $news = News::find($new_id);
         if (!$news) {
             return redirect()->back()->withErrors('Tin tức không tồn tại!');
         }
+        // Kiểm tra nếu có hình ảnh mới
+    if ($request->hasFile('image_url')) {
+        // Xóa hình ảnh cũ nếu có
+        if ($news->image_url) {
+            $oldImagePath = public_path('assets/image_new/' . $news->image_url);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath); // Xóa tệp hình ảnh cũ
+            }
+        }
+
+        // Tạo tên file mới và di chuyển
+        $filename = time() . '_' . $request['image_url']->getClientOriginalName();
+        $request['image_url']->move('assets/image_new', $filename);
+        
+        // Cập nhật đường dẫn hình ảnh vào cơ sở dữ liệu
+        $news->image_url = $filename;
+    } else {
+        // Nếu không có hình ảnh mới, giữ nguyên hình ảnh cũ
+        $news->image_url = $news->image_url; // Không cần thay đổi gì
+    }
     
         $news->title = $request->title;
         $news->content = $request->content;
@@ -60,11 +84,13 @@ class AdminNewController extends Controller
             // Lấy tất cả news
             $news = News::select('id', 'image_url', 'title', 'slug','description','content', 'is_hidden', 'admin_id', 'category_id')
                 ->with(['Admin:id,name', 'NewsCategory:id,title']) // khi sử dụng with ->luôn có cột id
+                ->orderBy('created_at', 'desc') // Sắp xếp theo ngày đăng mới nhất
                 ->get();
         } else {
             // Lấy tour thuộc về đối tác (admin_id)
             $news = News::select('id', 'image_url', 'title', 'slug','description','content',  'is_hidden', 'category_id')
                 ->with(['NewsCategory',])
+                ->orderBy('created_at', 'desc') // Sắp xếp theo ngày đăng mới nhất
                 ->where('admin_id', $admin_id)->get();
         }
         // trả kết quả
@@ -114,11 +140,33 @@ public function catenewEdit_update(Request $request,$catenew_id){
     $request->validate([
         'title' => ['required', 'string', 'max:255'],
                 'slug' => ['nullable', 'string', 'max:255'],
+                // * Ảnh chính và ảnh phụ
+            'image_url' => ' image| mimes:jpg,png,jpeg,gif,svg| max:2048',  // Max file size 2MB
     ]);
 
     $catenew_id = NewsCategory::find($catenew_id);
     if (!$catenew_id) {
         return redirect()->back()->withErrors('Category new không tồn tại!');
+    }
+    // Kiểm tra nếu có hình ảnh mới
+    if ($request->hasFile('image_url')) {
+        // Xóa hình ảnh cũ nếu có
+        if ($catenew_id->image_url) {
+            $oldImagePath = public_path('assets/image_new/' . $catenew_id->image_url);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath); // Xóa tệp hình ảnh cũ
+            }
+        }
+
+        // Tạo tên file mới và di chuyển
+        $filename = time() . '_' . $request['image_url']->getClientOriginalName();
+        $request['image_url']->move('assets/image_new', $filename);
+        
+        // Cập nhật đường dẫn hình ảnh vào cơ sở dữ liệu
+        $catenew_id->image_url = $filename;
+    } else {
+        // Nếu không có hình ảnh mới, giữ nguyên hình ảnh cũ
+        $catenew_id->image_url = $catenew_id->image_url; // Không cần thay đổi gì
     }
 
     $catenew_id->title = $request->title;
@@ -134,6 +182,9 @@ public function catenewInsert_(Request $request)
                 //  * Provider information
                 'title' => ['required', 'string', 'max:255'],
                 'slug' => ['nullable', 'string', 'max:255'],
+                // * Ảnh chính và ảnh phụ
+                'image_url' => ['required', 'image', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],  // Max file size 2MB
+                'sub_image_url' => ['nullable', 'array'],
             ],
             [
                 // 'admin_id.required' => 'Bạn chưa chọn đối tác.',
@@ -152,16 +203,19 @@ public function catenewInsert_(Request $request)
 
 
                 // * Ảnh
-                // 'image_url.required' => 'Cần thêm ảnh đại diện',
-                // 'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
-                // 'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
-                // 'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
-
+                'image_url.required' => 'Cần thêm ảnh đại diện',
+                'image_url.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
+                'image_url.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg, gif, svg.',
+                'image_url.max' => 'Kích thước ảnh không được vượt quá 2MB.',
             ]
         );
 
         $catenew = new NewsCategory();
         $catenew->title = $validated['title'];
+        // lấy tên ảnh - tạo tên ảnh mới - lưu vào file public - lưu vào db
+        $filename = time() . '_' . $validated['image_url']->getClientOriginalName();
+        $validated['image_url']->move('assets/image_new', $filename); // Di chuyển file vào thư mục public/assets/images
+        $catenew->image_url = $filename;
 
         if (!empty($validated['slug'])) {
             $catenew->slug = $validated['slug'];

@@ -7,12 +7,12 @@
         <h2 class="">Quản lý danh mục tin tức</h2>
         <a href="{{route('admin.catenewInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm danh mục tin tức</a>
     </header>
-    <div class="alert alert-warning">
+    <!-- <div class="alert alert-warning">
         <h4>Todo</h4>
         <ul>
             <li>Đếm tour theo danh mục</li>
         </ul>
-    </div>
+    </div> -->
     <section class="bg-body rounded p-2">
 
         {{-- danh sách danh mục tin tức --}}

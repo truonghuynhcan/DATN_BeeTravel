@@ -226,7 +226,7 @@ Trang chủ
             <div class="tab-pane fade" id="pills-trung" role="tabpanel" aria-labelledby="pills-trung-tab">
                 <div class="row">
                     @foreach($categories as $category)
-                    @if ($category->tour_nuoc_ngoai == 0)
+                    @if ($category->tour_nuoc_ngoai == 1)
                     {{-- is_nuocngoai = false: Tour trong nước --}}
                     <div class="col-6 col-md-4 col-lg-3">
                         <div class="card text-bg-dark">
