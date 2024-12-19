@@ -58,13 +58,25 @@ class UserTourController extends Controller
         return view('client.tour', compact('tours', 'categories', 'news', 'provinces', 'locationFilter'));
     }
 
-    public function fullsearch()
+    public function fullsearch(Request $request)
     {
         $searchCategory = Category::all();
+        // Lấy giá trị lọc "Nơi khởi hành"
+        $locationFilter = $request->input('location');
+
+        // Gọi API để lấy danh sách tỉnh thành
+        $response = Http::get('https://provinces.open-api.vn/api/?depth=1');
+        $provinces = $response->successful() ? $response->json() : [];
+
+        // Loại bỏ tiền tố "Tỉnh" hoặc "Thành phố" ngay từ đầu
+        $provinces = array_map(function ($province) {
+            $province['name'] = preg_replace('/^(Tỉnh|Thành phố)\s/', '', $province['name']);
+            return $province;
+        }, $provinces);
         $news = News::all();
         $search = Tour::select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured', 'featured_start');
         $search = Tour::paginate(6);
-        return view('client.search_tong_quat', compact('search', 'searchCategory', 'news'));
+        return view('client.search_tong_quat', compact('search', 'searchCategory', 'news', 'provinces', 'locationFilter'));
     }
 
 
@@ -84,20 +96,45 @@ class UserTourController extends Controller
             ->orwhere('featured', 'like', "%$keyword%")
             ->orderby('id', 'desc')
             ->paginate(6);
-        return view('client.search_tong_quat', compact('search', 'searchCategory', 'news'));
+        // Lấy giá trị lọc "Nơi khởi hành"
+        $locationFilter = $request->input('location');
+
+        // Gọi API để lấy danh sách tỉnh thành
+        $response = Http::get('https://provinces.open-api.vn/api/?depth=1');
+        $provinces = $response->successful() ? $response->json() : [];
+
+        // Loại bỏ tiền tố "Tỉnh" hoặc "Thành phố" ngay từ đầu
+        $provinces = array_map(function ($province) {
+            $province['name'] = preg_replace('/^(Tỉnh|Thành phố)\s/', '', $province['name']);
+            return $province;
+        }, $provinces);
+        return view('client.search_tong_quat', compact('search', 'searchCategory', 'news', 'provinces', 'locationFilter'));
     }
 
 
-    public function showToursByCategory($id)
+    public function showToursByCategory($id, Request $request)
     {
         $category = Category::findOrFail($id);
+
+        // Lấy giá trị lọc "Nơi khởi hành"
+        $locationFilter = $request->input('location');
+
+        // Gọi API để lấy danh sách tỉnh thành
+        $response = Http::get('https://provinces.open-api.vn/api/?depth=1');
+        $provinces = $response->successful() ? $response->json() : [];
+
+        // Loại bỏ tiền tố "Tỉnh" hoặc "Thành phố" ngay từ đầu
+        $provinces = array_map(function ($province) {
+            $province['name'] = preg_replace('/^(Tỉnh|Thành phố)\s/', '', $province['name']);
+            return $province;
+        }, $provinces);
 
         $tours = Tour::where('category_id', $id)->paginate(10);
 
         $categories = Category::all();
         $news = News::all();
 
-        return view('client.tour', compact('tours', 'categories', 'category', 'news'));
+        return view('client.tour', compact('tours', 'categories', 'category', 'news', 'provinces', 'locationFilter'));
     }
 
     public function searchTours(Request $request)
@@ -123,13 +160,26 @@ class UserTourController extends Controller
             ->take(4)
             ->get();
 
+        // Lấy giá trị lọc "Nơi khởi hành"
+        $locationFilter = $request->input('location');
+
+        // Gọi API để lấy danh sách tỉnh thành
+        $response = Http::get('https://provinces.open-api.vn/api/?depth=1');
+        $provinces = $response->successful() ? $response->json() : [];
+
+        // Loại bỏ tiền tố "Tỉnh" hoặc "Thành phố" ngay từ đầu
+        $provinces = array_map(function ($province) {
+            $province['name'] = preg_replace('/^(Tỉnh|Thành phố)\s/', '', $province['name']);
+            return $province;
+        }, $provinces);
+
         // $news = News::latest()->take(4)->get();
 
         // $tours = Tour::where('title', 'like', "%$keyword%")
         //     ->orWhere('description', 'like', "%$keyword%")
         //     ->orderby('id', 'desc')
         //     ->paginate(10);
-        return view('client.tour', compact('tours', 'categories', 'news'));
+        return view('client.tour', compact('tours', 'categories', 'news', 'provinces', 'locationFilter'));
     }
 
     public function chitiet($id)
@@ -194,11 +244,12 @@ class UserTourController extends Controller
             ->orwhere('featured', 'like', "%$keyword%")
             ->orderby('id', 'desc')
             ->paginate(6);
-        $tours_moinhat= Tour::where('title', 'like', "%$keyword%")
-        ->orwhere('featured', 'like', "%$keyword%")
-        ->orderby('id', 'desc')
-        ->paginate(6);
-        return view('client.home', compact('tours', 'categories', 'latestNews','tours_moinhat'));
+
+        $tours_moinhat = Tour::where('title', 'like', "%$keyword%")
+            ->orwhere('featured', 'like', "%$keyword%")
+            ->orderby('id', 'desc')
+            ->paginate(6);
+        return view('client.home', compact('tours', 'categories', 'latestNews', 'tours_moinhat'));
     }
 
     public function filterTours(Request $request)
