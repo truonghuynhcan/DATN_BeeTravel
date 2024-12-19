@@ -19,6 +19,7 @@ use App\Http\Controllers\UserNgayDiController;
 use App\Http\Controllers\UserOrderController;
 use App\Http\Controllers\LoginGoogleController;
 use App\Http\Controllers\LoginFacebookController;
+use App\Http\Controllers\StatisticsController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -147,6 +148,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     // Route::get('/tour/create', [AdminTourController::class, 'createOption'])->name('admin.tour_insert');
     Route::post('/them-tour/loading', [AdminTourController::class, 'tourInsert_'])->name('tourInsert_');
     
+    // * thống kê
+    Route::get('/thong_ke', [StatisticsController::class,'getDashboard'])->name('thong_ke');
 
     Route::view('/quan-ly-tt', 'admin.news')->name('newsManagement');
     Route::view('/them-tt', 'admin.new_insert')->name('newInsert');
@@ -167,18 +170,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::view('/quan-ly-users', 'admin.users')->name('usersManagement');
     Route::get('/quan-ly-users/{id}', [AdminUsersController::class, 'getAdminEdit'])->name('getAdminEdit');
     Route::post('/quan-ly-users/{id}', [AdminUsersController::class, 'getAdminEdit_update'])->name('getAdminEdit_update');
+    
     // Provide đối tác
     Route::view('/quan-ly-provide', 'admin.users_provide')->name('providesManagement');
     Route::view('/them-provider', 'admin.provider_insert')->name('providerInsert');
     Route::post('/them-provider/loading', [AdminUsersController::class, 'providerInsert_'])->name('providerInsert_');
     Route::get('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit'])->name('providerEdit');
     Route::post('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit_update'])->name('providerEdit_update');
+
     // Person đối tác
     Route::view('/quan-ly-person', 'admin.users_person')->name('personsManagement');
     Route::view('/them-person', 'admin.person_insert')->name('personInsert');
     Route::post('/them-person/loading', [AdminUsersController::class, 'personInsert_'])->name('personInsert_');
     Route::get('/sua-person/{id}', [AdminUsersController::class, 'personEdit'])->name('personEdit');
     Route::post('/sua-person/{id}', [AdminUsersController::class, 'personEdit_update'])->name('personEdit_update');
+
     // Admin đối tác
     Route::view('/quan-ly-admin', 'admin.users_admin')->name('adminusersManagement');
     Route::view('/them-admin', 'admin.admin_insert')->name('adminInsert');
@@ -189,6 +195,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
 
     Route::get('/sua-tour/{id}', [AdminTourController::class, 'tourEdit'])->name('tourEdit');
     Route::post('/sua-tour/{id}', [AdminTourController::class, 'tourEdit_update'])->name('tourEdit_update');
+
     // Route::delete('/tours/{id}', [AdminTourController::class, 'destroy'])->name('tour_destroy');
     
     Route::get('/sua-tintuc/{id}', [AdminNewController::class, 'newEdit'])->name('newEdit');
