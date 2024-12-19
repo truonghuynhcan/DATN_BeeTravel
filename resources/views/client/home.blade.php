@@ -213,6 +213,7 @@ Trang chủ
             </div>
         </div>
         <div class="row">
+        @if($tours_moinhat->count() > 0)
             @foreach ($tours_moinhat as $tour)
             <div class="col-12 col-md-6 col-lg-3 col-xxl-3 mb-3">
                 <div class="card text-bg-dark position-relative">
@@ -261,6 +262,15 @@ Trang chủ
                 </div>
             </div>
             @endforeach
+            @else
+            <div class="container p-3">
+                <div class="row">
+                    <div class="alert alert-warning text-center">
+                        <p class="fw-bold fst-italic">Không tìm thấy tour bạn vừa nhập. </p>
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <a href="{{ route('tour') }}" class=" them btn d-none">Xem tất cả</a>
         </div>
