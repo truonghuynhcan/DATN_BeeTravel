@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class UserTourController extends Controller
 {
-    public function tour()
+    public function tour(Request $request)
     {
         // Lấy danh mục
         $categories = Category::all();
@@ -26,9 +26,15 @@ class UserTourController extends Controller
                 $query->select('id', 'ten_danh_muc'); // Lấy điểm khởi hành từ bảng category
             }
         ])
-            ->select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'duration', 'transport', 'featured_start')
+            ->select('id', 'category_id', 'image_url', 'title', 'sub_title', 'slug', 'description', 'noi_khoi_hanh', 'duration', 'transport', 'featured_start')
             ->orderBy('created_at', 'desc')
             ->paginate(12);
+
+        // nơi khởi hành
+        $noikhoihanhs = Tour::whereNotNull('noi_khoi_hanh')
+            ->where('noi_khoi_hanh', '!=', '')
+            ->distinct()
+            ->pluck('noi_khoi_hanh');
 
         // Lấy danh sách tin tức
         $news = News::select('id', 'title', 'image_url', 'created_at') // Thêm các cột bạn muốn lấy
@@ -37,7 +43,7 @@ class UserTourController extends Controller
             ->get();
 
         // Trả dữ liệu về view
-        return view('client.tour', compact('tours', 'categories', 'news'));
+        return view('client.tour', compact('tours', 'categories', 'news', 'noikhoihanhs'));
     }
 
     public function fullsearch()
@@ -181,12 +187,44 @@ class UserTourController extends Controller
 
     public function filterTours(Request $request)
     {
-        // Khởi tạo truy vấn
+        // Khởi tạo query cơ bản
         $query = Tour::with(['ngayDi' => function ($q) {
             $q->select('tour_id', 'price', 'start_date');
         }]);
 
-        // Lọc theo giá
+        // Áp dụng các bộ lọc
+        $this->filterLocation($query, $request);
+        $this->filterPrice($query, $request);
+        $this->filterStartDate($query, $request);
+
+        // Lấy danh sách các tour
+        $tours = $query->paginate(12);
+
+        $categories = Category::all();
+
+        $news = News::select('id', 'title', 'image_url', 'created_at') // Thêm các cột bạn muốn lấy
+            ->latest()
+            ->take(4)
+            ->get();
+
+        // Lấy danh sách nơi khởi hành
+        $noikhoihanhs = Tour::whereNotNull('noi_khoi_hanh')
+            ->where('noi_khoi_hanh', '!=', '')
+            ->distinct()
+            ->pluck('noi_khoi_hanh');
+
+        return view('client.tour', compact('tours', 'noikhoihanhs', 'categories', 'news'));
+    }
+
+    private function filterLocation($query, $request)
+    {
+        if ($request->filled('noi_khoi_hanh')) {
+            $query->where('noi_khoi_hanh', $request->noi_khoi_hanh);
+        }
+    }
+
+    private function filterPrice($query, $request)
+    {
         if ($request->filled('price_range')) {
             $range = explode('-', $request->price_range);
             $minPrice = isset($range[0]) ? (int)$range[0] : null;
@@ -201,8 +239,10 @@ class UserTourController extends Controller
                 }
             });
         }
+    }
 
-        // Lọc theo ngày đi
+    private function filterStartDate($query, $request)
+    {
         if ($request->filled('start_date')) {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d', $request->start_date)->toDateString();
 
@@ -210,22 +250,5 @@ class UserTourController extends Controller
                 $q->whereDate('start_date', '>=', $startDate);
             });
         }
-
-        // Lọc theo địa điểm
-        if ($request->filled('location')) {
-            $query->where('category_id', $request->location);
-        }
-
-        // Lấy danh sách các tour theo điều kiện lọc
-        $tours = $query->paginate(10);
-
-        // Lấy danh sách danh mục và tin tức
-        $categories = Category::all();
-        $news = News::select('id', 'title', 'image_url', 'created_at')
-            ->latest()
-            ->take(4)
-            ->get();
-
-        return view('client.tour', compact('tours', 'categories', 'news'));
     }
 }
