@@ -60,7 +60,7 @@
                         <td class="text-primary fw-bold">{{ $order->fullname }}</td>
                     </tr>
 
-                    <tr>
+                    <tr class="d-none">
                         <td>Số người tham gia:</td>
                         <td>12</td>
                     </tr>

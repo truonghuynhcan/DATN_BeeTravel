@@ -313,7 +313,7 @@
 
 
                 <!-- Voucher giảm giá -->
-                <section class="bg-body py-2 mb-3">
+                <section class="bg-body py-2 mb-3 d-none">
                     <div class="p-2 border-bottom border-light-subtle">
                         <strong class="text-primary">VOUCHER</strong>
                     </div>
@@ -330,12 +330,12 @@
 
 
                 <!-- Chọn hình thức thanh toán -->
-                <div class="card p-4">
+                <div class="card p-4 d-none">
                     <h5 class="highlight">CÁC HÌNH THỨC THANH TOÁN</h5>
                     <div class="payment-option">
                         {{-- Trạng thái chưa thanh toán --}}
                         <input type="radio" name="user-payment" value="0" id="cash" checked>
-                        <label for="cash">Thanh toán khi tham gia</label>
+                        <label for="cash"></label>
                     </div>
                     {{-- <div class="payment-option">
                         <input type="radio" name="payment" id="transfer">

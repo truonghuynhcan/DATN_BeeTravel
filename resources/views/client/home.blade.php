@@ -120,7 +120,7 @@
     </nav>
 
     <!-- TOUR NỔI BẬT -->
-    <section class=" py-4 bg-body">
+    <section class=" py-4 bg-body d-none">
         <div class="container">
 
             <div class="d-flex justify-content-between align-items-end">
