@@ -29,6 +29,16 @@ class AdminTourController extends Controller
 
         return view('admin.tour_edit', compact('tour'));
     }
+    public function tourDelete($tour_id)
+    {
+        $tour = Tour::with(['category', 'ngayDi', 'images', 'admin'])->withCount('wishlist')->find($tour_id);
+
+        if (!$tour) {
+            return redirect()->back()->withErrors('Tour not found!');
+        }
+
+        return view('admin.tour_delete', compact('tour'));
+    }
 
     public function tourEdit_update(Request $request, $tour_id)
     {
@@ -218,7 +228,42 @@ class AdminTourController extends Controller
             'data' => $category_tour,
         ], 200);
     }
+    public function catetour_Delete($catetour_id)
+{
+    // Tìm danh mục tour theo ID
+    $category_tour = Category::with('tours')->find($catetour_id);
 
+    if (!$category_tour) {
+        return redirect()->back()->withErrors('Category tour không tồn tại!');
+    }
+
+    // Kiểm tra xem danh mục có tour nào không
+    if ($category_tour->tours()->count() > 0) {
+        return redirect()->back()->withErrors('Không thể xóa category tour vì nó có các tour liên quan!');
+    }
+
+    // Xóa hình ảnh nếu có
+    if ($category_tour->image_url) {
+        $oldImagePath = public_path('assets/image_tour/' . $category_tour->image_url);
+        if (file_exists($oldImagePath)) {
+            unlink($oldImagePath); // Xóa tệp hình ảnh
+        }
+    }
+
+    // Xóa danh mục tour
+    $category_tour->delete();
+
+    return redirect()->route('admin.CateToursManagement')->with('success', 'Xóa category tour thành công!');
+}
+
+public function catetourDelete($catetour_id)
+    {
+        $category_tour = Category::with(['tours'])->find($catetour_id);
+        if (!$category_tour) {
+            return redirect()->back()->withErrors('Category tour not found!');
+        }
+        return view('admin.catetour_delete', compact('category_tour'));
+    }
     public function catetourEdit($catetour_id)
     {
         $category_tour = Category::with(['tours'])->find($catetour_id);
@@ -572,12 +617,46 @@ class AdminTourController extends Controller
 
         return redirect()->route('admin.tourManagement')->with('success', 'Tour added successfully!');
     }
+
+    
+
     // Trả về view khi yêu cầu là GET
     // return view('admin.tour_insert', compact('usedFeaturedValues'));
     // }
     /**
      * Display a listing of the resource.
      */
+    public function tour_Delete($tour_id)
+{
+    $tour = Tour::find($tour_id);
+
+    if (!$tour) {
+        return redirect()->back()->withErrors('Tour không tồn tại!');
+    }
+
+    // Kiểm tra xem có đơn hàng nào liên quan đến các ngày đi của tour không
+    if ($tour->ngayDi()->with('order')->get()->contains(function($ngayDi) {
+        return $ngayDi->order()->count() > 0;
+    })) {
+        return redirect()->back()->withErrors('Không thể xóa tour vì đã có đơn hàng liên quan!');
+    }
+
+    // Xóa hình ảnh liên quan nếu có
+    if ($tour->image_url) {
+        $oldImagePath = public_path('assets/image_tour/' . $tour->image_url);
+        if (file_exists($oldImagePath)) {
+            unlink($oldImagePath); // Xóa hình ảnh chính
+        }
+    }
+
+    // Xóa các bản ghi 'Ngày đi' liên quan
+    $tour->ngayDi()->delete();
+
+    // Xóa tour
+    $tour->delete();
+
+    return redirect()->route('admin.tourManagement')->with('success', 'Xóa tour thành công!');
+}
     public function index()
     {
         //

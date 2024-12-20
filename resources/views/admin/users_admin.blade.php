@@ -7,12 +7,7 @@
         <h2 class="">Quản lý tất cả admin</h2>
         <a href="{{route('admin.adminInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm admin mới</a>
     </header> -->
-    <div class="alert alert-warning">
-        <h4>Todo</h4>
-        <ul>
-            <li>Đang thực hiện</li>
-        </ul>
-    </div>
+    
     <section class="bg-body rounded p-2">
     <h3 class="">Quản lý admin của Bee Travel</h3>
         {{-- danh sách người dùng theo phân biệt admin/user/provide --}}

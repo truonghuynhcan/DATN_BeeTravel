@@ -15,8 +15,8 @@ Quản lý tour
 </div>
 <section class="bg-body rounded p-2">
     {{-- Bộ lọc --}}
-    <form action="" method="GET" class="d-flex mb-3">
-        <!-- Lọc giá -->
+    <!-- <form action="" method="GET" class="d-flex mb-3">
+        
         <div class="me-3">
             <label for="price_range" class="form-label">Lọc theo giá</label>
             <select name="price_range" class="form-select form-select-sm" id="price_range" onchange="this.form.submit()">
@@ -29,7 +29,7 @@ Quản lý tour
             </select>
         </div>
 
-        <!-- Lọc ngày -->
+        
         <div class="me-3">
             <label for="start_date" class="form-label">Ngày đi</label>
             <div class="d-flex">
@@ -39,7 +39,7 @@ Quản lý tour
             </div>
         </div>
 
-        <!-- Lọc địa điểm (Danh mục) -->
+        
         <div class="me-3">
             <label for="location" class="form-label">Lọc theo địa điểm</label>
             <select name="location" class="form-select form-select-sm" id="location" onchange="this.form.submit()">
@@ -47,7 +47,7 @@ Quản lý tour
                 
             </select>
         </div>
-    </form>
+    </form> -->
 
 
     {{-- danh sách tour --}}
@@ -79,17 +79,18 @@ Quản lý tour
                 <td class="text-center">@{{ tour.ngay_di[0].start_date || 'Chưa có' | date:'dd/MM/yyyy'}}</td>
                 @endif
                 <td class="text-end">@{{ tour.ngay_di[0].price || 0  | number}}</td>
-                <!-- Người đăng ký -->
-                <!-- <td class="text-center">0</td> -->
-                <!-- trạng thái -->
                 <td class="text-center" ng-bind="tour.is_hidden !== 0 ? 'Ẩn' : 'Hiện'"></td>
-
+                
                 <td class="text-center">
                     <!-- <button class="btn btn-outline-danger">Ẩn Tour</button> -->
                     @if (Auth::guard('admin')->user()->role != 'admin')
                         <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info mb-1">Sửa</a>
                     @endif
-                    <button class="btn btn-outline-danger">Ẩn Tour</button>
+                    
+                    
+                    <a href="/admin/xoa-tour/@{{ tour.id }}" class="btn btn-info mb-1">Xóa Tour</a>
+                    <!-- <button class="btn btn-outline-danger">Ẩn Tour</button>
+                    <button class="btn btn-danger" >Xóa Tour</button> -->
                     <!-- <a href="/admin/sua-tour/@{{ tour.id }}" class="btn btn-info mb-1">Sửa</a>
                     <button class="btn btn-outline-danger">Xóa</button> -->
                 </td>
@@ -128,5 +129,7 @@ function deleteTour(tourId) {
             }
         )
     };
+    
 </script>
+
 @endsection

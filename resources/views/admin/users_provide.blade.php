@@ -7,12 +7,7 @@
         <h2 class="">Quản lý tất cả đối tác</h2>
         <a href="{{route('admin.providerInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm đối tác mới</a>
     </header> -->
-    <div class="alert alert-warning">
-        <h4>Todo</h4>
-        <ul>
-            <li>Đang thực hiện</li>
-        </ul>
-    </div>
+    
     <section class="bg-body rounded p-2">
     <h3 class="">Quản lý đối tác của Bee Travel</h3>
         {{-- danh sách người dùng theo phân biệt admin/user/provide --}}
@@ -28,6 +23,7 @@
                         <th scope="col" class="text-center">Phân quyền</th>
                     @endif
                     <th scope="col" class="text-center">Số điện thoại</th>
+                    <th scope="col" class="text-center">Trạng thái</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
                     <th scope="col" class="text-center">Hành động</th>
@@ -40,15 +36,18 @@
                     <td class="text-center">@{{ userprovide.email }}</td>
                     <td class="text-center">@{{ userprovide.role }}</td>
                     <td class="text-center">@{{ userprovide.phone }}</td>
+                    <td class="text-center badge text-bg-success m-2" style="display: flex; align-items: center; justify-content: center; height: 30px;">@{{ userprovide.is_block === 0 ? 'Còn hoạt động' : 'Đã bị khóa' }}</td>
                     <!-- Người đăng ký -->
                     <!-- <td class="text-center">@{{ newItem.content }}</td> -->
                     <!-- trạng thái -->
                     <!-- <td class="text-center" ng-bind=" useradmin.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
                     <td class="text-center">
-                        <!-- <a href="/admin/sua-provider/@{{ userprovide.id }}" class="btn btn-info">Sửa</a> -->
                         <button class="btn btn-outline-danger">Khóa tài khoản</button>
-                    </td>
+                
+        </tr>
+                    <!-- <a href="/admin/sua-provider/@{{ userprovide.id }}" class="btn btn-info">Sửa</a> -->
+                        <!-- <button class="btn btn-outline-danger">Khóa tài khoản</button> -->
                 </tr>
             </tbody>
         </table>

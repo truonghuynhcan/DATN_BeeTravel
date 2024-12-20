@@ -244,6 +244,7 @@ class UserTourController extends Controller
             ->orwhere('featured', 'like', "%$keyword%")
             ->orderby('id', 'desc')
             ->paginate(6);
+
         $tours_moinhat = Tour::where('title', 'like', "%$keyword%")
             ->orwhere('featured', 'like', "%$keyword%")
             ->orderby('id', 'desc')

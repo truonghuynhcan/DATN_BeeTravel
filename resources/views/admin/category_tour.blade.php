@@ -21,7 +21,7 @@
                     <th scope="col" class="text-center">Số lượng tour</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
-                    <th scope="col">Hành động</th>
+                    <th scope="col" class="text-center">Hành động</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -37,9 +37,15 @@
                     <!-- trạng thái -->
                     <!-- <td class="text-center" ng-bind=" tourcate.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
-                    <td>
-                        <a href="/admin/sua-category-tour/@{{ tourcate.id }}" class="btn btn-info">Sửa</a>
-                        <button class="btn btn-outline-danger">Xóa</button>
+                    <td class="text-center">
+                    @if (Auth::guard('admin')->user()->role != 'admin')
+                    <a href="/admin/sua-category-tour/@{{ tourcate.id }}" class="btn btn-info">Sửa</a>
+                    @endif
+                    
+                    
+                    <a href="/admin/xoa-category-tour/@{{ tourcate.id }}" class="btn btn-info mb-1">Xóa Danh Mục Tour</a>
+                        
+                        
                     </td>
                 </tr>
             </tbody>
