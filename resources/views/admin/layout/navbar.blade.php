@@ -4,7 +4,7 @@
         <a href="{{route('admin.thong_ke')}}" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
             Dashboard
         </a>
-        <a href="" class="list-group-item list-group-item-action">Thống kê tour</a>
+        <a href="{{route('admin.thong_ke_tour')}}" class="list-group-item list-group-item-action">Thống kê tour</a>
         {{-- <a href="" class="list-group-item list-group-item-action">Thống kê doanh thu</a> --}}
     </div>
     <div class="list-group mb-3">

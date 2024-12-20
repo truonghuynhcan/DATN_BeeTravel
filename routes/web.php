@@ -150,6 +150,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     
     // * thống kê
     Route::get('/thong_ke', [StatisticsController::class,'getDashboard'])->name('thong_ke');
+    Route::get('/thong_ke_tour', [StatisticsController::class,'getStatistics'])->name('thong_ke_tour');
+
 
     // * tin tức
     Route::view('/quan-ly-tt', 'admin.news')->name('newsManagement');
