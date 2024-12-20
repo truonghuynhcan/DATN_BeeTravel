@@ -15,7 +15,12 @@ class UserNewsController extends Controller
         $news = News::getNew();
         // Lấy các tin có lượt xem cao 
         $reading = News::reading()->get();
-        return view('client.tin_tuc_danh_muc', compact('categories', 'news','reading'));
+
+        $latestNews = News::select('id', 'category_id', 'image_url', 'title', 'slug', 'description', 'content', 'reading')
+        ->orderBy('reading', 'asc') // Sắp xếp theo featured tăng dần
+        ->get();
+
+        return view('client.tin_tuc_danh_muc', compact('categories', 'news','reading','latestNews'));
     } 
     public function getNewByCategory(Request $request, $category_id)
     {

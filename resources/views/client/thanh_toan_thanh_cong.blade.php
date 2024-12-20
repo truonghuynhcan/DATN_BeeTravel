@@ -103,7 +103,7 @@
                         <th class="text-primary"><strong>{{ number_format($order->total_price) }} VNĐ</strong></th>
                     </tr>
                     <!-- Button trigger modal -->
-                    @if ($order->ngayDi->start_date < now())
+                    @if ($order->ngayDi->start_date < now()|| $order->status == 'finished')
                         <tfoot>
                             <tr>
                                 <td>
@@ -173,7 +173,7 @@
     </div>
 
 
-    @if ($order->ngayDi->start_date < now())
+    @if ($order->ngayDi->start_date < now() || $order->status == 'finished')
         <!-- Modal -->
         <div class="modal fade" id="danhgiatour" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="danhgiatourLabel" aria-hidden="true">
             <div class="modal-dialog">

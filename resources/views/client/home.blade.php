@@ -296,7 +296,7 @@
                             @foreach ($latestNews as $item)
                                 <div class="col-md-3 mb-3 tour-new" data-position="{{ $item->reading }}"> <!-- Sử dụng col-md-3 để có 4 ô trên một hàng -->
                                     <div class="card h-100"> <!-- H-100 để các card có chiều cao bằng nhau -->
-                                        <img src="assets/image_new/{{ $item->image_url }}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
+                                        <img src="{{asset('assets/image_new/'.$item->image_url)}}" class="card-img-top" alt="Tin tức nổi bật" style="object-fit: cover; height: 200px;"> <!-- Đặt chiều cao cố định cho hình ảnh -->
                                         <div class="card-body d-flex flex-column"> <!-- Sử dụng flex để căn chỉnh nội dung -->
                                             <h6 class="card-title">{{ $item->title }}</h6>
                                             <p class="card-text">{{ $item->description }}</p>

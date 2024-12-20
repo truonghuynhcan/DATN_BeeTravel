@@ -110,7 +110,7 @@
 
                          {{-- khi người dùng đã đăng nhập thì hiện --}}
                          @auth()
-                             <li><a class="dropdown-item text-primary text-truncate" style="max-width: 0px;"href="{{ route('myProfile') }}">{{ Auth::user()->name }}</a></li>
+                             <li><a class="dropdown-item text-primary" style="max-width: 0px;"href="{{ route('myProfile') }}">{{ Auth::user()->name }}</a></li>
                              <li><a class="dropdown-item" href="{{ route('settingNotificationsOrder') }}">Thông báo
                                      <span class="badge text-bg-danger"></span>
                                  </a></li>

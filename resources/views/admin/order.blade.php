@@ -76,7 +76,7 @@
 
                     {{-- TRẠNG THÁI THANH TOÁN --}}
                     <td scope="col" class="text-center">
-                        <select ng-change="updateOrderPaid(order)" ng-model="order.is_paid"  ng-init="order.is_paid = order.is_paid ? '1' : '0'" class="form-select form-select-sm" aria-label="Default select example" style="min-width:80px">
+                        <select ng-change="updateOrderPaid(order)" ng-model="order.is_paid"  class="form-select form-select-sm" aria-label="Default select example" style="min-width:80px">
                             <option value="0">Chưa thanh toán</option>
                             <option value="1">Đã thanh toán</option>
                         </select>

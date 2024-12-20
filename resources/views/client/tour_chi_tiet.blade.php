@@ -80,12 +80,6 @@
                                 <td>:</td>
                                 <td class="text-body ps-2 fw-bold">{{ $tour->duration }}</td>
                             </tr>
-                            <tr>
-                                <td><i class="fa-solid fa-check-to-slot"></i></td>
-                                <td> Số chỗ còn</td>
-                                <td>:</td>
-                                <td class="text-body ps-2 fw-bold">4 chỗ</td>
-                            </tr>
                         </table>
                         <div class="d-grid gap-2">
                             <a href="{{ route('thanh_toan', $tour->id) }}" class="btn btn-primary fw-medium fs-5 py-2">Đặt tour</a>
