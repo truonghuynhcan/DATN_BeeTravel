@@ -7,12 +7,7 @@
         <h2 class="">Quản lý tin tức</h2>
         <a href="{{route('admin.newInsert')}}" class="btn btn-primary" style="height: fit-content;">Thêm tin tức mới</a>
     </header>
-    <!-- <div class="alert alert-warning">
-        <h4>Todo</h4>
-        <ul>
-            <li>Đang thực hiện</li>
-        </ul>
-    </div> -->
+    
     <section class="bg-body rounded p-2">
         {{-- Bộ lọc --}}
         <!-- <div class="d-flex mb-3">
@@ -51,11 +46,9 @@
                     <th scope="col" class="text-center">Danh mục</th>
                     @if (Auth::guard('admin')->user()->role == 'admin')
                         <th scope="col" class="text-center">Đối tác</th>
-                    @else
-                        <th scope="col" class="text-center">Ngày Khởi Hành</th>
                     @endif
-                    <th scope="col" class="text-center">Mô tả tin tức </th>
-                    <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
+                        <!-- <th scope="col" class="text-center">Ngày Khởi Hành</th> -->
+                    <th scope="col" class="text-center">Nội dung tin tức</th>
                     <th scope="col" class="text-center">Trạng thái</th>
                     <th scope="col" class="text-center">Hành động</th>
                 </tr>
@@ -65,8 +58,9 @@
                     <th scope="row" class="text-center"><img src="{{ asset('') }}assets/image_new/@{{ newItem.image_url }}" alt="ảnh" class="object-fit-cover" height="60px"></th>
                     <td>@{{ newItem.title }}</td>
                     <td class="text-center">@{{ newItem.news_category.title }}</td>
-                    <td class="text-center">@{{ newItem.admin.name }}</td>
-                    <!-- Người đăng ký -->
+                    @if (Auth::guard('admin')->user()->role == 'admin')
+                        <td class="text-center">@{{ newItem.admin.name }}</td>
+                    @endif
                     <td class="text-center">@{{ newItem.description }}</td>
                     <!-- Người đăng ký -->
                     <!-- <td class="text-center">@{{ newItem.content }}</td> -->
@@ -95,6 +89,8 @@
             $http.get('/admin/api/danh-sach-new/{{ Auth::guard("admin")->user()->id }}').then(
                 function(res) { // success
                     $scope.news = res.data.data;
+                    console.log($scope.news);
+                    
                 },
                 function(res) { // error
                     console.error('Lỗi khi lấy danh sách tours:', res); // Ghi lỗi

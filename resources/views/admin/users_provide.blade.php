@@ -26,7 +26,7 @@
                     <th scope="col" class="text-center">Trạng thái</th>
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
-                    <th scope="col" class="text-center">Hành động</th>
+                    <!-- <th scope="col" class="text-center">Hành động</th> -->
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -42,8 +42,9 @@
                     <!-- trạng thái -->
                     <!-- <td class="text-center" ng-bind=" useradmin.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
-                    <td class="text-center">
+                    <!-- <td class="text-center">
                         <button class="btn btn-outline-danger">Khóa tài khoản</button>
+                        </td> -->
                 
         </tr>
                     <!-- <a href="/admin/sua-provider/@{{ userprovide.id }}" class="btn btn-info">Sửa</a> -->

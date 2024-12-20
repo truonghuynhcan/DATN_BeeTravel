@@ -238,15 +238,28 @@ class UserTourController extends Controller
         $categories = Category::all();
         $latestNews = News::where('title', 'like', "%$keyword%")
             ->orwhere('description', 'like', "%$keyword%")
+            ->orwhere('slug', 'like', "%$keyword%")
+            ->orwhere('content', 'like', "%$keyword%")
+            
             ->orderby('id', 'desc')
             ->paginate(4);
         $tours = Tour::where('title', 'like', "%$keyword%")
             ->orwhere('featured', 'like', "%$keyword%")
+            ->orwhere('sub_title', 'like', "%$keyword%")
+            ->orwhere('description', 'like', "%$keyword%")
+            ->orwhere('noi_khoi_hanh', 'like', "%$keyword%")
+            ->orwhere('duration', 'like', "%$keyword%")
+            ->orwhere('transport', 'like', "%$keyword%")
             ->orderby('id', 'desc')
             ->paginate(6);
 
         $tours_moinhat = Tour::where('title', 'like', "%$keyword%")
-            ->orwhere('featured', 'like', "%$keyword%")
+        ->orwhere('featured', 'like', "%$keyword%")
+        ->orwhere('sub_title', 'like', "%$keyword%")
+        ->orwhere('description', 'like', "%$keyword%")
+        ->orwhere('noi_khoi_hanh', 'like', "%$keyword%")
+        ->orwhere('duration', 'like', "%$keyword%")
+        ->orwhere('transport', 'like', "%$keyword%")
             ->orderby('id', 'desc')
             ->paginate(6);
         return view('client.home', compact('tours', 'categories', 'latestNews', 'tours_moinhat'));

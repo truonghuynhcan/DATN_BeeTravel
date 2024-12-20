@@ -1,5 +1,7 @@
 <nav class="bg-body-tertiary bg-opacity-25 p-2 overflow-auto sticky-top" style="width: 250px; height: 100vh;">
     <!-- Đối tác - chỉ show thống kê của riêng đối tác -->
+    @auth('admin')
+    @if (Auth::guard('admin')->user()->role == 'admin')
     <div class="list-group mb-3">
         <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
             Dashboard
@@ -7,6 +9,8 @@
         <a href="" class="list-group-item list-group-item-action">Thống kê tour</a>
         <a href="" class="list-group-item list-group-item-action">Thống kê doanh thu</a>
     </div>
+    @endif
+    @endauth
     <div class="list-group mb-3">
         <a href="{{route('admin.order')}}" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
             Quản lý đơn hàng
