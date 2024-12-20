@@ -22,7 +22,7 @@
                     <!-- <th scope="col" class="text-center">Nội dung tin tức</th> -->
                     <!-- <th scope="col" class="text-center">Trạng thái</th> -->
                     <th scope="col" class="text-center">Trạng thái</th>
-                    <th scope="col" class="text-center">Hành động</th>
+                    <!-- <th scope="col" class="text-center">Hành động</th> -->
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -32,18 +32,16 @@
                     <td class="text-center">@{{ userperson.email }}</td>
                     <td class="text-center">@{{ userperson.address }}</td>
                     <td class="text-center">@{{ userperson.phone }}</td>
-                    <td class="text-center">
-    @{{ userperson.is_block === 1 ? 'Còn hoạt động' : 'Đã bị khóa' }}
-</td>
+                    <td class="text-center badge text-bg-success m-2" style="display: flex; align-items: center; justify-content: center; height: 30px;">@{{ userperson.is_block  ? 'Đã bị khóa' : 'Còn hoạt động' }}</td>
                     <!-- Người đăng ký -->
                     <!-- <td class="text-center">@{{ newItem.content }}</td> -->
                     <!-- trạng thái -->
                     <!-- <td class="text-center" ng-bind=" useradmin.is_hidden !== 0 ? 'Ẩn Tin' : 'Hiện Tin'"></td> -->
 
-                    <td class="text-center">
-                        <!-- <a href="/admin/sua-person/@{{ userperson.id }}" class="btn btn-info">Sửa</a> -->
+                    <!-- <td class="text-center">
+                        
                         <button class="btn btn-outline-danger">Khóa tài khoản</button>
-                    </td>
+                    </td> -->
                 </tr>
             </tbody>
         </table>
