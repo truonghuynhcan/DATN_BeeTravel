@@ -8,6 +8,10 @@
 
         <!-- bootstrap -->
         <link rel="stylesheet" href="{{ asset('') }}assets/css/bootstrap.css">
+        <!-- sử dụng Popovers -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-qG3RE/whdkyDFbU92R/ZG7R1nWnZaX1anH9vAjiyBjGVGkiyof6BMlt4E/YIbx1F" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-MrcW6AHECpddKYL0MRq3tHV7PZ1KQb11D8T4LHRq1F2NfN/cpUkxofeO6pJoVbn" crossorigin="anonymous"></script>
+        <!-- sử dụng bundle-->
         <script src="{{ asset('') }}assets/bootstrap/js/bootstrap.bundle.min.js" defer></script>
         <!-- icon -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -18,7 +22,7 @@
 
         <!-- TRÌNH SOẠN THẢO -->
         <script src="https://cdn.tiny.cloud/1/j3c0uo9sihhr95e3j0x613exxpc573dgffjby8r3q6q0aand/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-        
+
 
     </head>
 

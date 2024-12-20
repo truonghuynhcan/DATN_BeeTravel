@@ -150,18 +150,24 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     
     // * thống kê
     Route::get('/thong_ke', [StatisticsController::class,'getDashboard'])->name('thong_ke');
+    Route::get('/thong_ke_tour', [StatisticsController::class,'getStatistics'])->name('thong_ke_tour');
 
+
+    // * tin tức
     Route::view('/quan-ly-tt', 'admin.news')->name('newsManagement');
     Route::view('/them-tt', 'admin.new_insert')->name('newInsert');
     Route::post('/them-tt/loading', [AdminNewController::class, 'newInsert_'])->name('newInsert_');
-
+    
+    // * danh mục tin tức
     Route::view('/quan-ly-dmtt', 'admin.category_new')->name('CateNewsManagement');
     Route::view('/them-catenew', 'admin.catenew_insert')->name('catenewInsert');
     Route::post('/them-catenew/loading', [AdminNewController::class, 'catenewInsert_'])->name('catenewInsert_');
     Route::get('/sua-category-new/{id}', [AdminNewController::class, 'catenewEdit'])->name('catenewEdit');
     Route::post('/sua-category-new/{id}', [AdminNewController::class, 'catenewEdit_update'])->name('catenewEdit_update');
     Route::get('/xoa-category-new/{id}', [AdminNewController::class, 'catenewDelete'])->name('catenewDelete');
-    Route::delete('/xoa-category-new/{id}', [AdminNewController::class, 'catenew_Delete'])->name('catenew_Delete');
+    Route::delete('/xoa-category-new/{id}', action: [AdminNewController::class, 'catenew_Delete'])->name('catenew_Delete');
+    
+    // * danh mục tour
 
     Route::view('/quan-ly-dmtour', 'admin.category_tour')->name('CateToursManagement');
     Route::view('/them-catetour', 'admin.catetour_insert')->name('catetourInsert');
@@ -171,25 +177,26 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
     Route::get('/xoa-category-tour/{id}', [AdminTourController::class, 'catetourDelete'])->name('catetourDelete');
     Route::delete('/xoa-category-tour/{id}', [AdminTourController::class, 'catetour_Delete'])->name('catetour_Delete');
 
+    // * user
     Route::view('/quan-ly-users', 'admin.users')->name('usersManagement');
     Route::get('/quan-ly-users/{id}', [AdminUsersController::class, 'getAdminEdit'])->name('getAdminEdit');
     Route::post('/quan-ly-users/{id}', [AdminUsersController::class, 'getAdminEdit_update'])->name('getAdminEdit_update');
     
-    // Provide đối tác
+    // * Provide đối tác
     Route::view('/quan-ly-provide', 'admin.users_provide')->name('providesManagement');
     Route::view('/them-provider', 'admin.provider_insert')->name('providerInsert');
     Route::post('/them-provider/loading', [AdminUsersController::class, 'providerInsert_'])->name('providerInsert_');
     Route::get('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit'])->name('providerEdit');
     Route::post('/sua-provider/{id}', [AdminUsersController::class, 'providerEdit_update'])->name('providerEdit_update');
 
-    // Person đối tác
+    // * quản lý người dùng
     Route::view('/quan-ly-person', 'admin.users_person')->name('personsManagement');
     Route::view('/them-person', 'admin.person_insert')->name('personInsert');
     Route::post('/them-person/loading', [AdminUsersController::class, 'personInsert_'])->name('personInsert_');
     Route::get('/sua-person/{id}', [AdminUsersController::class, 'personEdit'])->name('personEdit');
     Route::post('/sua-person/{id}', [AdminUsersController::class, 'personEdit_update'])->name('personEdit_update');
 
-    // Admin đối tác
+    // * Admin đối tác
     Route::view('/quan-ly-admin', 'admin.users_admin')->name('adminusersManagement');
     Route::view('/them-admin', 'admin.admin_insert')->name('adminInsert');
     Route::post('/them-admin/loading', [AdminUsersController::class, 'adminInsert_'])->name('adminInsert_');
@@ -223,7 +230,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin_or_prov
 // Route::post('/admin/delete-tour/{id}', [AdminTourController::class, 'deleteTour']);
     Route::prefix('/api')->group(function () {
         Route::get('/danh-sach-don-hang/{admin_id}', [AdminOrderController::class, 'order']);
-
+        Route::post('/update-order-paid', [AdminOrderController::class, 'updateOrderPaid']);
+        Route::post('/update-order-status', [AdminOrderController::class, 'updateOrderStatus']);
 
         Route::get('/danh-sach-tour/{admin_id}', [AdminTourController::class, 'tours']);
         Route::get('/danh-muc-tour', [AdminCategoryController::class, 'index']); // lấy danh mục categories tour

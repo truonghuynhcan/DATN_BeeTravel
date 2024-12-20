@@ -68,7 +68,7 @@
             <!-- Revenue Sources -->
             <div class="col-md-4">
                 <div class="card p-3">
-                    <h5 class="text-primary">Doanh thu theo danh mục</h5>
+                    <h5 class="text-primary">Số lượng tour theo danh mục</h5>
                     <canvas id="doughnutChart"></canvas>
                 </div>
             </div>
@@ -81,33 +81,53 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
    
+// Dữ liệu cho biểu đồ tròn (số lượng tour theo loại tour)
+const tourCategories = @json($tourCategories);
 
-    // Dữ liệu cho biểu đồ tròn (doanh thu theo loại tour)
-    const tourCategories = @json($tourCategories);
-    const categoryLabels = tourCategories.map(data => (data.tour_nuoc_ngoai == 0 ? 'Tour trong nước' : 'Tour nước ngoài'));
-    const categoryRevenue = tourCategories.map(data => data.total_revenue);
+// Gộp dữ liệu thành 2 nhóm chính: Tour trong nước và Tour nước ngoài
+const categoryLabels = ['Tour trong nước', 'Tour nước ngoài'];
+const categoryCounts = [
+    tourCategories.filter(data => data.tour_nuoc_ngoai == 0).reduce((sum, data) => sum + data.total_tours, 0),
+    tourCategories.filter(data => data.tour_nuoc_ngoai == 1).reduce((sum, data) => sum + data.total_tours, 0),
+];
 
-    renderDoughnutChart(categoryLabels, categoryRevenue);
+// Render biểu đồ tròn
+renderDoughnutChart(categoryLabels, categoryCounts);
 
-    // Hàm render biểu đồ tròn
-    function renderDoughnutChart(labels, revenue) {
-        const ctx = document.getElementById('doughnutChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Doanh thu theo loại tour',
-                    data: revenue,
-                    backgroundColor: ['#f6c23e', '#e74a3b'],
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true
+function renderDoughnutChart(labels, counts) {
+    const ctx = document.getElementById('doughnutChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels, // Nhãn: Tour trong nước, Tour nước ngoài
+            datasets: [{
+                label: 'Số lượng tour theo loại',
+                data: counts, // Dữ liệu: Số lượng
+                backgroundColor: ['#4e73df', '#1cc88a'], // Màu nền
+                hoverBackgroundColor: ['#2e59d9', '#17a673'], // Màu khi hover
+                hoverOffset: 5,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top', // Vị trí của chú thích
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            const index = tooltipItem.dataIndex;
+                            const value = counts[index];
+                            const label = labels[index];
+                            return `${label}: ${value} tours`;
+                        }
+                    }
+                }
             }
-        });
-    }
+        }
+    });
+}
 
     document.addEventListener('DOMContentLoaded', function () {
         // Lấy dữ liệu từ controller
@@ -141,7 +161,7 @@
                     },
                     {
                         label:'Số lượng tour' ,
-                        data: tourData,
+data: tourData,
                         type: 'line',  // Đặt kiểu biểu đồ là đường cho dataset này
                         borderColor: 'rgba(54, 162, 235, 1)', // Màu cho đường
                         backgroundColor: 'rgba(54, 162, 235, 0.2)', // Màu nền cho đường

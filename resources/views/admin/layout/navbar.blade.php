@@ -3,11 +3,11 @@
     @auth('admin')
     @if (Auth::guard('admin')->user()->role == 'admin')
     <div class="list-group mb-3">
-        <a href="" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
+        <a href="{{route('admin.thong_ke')}}" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">
             Dashboard
         </a>
-        <a href="" class="list-group-item list-group-item-action">Thống kê tour</a>
-        <a href="" class="list-group-item list-group-item-action">Thống kê doanh thu</a>
+        <a href="{{route('admin.thong_ke_tour')}}" class="list-group-item list-group-item-action">Thống kê tour</a>
+        {{-- <a href="" class="list-group-item list-group-item-action">Thống kê doanh thu</a> --}}
     </div>
     @endif
     @endauth
@@ -16,7 +16,7 @@
             Quản lý đơn hàng
         </a>
         <a href="{{route('admin.order')}}" class="list-group-item list-group-item-action">Tất cả đơn hàng</a>
-        <a href="" class="list-group-item list-group-item-action">Thông kê</a>
+        {{-- <a href="" class="list-group-item list-group-item-action">Thông kê</a> --}}
     </div>
     <div class="list-group mb-3">
         <a href="{{route('admin.tourManagement')}}" class="list-group-item list-group-item-action bg-primary-subtle" aria-current="true">

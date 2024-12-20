@@ -19,22 +19,8 @@ class StatisticsController extends Controller
                 ->where('is_hidden', '0') // Chỉ đếm những tour có trạng thái 'active'
                 ->groupBy('id')
                 ->get();
-
-            // Lấy tổng số Đơn hàng
-            $totalOrders = Order::count(); // Đếm tổng số đơn hàng trong bảng orders
-
-            // Lấy tổng số tin tức
-            $totalNews = DB::table('news')
-                ->select('id', DB::raw('COUNT(*) as count'))
-                ->where('is_hidden', '0') // Chỉ đếm những tin tức có trạng thái 'active'
-                ->groupBy('id')
-                ->get();
-
-            // Lấy tổng số Đối tác
-            $totalProvider = DB::table('admins')
-                ->where('role', 'provider')  // Lọc theo role 'provider'
-                ->count();
-
+                // $toursCountById =Tour::count();
+            
 
             // Lấy tổng loại tour
             $tourCountsByCategory = DB::table('categories')
@@ -52,17 +38,21 @@ class StatisticsController extends Controller
 
         // lấy tour đc đặt nhiều 
         $mostBookedTours = DB::table('tours')
-            ->join('ngay_di', 'tours.id', '=', 'ngay_di.tour_id') // Kết nối bảng tours với bảng ngay_di qua tour_id
-            ->join('orders', 'ngay_di.id', '=', 'orders.ngaydi_id') // Kết nối bảng ngay_di với bảng orders qua ngay_di_id
-            ->select(
-                'tours.title as tour_name', // Tên tour từ bảng tours
-                'ngay_di.start_date as booking_date', // Ngày đi từ bảng ngay_di
-                DB::raw('COUNT(orders.id) as total_bookings') // Đếm số lượt đặt từ bảng orders
-            )
-            ->groupBy('tours.id', 'tours.title', 'ngay_di.start_date') // Nhóm theo tour, tên tour và ngày đi
-            ->orderByDesc('total_bookings') // Sắp xếp theo số lượng lượt đặt
-            ->limit(10) // Lấy 10 tour có lượt đặt nhiều nhất
-            ->get();
+        ->join('ngay_di', 'tours.id', '=', 'ngay_di.tour_id') // Kết nối bảng tours với bảng ngay_di qua tour_id
+        ->join('orders', 'ngay_di.id', '=', 'orders.ngaydi_id') // Kết nối bảng ngay_di với bảng orders qua ngay_di_id
+        ->join('categories', 'tours.category_id', '=', 'categories.id') // Kết nối bảng tours với bảng categories để lấy danh mục
+        ->select(
+            'tours.title as tour_name', // Tên tour từ bảng tours
+            'tours.image_url', // Ảnh từ bảng tours
+            'categories.ten_danh_muc as category_name', // Danh mục từ bảng categories
+            'ngay_di.start_date as booking_date', // Ngày đi từ bảng ngay_di
+            'ngay_di.price as total_price', 
+            DB::raw('COUNT(orders.id) as total_bookings') // Đếm số lượt đặt từ bảng orders
+        )
+        ->groupBy('tours.id', 'tours.title', 'ngay_di.start_date','ngay_di.price', 'categories.id', 'tours.image_url') // Nhóm theo tour, tên tour, ngày đi, danh mục và ảnh
+        ->orderByDesc('total_bookings') // Sắp xếp theo số lượng lượt đặt
+        ->limit(10) // Lấy 10 tour có lượt đặt nhiều nhất
+        ->get();
 
             
 
@@ -72,7 +62,7 @@ class StatisticsController extends Controller
             'Vĩnh Phúc', 'Phú Thọ', 'Thái Nguyên', 'Lạng Sơn', 'Cao Bằng',
             'Hà Giang', 'Tuyên Quang', 'Yên Bái', 'Lào Cai', 'Điện Biên',
             'Lai Châu', 'Sơn La', 'Hòa Bình', 'Nam Định', 'Hà Nam',
-            'Ninh Bình', 'Thái Bình'
+'Ninh Bình', 'Thái Bình'
         ];
         $mienTrung = [
             'Thanh Hóa', 'Nghệ An', 'Hà Tĩnh', 'Quảng Bình', 'Quảng Trị',
@@ -109,12 +99,8 @@ class StatisticsController extends Controller
             // Trả về view và truyền dữ liệu vào
             return view('admin.thong_ke_tour', [
                 'toursCountById' => $toursCountById,
-                'totalOrders' => $totalOrders,
-                'totalNews' => $totalNews,
-                'tourCountsByCategory' => $tourCountsByCategory,
+                'tourCountsByCategory' => $tourCountsByCategory,      
                 'mostBookedTours' =>$mostBookedTours,
-                'totalProvider' => $totalProvider,
-               
                 'tourStats'=> $tourStats,
             ]);
         } catch (\Exception $e) {
@@ -128,7 +114,7 @@ class StatisticsController extends Controller
         try {
             // Lấy tổng doanh thu từ đơn hàng đã hoàn thành
             $toursRevenue = DB::table('orders')
-                ->where('status', 'waiting') // Lọc theo trạng thái "finished"
+                ->where('status', 'finished') // Lọc theo trạng thái "finished"
                 ->sum('total_price');
 
             // Lấy tổng số Đơn hàng
@@ -140,8 +126,7 @@ class StatisticsController extends Controller
             //     ->where('is_hidden', '0') // Chỉ đếm những tin tức có trạng thái 'active'
             //     ->groupBy('id')
             //     ->get();
-
-            $totalUsers = DB::table('users')->count();
+$totalUsers = DB::table('users')->count();
             // Lấy tổng số Đối tác
             $totalProvider = DB::table('admins')
                 ->where('role', 'provider')  // Lọc theo role 'provider'
@@ -153,13 +138,24 @@ class StatisticsController extends Controller
 
 
                 
-            $tourCategories = DB::table('categories')
-                ->join('tours', 'categories.id', '=', 'tours.category_id') // Kết nối với bảng tours
-                ->join('ngay_di', 'tours.id', '=', 'ngay_di.tour_id') // Kết nối với bảng ngay_di
-                ->select('categories.tour_nuoc_ngoai', 
-                        DB::raw('COUNT(tours.id) as total_categories'),
-                        DB::raw('SUM(ngay_di.price) as total_revenue')) // Tính doanh thu
-                ->groupBy('categories.tour_nuoc_ngoai') // Nhóm theo loại tour
+            // $tourCategories = DB::table('categories')
+            //     ->join('tours', 'categories.id', '=', 'tours.category_id') // Kết nối với bảng tours
+            //     ->join('orders', 'tours.id', '=', 'orders.id') // Kết nối với bảng ngay_di
+            //     ->select('categories.tour_nuoc_ngoai', 
+            //             DB::raw('COUNT(tours.id) as total_categories'),
+            //             DB::raw('SUM(orders.total_price) as total_revenue')) // Tính doanh thu
+            //     ->groupBy('categories.tour_nuoc_ngoai') // Nhóm theo loại tour
+            //     ->get();
+
+                $tourCategories = DB::table('categories')
+                ->leftJoin('tours', 'categories.id', '=', 'tours.category_id') // Kết nối với bảng tours
+                ->select(
+                    'categories.ten_danh_muc as category_name', 
+                    'categories.tour_nuoc_ngoai', 
+                    DB::raw('COUNT(tours.id) as total_tours') // Đếm số lượng tour
+                )
+                ->groupBy('categories.id', 'categories.ten_danh_muc', 'categories.tour_nuoc_ngoai') // Nhóm theo danh mục và loại tour
+                ->orderByDesc('total_tours') // Sắp xếp theo số lượng tour giảm dần
                 ->get();
             
 
@@ -180,7 +176,3 @@ class StatisticsController extends Controller
     }
 
 }
-
-
-
-
