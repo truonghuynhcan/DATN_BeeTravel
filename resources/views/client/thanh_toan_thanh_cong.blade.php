@@ -132,7 +132,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <a href="{{ route('chitiet', $tour->id) }}" class="h5 card-title text-primary fw-bold">{{ $tour->title }}</a>
+                            <a href="{{ route('tour_chi_tiet', $tour->id) }}" class="h5 card-title text-primary fw-bold">{{ $tour->title }}</a>
                             <table class="table table-borderless w-auto">
                                 <tr>
                                     <td><i class="bi bi-clock"></i></td>
